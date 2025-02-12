@@ -71,13 +71,14 @@ const validateFrontMatter = frontMatter => {
 
   if (
     frontMatter.duration &&
-    !/^(?:[0-9]|[0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/.test(
+    !/^(?:(?:[0-9]|[0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]|[0-9]:[0-5][0-9]:[0-5][0-9])$/.test(
       frontMatter.duration
     )
   ) {
     errors.push({
       line: 1,
-      message: "Duration must be in HH:MM:SS format (e.g. 12:34:56)",
+      message:
+        "Duration must be in HH:MM:SS or H:MM:SS format (e.g. 12:34:56 or 2:34:56)",
     });
   }
 
