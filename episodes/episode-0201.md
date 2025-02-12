@@ -1,6 +1,6 @@
 ---
 date: 2024-12-15
-duration: "2:4:23"
+duration: "2:04:23"
 title: "Special: Sawalni.com"
 tags: ["AI"]
 category: "ai"
@@ -27,7 +27,7 @@ In this episode, we'll talk about how the idea of 'Swalni' came about and how it
 
 00:29:36 - What were some of the most interesting patterns you uncovered in the content creation and geographic distribution of Darija websites?
 
-01:08:05 - Regarding data and its usage in Morocco, Do you think we have tools to monitor such datasets 
+01:08:05 - Regarding data and its usage in Morocco, Do you think we have tools to monitor such datasets
 
 01:25:05 - Looking ahead, what are some of the key opportunities and challenges you see in further advancing natural language processing and language technology solutions for Moroccan Arabic and other under-resourced languages? Where would you like to see the most progress in the next 3-5 years?
 

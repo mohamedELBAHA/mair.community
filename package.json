@@ -15,6 +15,7 @@
     "lint": "prettier --write  \"**/*.{js,jsx,ts,tsx,md,mdx,astro}\" && eslint --fix \"src/**/*.{js,ts,jsx,tsx,astro}\"",
     "lint:ci": "eslint \"src/**/*.{js,ts,jsx,tsx,astro}\"",
     "prepare": "husky",
+    "validate-episode": "node .github/scripts/validate-episode-markdown.js",
     "check-all": "pnpm run lint && pnpm run check && pnpm run build"
   },
   "dependencies": {
