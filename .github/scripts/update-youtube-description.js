@@ -8,7 +8,7 @@ const WEBHOOK_URL = process.env.YOUTUBE_WEBHOOK_URL;
  * Sends the YouTube description to a webhook
  * @param {string} input - Either episode number or full file path
  */
-async function updateYoutubeDescription(input) {
+export async function updateYoutubeDescription(input) {
   try {
     // Get webhook URL from environment variable
     const webhookUrl = process.env.WEBHOOK_URL ?? WEBHOOK_URL;
@@ -18,7 +18,19 @@ async function updateYoutubeDescription(input) {
 
     // Generate the description
     const { youtube, description } = generateYoutubeDescription(input);
-    const youtubeId = youtube.split("v=")[1];
+    if (description.length > 4990) {
+      // max length is 5000
+      throw new Error("Description is too long");
+    }
+    let youtubeId;
+    if (youtube.includes("youtu.be/")) {
+      youtubeId = youtube.split("youtu.be/")[1]?.split("?")[0];
+    } else {
+      youtubeId = youtube.split("v=")[1]?.split("&")[0];
+    }
+    if (!youtubeId) {
+      throw new Error("Invalid YouTube URL");
+    }
     // Send to webhook
     const formData = new URLSearchParams();
     formData.append("youtube_id", youtubeId);

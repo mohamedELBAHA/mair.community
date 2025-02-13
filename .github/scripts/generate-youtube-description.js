@@ -72,16 +72,16 @@ export function generateYoutubeDescription(input) {
 }
 
 // Main execution
-const main = () => {
-  const input = process.argv[2];
+// const main = () => {
+//   const input = process.argv[2];
 
-  if (!input) {
-    console.error("Please provide an episode number or file path");
-    process.exit(1);
-  }
+//   if (!input) {
+//     console.error("Please provide an episode number or file path");
+//     process.exit(1);
+//   }
 
-  const result = generateYoutubeDescription(input);
-  console.log(JSON.stringify(result, null, 2));
-};
+//   const result = generateYoutubeDescription(input);
+//   console.log(JSON.stringify(result, null, 2));
+// };
 
-main();
+// main();

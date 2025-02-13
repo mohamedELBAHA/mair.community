@@ -1,0 +1,35 @@
+name: Update YouTube Description
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "episodes/**.md"
+
+jobs:
+  update-description:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: episodes/**.md
+
+      - name: Update YouTube descriptions for changed episodes
+        env:
+          YOUTUBE_WEBHOOK_URL: ${{ secrets.YOUTUBE_WEBHOOK_URL }}
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          echo "Changed files: ${ALL_CHANGED_FILES}"
+          for file in ${ALL_CHANGED_FILES}; do
+            node .github/scripts/update-youtube-description.js "$file"
+          done
