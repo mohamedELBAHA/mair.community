@@ -1,0 +1,48 @@
+name: Upload Episode to Spotify
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - "episodes/**.md"
+
+jobs:
+  upload-episode:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Get missed episode + generate youtube id file missed-episode.json
+        id: missed-episode
+        run: |
+          node ./.github/scripts/get-missed-episode.js
+
+      - name: Check if missed episode exists
+        id: check-file
+        run: |
+          if [ -f "missed-episode.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload Episode from YouTube To Spotify
+        if: steps.check-file.outputs.exists == 'true'
+        uses: Schroedinger-Hat/youtube-to-spotify@v2.5.0
+        env:
+          SPOTIFY_EMAIL: ${{ secrets.ANCHOR_EMAIL }}
+          SPOTIFY_PASSWORD: ${{ secrets.ANCHOR_PASSWORD }}
+          EPISODE_PATH: /github/workspace
+          SAVE_AS_DRAFT: true
+          LOAD_THUMBNAIL: true
+          URL_IN_DESCRIPTION: true
+          EPISODE_FILE: missed-episode.json

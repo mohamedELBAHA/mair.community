@@ -16,6 +16,7 @@
     "lint:ci": "eslint \"src/**/*.{js,ts,jsx,tsx,astro}\"",
     "prepare": "husky",
     "validate-episode": "node .github/scripts/validate-episode-markdown.js",
+    "get-missed-episode": "node .github/scripts/get-missed-episode.js",
     "check-all": "pnpm run lint && pnpm run check && pnpm run build"
   },
   "dependencies": {
@@ -44,7 +45,10 @@
     "remark-toc": "^9.0.0",
     "satori": "^0.11.2",
     "tailwindcss": "^3.4.11",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "node-fetch": "^3.3.2",
+    "fast-xml-parser": "^4.3.4",
+    "gray-matter": "^4.0.3"
   },
   "devDependencies": {
     "@astrojs/react": "^3.6.2",
