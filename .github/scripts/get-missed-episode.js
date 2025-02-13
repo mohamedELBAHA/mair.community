@@ -59,7 +59,7 @@ async function findMissingEpisodesYoutubeId() {
     getRSSEpisodesLength(),
   ]);
   if (localEpisodes > rssEpisodes) {
-    const missedEpisodeNumber = rssEpisodes + 1;
+    const missedEpisodeNumber = rssEpisodes;
     console.log(`Next episode to upload: #${missedEpisodeNumber}`);
     const youtubeId = await getEpisodeYoutubeId(missedEpisodeNumber);
     console.log(`YouTube ID: ${youtubeId}`);
