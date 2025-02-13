@@ -4,7 +4,7 @@ duration: "1:56:15"
 title: "Testing & QA Engineering"
 tags: ["software testing"]
 category: "dev"
-youtube: https://www.youtube.com/watch?v=iCc9kIGoQo4&ab_channel=GeeksBlaBla
+youtube: https://www.youtube.com/watch?v=iCc9kIGoQo4
 published: true
 ---
 

@@ -4,7 +4,7 @@ duration: "1:45:17"
 title: "Data engineer 101"
 tags: ["dev"]
 category: "dev"
-youtube: https://www.youtube.com/live/mxV9Bx1ZsZg?si=5QnDE6RCcNOBuW1T
+youtube: https://www.youtube.com/watch?v=mxV9Bx1ZsZg
 published: true
 featured: false
 ---

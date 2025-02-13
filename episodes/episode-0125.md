@@ -4,7 +4,7 @@ duration: "1:30:27"
 title: "DevoxxMa Special"
 tags: ["Dev"]
 category: "dev"
-youtube: https://youtu.be/UaulAxzEvdk
+youtube: https://www.youtube.com/watch?v=UaulAxzEvdk
 published: true
 featured: false
 ---

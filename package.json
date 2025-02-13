@@ -80,6 +80,9 @@
     ],
     "*.{md,mdx}": [
       "prettier --write"
+    ],
+    "episodes/*.{md,mdx}": [
+      "pnpm validate-episode"
     ]
   }
 }

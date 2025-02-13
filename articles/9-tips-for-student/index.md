@@ -181,3 +181,5 @@ School is great and all, but on its own, it’s often not enough to make you a w
 - 🔗 [Meetup](https://www.meetup.com): Explore meetups an events near you.
 - 🔗 [Mrrakc Maps](https://maps.mrrakc.com/): A curation of maps for various regions of Morocco.
 - 🔗 [Project Gutenberg](https://www.gutenberg.org/): A huge collection of free books.
+
+That's it for now. Now it's your turn to share your tips and tricks in the comments below. Don't forget to share this with your friends.
