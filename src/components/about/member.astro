@@ -7,7 +7,7 @@ const { name, link, profile_image } = Astro.props;
 <a href={link} class="block" target="_blank">
   <div class="md:mb mb-2">
     <Image
-      class="aspect-[297/330] w-full overflow-hidden rounded-t-[4px]"
+      class="aspect-[297/330] w-full overflow-hidden rounded-t-[4px] object-cover"
       src={profile_image}
       alt={name}
       width={297}

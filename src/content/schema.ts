@@ -77,14 +77,18 @@ export const authorSchema = z.object({
 
 export type ArticleFrontmatter = z.infer<ReturnType<typeof blogSchema>>;
 
-export const teamSchema = z.object({
-  name: z.string().min(1, "Name cannot be empty"),
-  link: z.string().url("Invalid URL format"),
-  profile_image: z
-    .string()
-    .regex(/\.(jpg|jpeg|png|gif)$/, "Invalid image file format"),
-  status: z.enum(["active", "past"]),
-});
+export const memberSchema = (ctx: SchemaContext) =>
+  z.object({
+    name: z.string(),
+    link: z.string().url(),
+    profile_image: ctx.image(),
+    status: z.enum(["active", "past"]),
+  });
+
+export const teamSchema = (ctx: SchemaContext) =>
+  z.object({
+    members: z.array(memberSchema(ctx)),
+  });
 
 export const testimonialSchema = (ctx: SchemaContext) =>
   z.object({
