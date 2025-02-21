@@ -5,7 +5,7 @@ import {
   authorSchema,
   blogSchema,
   episodeSchema,
-  teamSchema,
+  memberSchema,
   testimonialSchema,
 } from "./schema";
 /**
@@ -46,8 +46,8 @@ const gallery = !import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME
     });
 
 const team = defineCollection({
-  loader: file("src/components/about/team-members.json"),
-  schema: teamSchema,
+  loader: file("team/team-members.json"),
+  schema: ctx => memberSchema(ctx),
 });
 
 const testimonials = defineCollection({

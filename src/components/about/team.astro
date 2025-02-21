@@ -3,12 +3,7 @@ import Member from "./member.astro";
 import { getCollection } from "astro:content";
 
 const teamCollection = await getCollection("team");
-const teamMembers = teamCollection.map(member => ({
-  name: member.data.name,
-  link: member.data.link,
-  profile_image: member.data.profile_image,
-  status: member.data.status,
-}));
+const teamMembers = teamCollection.map(member => member.data);
 
 const activeMembers = teamMembers.filter(member => member.status === "active");
 const pastMembers = teamMembers.filter(member => member.status === "past");
