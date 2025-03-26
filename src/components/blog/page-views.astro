@@ -92,10 +92,10 @@ const counterUrl = `https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=${e
         viewsCount.textContent = "0"; // Start from zero
         animateNumber(0, totalViews, 1000, viewsCount); // Animate to actual count over 1 second
       } else {
-        viewsCount.textContent = "0";
+        viewsCount.textContent = "N/A";
       }
     } catch {
-      viewsCount.textContent = "0";
+      viewsCount.textContent = "N/A";
     }
   }
 
