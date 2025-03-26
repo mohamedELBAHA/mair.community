@@ -7,7 +7,7 @@
 1. Fork and clone the repository
 
 ```bash
-git clone https://github.com/your-username/geeksblabla.com.git
+git clone https://github.com/your-username/geeksblabla.community.git
 ```
 
 2. Install dependencies
