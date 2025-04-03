@@ -21,4 +21,9 @@ jobs:
       - name: Setup yt-dlp
         uses: AnimMouse/setup-yt-dlp@v3
 
+      - name: Setup yt-dlp YouTube cookies
+        uses: AnimMouse/setup-yt-dlp/cookies@v3
+        with:
+          cookies: ${{ secrets.YOUTUBE_COOKIES }}
+
       - run: yt-dlp https://www.youtube.com/watch?v=HVdjS6NaEz8
