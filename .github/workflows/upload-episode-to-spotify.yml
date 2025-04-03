@@ -35,6 +35,11 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Setup yt-dlp YouTube cookies
+        uses: AnimMouse/setup-yt-dlp/cookies@v3
+        with:
+          cookies: ${{ secrets.YOUTUBE_COOKIES }}
+
       - name: Upload Episode from YouTube To Spotify
         if: steps.check-file.outputs.exists == 'true'
         uses: Schroedinger-Hat/youtube-to-spotify@v2.5.0
