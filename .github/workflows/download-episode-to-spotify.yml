@@ -1,0 +1,24 @@
+name: Download Episode to Spotify
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - "episodes/**.md"
+
+jobs:
+  upload-episode:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup yt-dlp
+        uses: AnimMouse/setup-yt-dlp@v3
+
+      - run: yt-dlp https://www.youtube.com/watch?v=HVdjS6NaEz8
