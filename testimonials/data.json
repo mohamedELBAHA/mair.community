@@ -21,13 +21,7 @@
     "video": "https://res.cloudinary.com/da6xak4vb/video/upload/f_auto:video,q_auto/v1/reviews/mapvth2qxm0n9aen3plw",
     "poster": "https://res.cloudinary.com/da6xak4vb/video/upload/so_auto/c_fill,g_auto,w_350/v1733227630/reviews/mapvth2qxm0n9aen3plw.webp"
   },
-  {
-    "id": "kaoutar-choubari",
-    "name": "Kaoutar Choubari",
-    "role": "Software Engineer",
-    "video": "https://res.cloudinary.com/da6xak4vb/video/upload/f_auto:video,q_auto/v1/reviews/fiewmhtdeiferk3rlo1d",
-    "poster": "https://res.cloudinary.com/da6xak4vb/video/upload/so_auto/c_fill,g_auto,w_350/v1733227630/reviews/fiewmhtdeiferk3rlo1d.webp"
-  },
+  
   {
     "id": "diaa-elhak",
     "name": "Diaa Elhak",
