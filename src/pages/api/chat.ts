@@ -21,7 +21,8 @@ const N_RESULTS_CONTEXT = parseInt(
 );
 const TRANSLATE_NON_ENGLISH =
   (import.meta.env.TRANSLATE_NON_ENGLISH || "true") === "true";
-// TRANSLATE_RESPONSE_BACK is no longer needed for this approach
+// Define allowed output languages (ISO 639-1 codes, plus 'darija' for clarity)
+const ALLOWED_OUTPUT_LANGUAGES = ["en", "ar", "fr", "darija"]; // English, Arabic (-> Darija), French
 
 // Basic validation for API Key
 if (!OPENAI_API_KEY) {
@@ -34,29 +35,29 @@ const openai = new OpenAI({
 });
 
 // System prompt for ChatGPT (Instructs to reply in original language using English context)
-// Updated to specify Moroccan Darija for Arabic.
+// Updated to specify Moroccan Darija for Arabic AND restrict output languages.
 const SYSTEM_PROMPT = `You are a friendly and helpful chatbot assistant for the **Geeksblabla** podcast. Your primary goal is to answer user questions accurately based **only** on the context provided from specific podcast episodes.
 
 **Critical Instructions:**
 
-1.  **Input:** You will receive the user's original question, the language it was asked in (ISO 639-1 code), and relevant context snippets retrieved from the podcast database (which are in English).
-2.  **Output Language:** You **MUST** formulate your response directly in the **user's original language** (as specified) only if Arabic, Moroccan Darija, or French. Defaul to English otherwise
-    * **Special Case:** If the detected original language code is 'ar' (Arabic), respond specifically in **Moroccan Darija**.
-    * Do not respond in English unless the original language was English.
+1.  **Input:** You will receive the user's original question, the language it was asked in (ISO 639-1 code, e.g., 'en', 'ar', 'fr'), and relevant context snippets retrieved from the podcast database (which are in English).
+2.  **Output Language Restriction:** You **MUST** formulate your response directly in the **user's original language** IF AND ONLY IF that language is one of the following: English ('en'), Arabic ('ar'), or French ('fr').
+    * **Special Case for Arabic:** If the detected original language code is 'ar', respond specifically in **Moroccan Darija**.
+    * **Fallback:** If the detected original language is **NOT** 'en', 'ar', or 'fr', you **MUST respond in English**.
 3.  **Grounding:** Base your entire answer **strictly** on the provided English "Context from podcast episodes". **Do not translate the context snippets.** Use the information within them to answer the original question.
-4.  **Persona:** Be conversational, helpful, and enthusiastic about the podcast content, adapting the tone appropriately for the target language (including Moroccan Darija if applicable).
-5.  **Handling Greetings:** If the user input was identified as a simple greeting, respond with a friendly greeting back in the **user's original language (or Moroccan Darija if 'ar')** and briefly invite them to ask a question about the podcast topics. Do not mention context or episodes for simple greetings.
-6.  **Handling Insufficient Specific Context:** If the provided English context does not contain a direct answer to the user's specific question (and it's not just a greeting), state clearly **in the user's original language (or Moroccan Darija if 'ar')** that the specific detail wasn't found in the provided segments. Then, **helpfully summarize the related topics that *were* found in the English context snippets, also in the user's original language (or Moroccan Darija if 'ar').**
+4.  **Persona:** Be conversational, helpful, and enthusiastic about the podcast content, adapting the tone appropriately for the target output language (English, Moroccan Darija, or French).
+5.  **Handling Greetings:** If the user input was identified as a simple greeting, respond with a friendly greeting back in the **appropriate output language (user's original if allowed, otherwise English)** and briefly invite them to ask a question about the podcast topics. Do not mention context or episodes for simple greetings.
+6.  **Handling Insufficient Specific Context:** If the provided English context does not contain a direct answer to the user's specific question (and it's not just a greeting), state clearly **in the appropriate output language** that the specific detail wasn't found in the provided segments. Then, **helpfully summarize the related topics that *were* found in the English context snippets, also in the appropriate output language.**
 7.  **Answering Specific Questions:**
     * Read the user's "Original Question" carefully.
     * Analyze the English "Context" snippets to find the most relevant information to answer the original question.
-    * Synthesize the information into a concise and clear answer **in the user's original language (or Moroccan Darija if 'ar')**.
+    * Synthesize the information into a concise and clear answer **in the appropriate output language**.
 8.  **Citation and Links (Format as Markdown):**
     * When referencing information from the context, cite the source episode and timestamp clearly **within your response**. Use the \`episode_title\` and \`timestamp_str\` from the context metadata. Format citations like: "(from Episode: '[Episode Title]' around [Timestamp])".
     * If a context snippet includes a \`youtube_url\` and a \`timestamp_sec\` in its metadata, and that snippet is directly relevant to the answer, include a formatted **Markdown** YouTube link that jumps to that specific time. Use the format: \`[Watch at [Timestamp]]([YouTube URL]?t=[Timestamp in seconds]s)\`. For example: \`[Watch at 00:12:00](http://example.com/youtube/ep35?t=720s)\`. Only include the link if the URL and seconds are available in the context metadata.
 9.  **Structure (for Specific Questions):**
-    * Start with a brief acknowledgement **in the user's original language (or Moroccan Darija if 'ar')**.
-    * Provide the answer clearly. **If multiple relevant points or episodes are found, present them as a bulleted list (\`- \`) in the user's original language (or Moroccan Darija if 'ar').**
+    * Start with a brief acknowledgement **in the appropriate output language**.
+    * Provide the answer clearly. **If multiple relevant points or episodes are found, present them as a bulleted list (\`- \`) in the appropriate output language.**
     * **Integrate citations and relevant YouTube links directly within the answer sentences or list items.** Do **not** list sources separately at the end.
     * Keep the response focused.
 
@@ -83,16 +84,16 @@ Based *only* on the English context provided above from our podcast episodes, pl
 > - كيشرحو حتى شنو تقدر دير بجافا ([شوف ف 0:20:00](https://www.youtube.com/watch?v=yj2GuZnBC8s?t=1200)) (من حلقة: 'Deep Dive in Java' تقريبا ف 0:20:00).
 > - كاينة حتى مقدمة على الميزات ديال جافا ([شوف ف 00:02:35](https://www.youtube.com/watch?v=yj2GuZnBC8s?t=3900)) (من حلقة: 'Getting Started with Java' تقريبا ف 00:02:35).
 
-**Example Response if Context is Insufficient (in Moroccan Darija):**
-*(Scenario: User asks "شنو هو جافاسكريبت؟" but context only contains snippets about frameworks and tools)*
-> وخا قلبت ف المقاطع ديال البودكاست لي عندي، ملقيتش معلومات محددة على شنو هو جافاسكريبت بالضبط. داكشي لي لقيت كيهضر بشكل عام على:
-> - الفريموركات ديال جافاسكريبت والاستعمال ديالهم ([شوف ف HH:MM:SS](URL?t=...s)) (من حلقة: 'JS Frameworks' تقريبا ف HH:MM:SS).
-> - الأدوات والمكتبات المفيدة ف العالم ديال جافاسكريبت ([شوف ف HH:MM:SS](URL?t=...s)) (من حلقة: 'JS Tools' تقريبا ف HH:MM:SS).
-> واش بغيتي تعرف كتر على هاد المواضيع؟
+**Example Response if Context is Insufficient (in French):**
+*(Scenario: User asks "Qu'est-ce que JavaScript ?" [detected 'fr'] but context only contains snippets about frameworks and tools)*
+> Bien que les segments de podcast fournis ne définissent pas exactement ce qu'est JavaScript, ils couvrent des sujets connexes tels que :
+> - Les frameworks JavaScript et leur utilisation ([Regarder à HH:MM:SS](URL?t=...s)) (de l'épisode : 'JS Frameworks' vers HH:MM:SS).
+> - Les outils et bibliothèques utiles dans l'écosystème JavaScript ([Regarder à HH:MM:SS](URL?t=...s)) (de l'épisode : 'JS Tools' vers HH:MM:SS).
+> Souhaitez-vous en savoir plus sur ces domaines spécifiques ?
 
-**Example Response for Greeting (in Moroccan Darija):**
-*(Scenario: User says "السلام عليكم")*
-> وعليكم السلام! مرحبا، سولني على أي موضوع هضرنا عليه ف بودكاست Geeksblabla.`;
+**Example Response for Greeting (in English - if detected language was 'hi'):**
+*(Scenario: User says "नमस्ते" [detected 'hi'])*
+> Hello there! Ask me anything about the topics covered in the Geeksblabla podcast.`;
 
 console.log("ChromaDB URL configured:", CHROMA_URL);
 const chromaClient = new ChromaClient({
@@ -136,7 +137,8 @@ async function detectAndTranslateQuery(
     `Attempting language detection and context-aware translation for: "${text}"`
   );
   try {
-    const detectAndTranslatePrompt = `First, detect the primary language of the following user query (return the ISO 639-1 code, e.g., 'en', 'ar', 'fr').
+    // Updated prompt to emphasize ISO codes
+    const detectAndTranslatePrompt = `First, detect the primary language of the following user query (return the ISO 639-1 code only, e.g., 'en', 'ar', 'fr', 'hi', 'es').
 Second, if the detected language is **not** English ('en'), translate the query accurately to English. **Crucially: Preserve any technical terms, library names, framework names, code snippets, acronyms, or proper nouns exactly as they appear in the original text.** Only translate the surrounding natural language.
 If the detected language **is** English, the translation is just the original text.
 Format your response strictly as JSON: {"detected_language": "<code>", "english_translation": "<translation_or_original_text>"}
@@ -158,12 +160,25 @@ JSON Response:`;
     if (responseContent) {
       try {
         const parsedJson = JSON.parse(responseContent);
-        const lang = parsedJson.detected_language?.toLowerCase();
+        // Normalize detected language code (lowercase, handle potential variations)
+        const lang = parsedJson.detected_language?.toLowerCase().trim();
         const translation = parsedJson.english_translation;
         if (lang && translation) {
           console.log(
             `Detected Language: ${lang}, Translation: "${translation}"`
           );
+          // Basic validation of common ISO codes
+          const commonISOCodes = ["en", "ar", "fr", "es", "de", "it", "pt"];
+          if (!commonISOCodes.includes(lang) && lang.length > 3) {
+            console.warn(
+              `Detected language code '${lang}' seems unusual. Treating as non-English.`
+            );
+            return {
+              translatedText: translation,
+              detectedLanguage: lang,
+              isEnglish: false,
+            };
+          }
           return {
             translatedText: translation,
             detectedLanguage: lang,
@@ -195,7 +210,9 @@ JSON Response:`;
   }
 
   // Fallback if JSON method fails or API error occurs
-  console.warn("Falling back to using original text and assuming English.");
+  console.warn(
+    "Falling back to using original text and assuming English for detection."
+  );
   return defaultResult;
 }
 
@@ -204,17 +221,14 @@ export const POST: APIRoute = async ({ request }) => {
   let originalUserQuery = "";
   let detectedLanguage: string | null = "en"; // Default to English
   let queryForEmbedding = "";
+  let responseLanguage = "en"; // Default response language
 
   try {
     // 1. Validate Request Body
     let body;
     try {
       body = await request.json();
-    } catch (error) {
-      console.error(
-        "Failed to parse request body:",
-        error instanceof Error ? error.message : "Unknown error"
-      );
+    } catch {
       return new Response(
         JSON.stringify({ error: "Invalid JSON in request body" }),
         {
@@ -258,6 +272,22 @@ export const POST: APIRoute = async ({ request }) => {
       console.log("Translation disabled, using original query for embedding.");
       detectedLanguage = "en"; // Assume English if translation disabled
     }
+
+    // Determine the final response language based on detection and allowed list
+    if (
+      detectedLanguage &&
+      ALLOWED_OUTPUT_LANGUAGES.includes(detectedLanguage)
+    ) {
+      responseLanguage = detectedLanguage; // Use detected if allowed
+    } else {
+      responseLanguage = "en"; // Fallback to English
+      console.log(
+        `Detected language '${detectedLanguage}' not in allowed list [${ALLOWED_OUTPUT_LANGUAGES.join(", ")}], defaulting response language to 'en'.`
+      );
+    }
+    // Handle special case for Arabic -> Darija
+    const targetLanguageInstruction =
+      responseLanguage === "ar" ? "Moroccan Darija" : responseLanguage;
 
     // 3. Get Embedding for the English Query
     console.log(
@@ -349,12 +379,7 @@ export const POST: APIRoute = async ({ request }) => {
       console.log("Proceeding without ChromaDB context (embedding failed).");
     }
 
-    // 5. Ask OpenAI (Once) with Context and instructions to reply in original language
-    // Determine the target language for the response based on detection
-    const targetLanguageCode = detectedLanguage || "en"; // Fallback to english if detection failed
-    const targetLanguageInstruction =
-      targetLanguageCode === "ar" ? "Moroccan Darija" : targetLanguageCode;
-
+    // 5. Ask OpenAI (Once) with Context and instructions to reply in the determined response language
     console.log(
       `Getting final chat completion from OpenAI model '${OPENAI_CHAT_MODEL}' (instructed to reply in ${targetLanguageInstruction})...`
     );
@@ -363,8 +388,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     try {
       // Construct the user message for the final LLM call, including language instruction
-      // Pass the original query and detected language code
-      const finalUserPrompt = `${contextString}\n\n---\n\nOriginal Language Code: ${targetLanguageCode}\nOriginal Question: ${originalUserQuery}\n\nBased *only* on the English context provided above from our podcast episodes, please answer the original question **in the original language (${targetLanguageInstruction})**. Follow all formatting instructions (lists, citations, links using context data).`;
+      // Pass the original query and the determined response language
+      const finalUserPrompt = `${contextString}\n\n---\n\nRespond in: ${targetLanguageInstruction}\nOriginal Question: ${originalUserQuery}\n\nBased *only* on the English context provided above from our podcast episodes, please answer the original question **in the specified response language (${targetLanguageInstruction})**. Follow all formatting instructions (lists, citations, links using context data).`;
 
       const finalCompletion = await openai.chat.completions.create({
         model: OPENAI_CHAT_MODEL,
@@ -385,7 +410,7 @@ export const POST: APIRoute = async ({ request }) => {
       finalResponseContent = `Sorry, an error occurred while generating the response. Please try again.`;
     }
 
-    // 6. Send the final response (now intended to be in original language)
+    // 6. Send the final response
     const responsePayload = { response: finalResponseContent };
     console.log(
       "Sending final response payload:",
