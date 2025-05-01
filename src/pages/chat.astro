@@ -5,11 +5,9 @@ import ChatInterface from "@/components/chat/chat-interface.astro";
 import { SITE } from "@/config";
 
 export const prerender = false;
-
-const ogImage = "/chat.jpg";
 ---
 
-<Layout title={`Chat with BlaBlator | ${SITE.title}`} ogImage={ogImage}>
+<Layout title={`Chat with BlaBlator | ${SITE.title}`}>
   <div class="bg-[#F2F4F7]">
     <Header />
     <main class="main mx-auto py-4 md:py-16">
@@ -22,7 +20,7 @@ const ogImage = "/chat.jpg";
         </p>
       </div>
       <div class="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-lg">
-        <ChatInterface client:load />
+        <ChatInterface />
       </div>
     </main>
   </div>

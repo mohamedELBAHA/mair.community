@@ -1,3 +1,7 @@
+---
+// Add frontmatter to ensure proper TypeScript resolution
+---
+
 <div class="flex h-[600px] flex-col bg-gray-50">
   <div id="chat-messages" class="flex-1 space-y-2 overflow-y-auto p-4">
     <!-- Messages will be dynamically inserted here -->
@@ -64,7 +68,8 @@
     }`;
 
     if (message.role === "assistant") {
-      messageBubble.innerHTML = await marked.parse(message.content);
+      const parsedContent = await marked.parse(message.content);
+      messageBubble.innerHTML = parsedContent;
       // Add styles for markdown elements
       messageBubble.classList.add("prose", "prose-sm", "max-w-none");
       // Add RTL support for Arabic content
