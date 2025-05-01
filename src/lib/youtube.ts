@@ -1,9 +1,16 @@
 // Helper function to extract video ID from YouTube URL
 const getYouTubeVideoId = (url: string) => {
-  const regex =
+  // Handle regular YouTube URLs
+  const regularRegex =
     /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/;
-  const match = url.match(regex);
-  return match?.[1] || null;
+  const regularMatch = url.match(regularRegex);
+
+  // Handle YouTube live URLs (format: youtube.com/live/VIDEO_ID)
+  const liveRegex = /youtube\.com\/live\/([^"&?/\s]{11})/;
+  const liveMatch = url.match(liveRegex);
+
+  // Return the first match found
+  return regularMatch?.[1] || liveMatch?.[1] || null;
 };
 
 const YOUTUBE_API_KEY = import.meta.env.YOUTUBE_API_KEY;

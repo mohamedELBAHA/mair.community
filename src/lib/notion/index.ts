@@ -85,12 +85,18 @@ export const getPeopleDetails = async (ids: string[]) => {
 function normalizePeopleProperties(properties: {
   [key: string]: NotionProperty;
 }): NotionPeopleProperties {
+  const link =
+    properties.link?.type === "url" ? (properties.link.url ?? "") : "";
+  const linkedin =
+    properties["Linkedin"]?.type === "url"
+      ? (properties["Linkedin"].url ?? "")
+      : "";
   return {
     title:
       properties.Name?.type === "title"
         ? (properties.Name.title[0]?.plain_text ?? "")
         : "",
-    url: properties.link?.type === "url" ? (properties.link.url ?? "") : "",
+    url: link || linkedin,
   };
 }
 
