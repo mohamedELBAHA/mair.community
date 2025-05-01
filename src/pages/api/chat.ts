@@ -6,6 +6,7 @@ export const prerender = false;
 
 // Constants
 const CHROMA_URL = import.meta.env.CHROMA_URL || "http://localhost:8000";
+const CHROMA_TOKEN = import.meta.env.CHROMA_TOKEN;
 const COLLECTION_NAME = import.meta.env.CHROMA_COLLECTION || "podcast_episodes";
 const OPENAI_API_KEY = import.meta.env.OPENAI_API_KEY;
 const OPENAI_CHAT_MODEL = import.meta.env.OPENAI_CHAT_MODEL || "gpt-3.5-turbo";
@@ -98,6 +99,9 @@ Based *only* on the English context provided above from our podcast episodes, pl
 console.log("ChromaDB URL configured:", CHROMA_URL);
 const chromaClient = new ChromaClient({
   path: CHROMA_URL,
+  auth: CHROMA_TOKEN
+    ? { provider: "token", credentials: `Bearer ${CHROMA_TOKEN}` }
+    : undefined,
 });
 
 // Helper function to get collection

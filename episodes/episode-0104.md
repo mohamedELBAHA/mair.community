@@ -46,8 +46,6 @@ In this episode of GeeksBlabla, we invited Mehdi Daoudi, CEO and Co-Founder - Ca
 
 1:13:00 - Do you follow news about the startups' ecosystem in Morocco, what do you think about it, and what does miss it?
 
-1:13:00 - Do you follow news about the startups' ecosystem in Morocco, what do you think about it, and what does miss it?
-
 1:19:00 - What do you think about companies that do the offshoring?
 
 1:22:00 - After ten years of pushing startups, why can't we see some of them succeed now?

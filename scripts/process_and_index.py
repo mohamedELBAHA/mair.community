@@ -20,6 +20,7 @@ STATE_FILE_PATH = os.environ.get("STATE_FILE_PATH", "./scripts/processing_state.
 # ChromaDB Connection: Set CHROMA_HOST for remote, otherwise uses local PersistentClient
 CHROMA_HOST = os.environ.get("CHROMA_HOST", None)
 CHROMA_PORT = os.environ.get("CHROMA_PORT", "8000")
+CHROMA_TOKEN = os.environ.get("CHROMA_TOKEN", None)
 VECTOR_STORE_PATH = os.environ.get("VECTOR_STORE_PATH", "./chroma_db_store") # Used only if CHROMA_HOST is not set
 COLLECTION_NAME = os.environ.get("VECTOR_DB_COLLECTION", "podcast_episodes")
 # OpenAI Embedding Model
@@ -346,15 +347,21 @@ def process_episodes_incremental():
         # Determine connection method
         if CHROMA_HOST:
             logging.info(f"Using HttpClient to connect to {CHROMA_HOST}:{CHROMA_PORT}")
-            client_chroma = chromadb.HttpClient(host=CHROMA_HOST, port=CHROMA_PORT,
-                                                settings=chromadb.config.Settings(anonymized_telemetry=False))
+            client_chroma = chromadb.HttpClient(
+                host=CHROMA_HOST,
+                port=CHROMA_PORT,
+                settings=chromadb.config.Settings(anonymized_telemetry=False),
+                headers={"Authorization": f"Bearer {CHROMA_TOKEN}"} if CHROMA_TOKEN else None
+            )
         else:
             logging.info(f"Using PersistentClient with path: {VECTOR_STORE_PATH}")
             parent_dir = os.path.dirname(VECTOR_STORE_PATH)
             if parent_dir and not os.path.exists(parent_dir):
                  os.makedirs(parent_dir)
-            client_chroma = chromadb.PersistentClient(path=VECTOR_STORE_PATH,
-                                                      settings=chromadb.config.Settings(anonymized_telemetry=False))
+            client_chroma = chromadb.PersistentClient(
+                path=VECTOR_STORE_PATH,
+                settings=chromadb.config.Settings(anonymized_telemetry=False)
+            )
 
         logging.info("Pinging ChromaDB server...")
         client_chroma.heartbeat()

@@ -31,7 +31,7 @@ In this episode of GeeksBlabla, we discuss with our community members about soft
 
 0:48:00 - What is OWASP?
 
-0:51:00 - OWASP top 10 - 2021
+0:50:00 - OWASP top 10 - 2021
 
 0:51:00 - OWASP top 10 - 2021: Injection
 

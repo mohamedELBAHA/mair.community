@@ -6,6 +6,7 @@ import icon from "astro-icon";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
+import { fileURLToPath } from "url";
 
 import rehypeExternalLinks from "rehype-external-links";
 
@@ -69,9 +70,30 @@ export default defineConfig({
   },
   vite: {
     assetsInclude: ["**/*.riv"],
-    optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
     },
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js", "@astrojs/astro", "@hookform/resolvers", "tailwind-merge"],
+    },
+    ssr: {
+      noExternal: ["@astrojs/astro", "marked", "@hookform/resolvers", "tailwind-merge"],
+    },
+    build: {
+      commonjsOptions: {
+        include: [/node_modules/],
+      },
+      rollupOptions: {
+        external: [
+          /scripts\/.*/,        // Everything in scripts directory
+          /\.py$/,             // Any Python files outside scripts
+          /\.venv\/.*/,        // Virtual environment directory
+          /requirements\.txt$/ // Requirements file
+        ],
+      }
+    }
   },
   scopedStyleStrategy: "where",
 });

@@ -55,6 +55,7 @@ PUBLIC_CLOUDINARY_CLOUD_NAME=
 # For Astro API Route (Chatbot Frontend Interaction)
 OPENAI_API_KEY="sk-..." # Your OpenAI API Key
 CHROMA_URL="http://localhost:8000" # URL of your ChromaDB instance (local Docker or remote)
+CHROMA_TOKEN="your-token-here" # Token for ChromaDB authentication (if required)
 # Optional overrides for Astro API Route
 # CHROMA_COLLECTION="podcast_episodes"
 # OPENAI_CHAT_MODEL="gpt-3.5-turbo"
@@ -69,6 +70,7 @@ CHROMA_URL="http://localhost:8000" # URL of your ChromaDB instance (local Docker
 # STATE_FILE_PATH="./processing_state.json" # Path to store indexing state
 # CHROMA_HOST="localhost" # Set ONLY if connecting to a running ChromaDB server (e.g., Docker)
 # CHROMA_PORT="8000" # Port for the running ChromaDB server
+# CHROMA_TOKEN="your-token-here" # Token for ChromaDB authentication (if required)
 # VECTOR_STORE_PATH="./chroma_db_store" # Path for local ChromaDB persistence (used if CHROMA_HOST is NOT set)
 # CHROMA_COLLECTION="podcast_episodes"
 # OPENAI_EMBEDDING_MODEL="text-embedding-3-small"

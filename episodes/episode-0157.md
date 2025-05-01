@@ -33,8 +33,6 @@ Tech News & AMA #26 with our community members Ilias, Nouamane, Faisal, and Yous
 
 1:56:00 - Bun as new JS runtime
 
-1:06:06 - QA
-
 1:23:00 - Missing semester program
 
 1:35:04 - Switching technologies and frameworks.

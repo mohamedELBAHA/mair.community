@@ -3,6 +3,7 @@
 
 interface ImportMetaEnv {
   readonly CHROMA_URL: string;
+  readonly CHROMA_TOKEN: string;
   readonly CHROMA_COLLECTION: string;
   readonly OPENAI_API_KEY: string;
   readonly OPENAI_CHAT_MODEL: string;
