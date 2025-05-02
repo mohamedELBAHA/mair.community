@@ -64,18 +64,6 @@ CHROMA_TOKEN="your-token-here" # Token for ChromaDB authentication (if required)
 # N_RESULTS_CONTEXT="5"
 # TRANSLATE_NON_ENGLISH="true"
 
-# For Python Indexing Script (see section below)
-# OPENAI_API_KEY is reused from above
-# MARKDOWN_PATH_PATTERN="episodes/**/*.md" # Path to episode markdown files
-# STATE_FILE_PATH="./processing_state.json" # Path to store indexing state
-# CHROMA_HOST="localhost" # Set ONLY if connecting to a running ChromaDB server (e.g., Docker)
-# CHROMA_PORT="8000" # Port for the running ChromaDB server
-# CHROMA_TOKEN="your-token-here" # Token for ChromaDB authentication (if required)
-# VECTOR_STORE_PATH="./chroma_db_store" # Path for local ChromaDB persistence (used if CHROMA_HOST is NOT set)
-# CHROMA_COLLECTION="podcast_episodes"
-# OPENAI_EMBEDDING_MODEL="text-embedding-3-small"
-# OPENAI_BATCH_SIZE="500"
-# CHROMA_UPSERT_BATCH_SIZE="100"
 ```
 
 **Important:** Add the `.env` file to your `.gitignore` to avoid committing secrets.
