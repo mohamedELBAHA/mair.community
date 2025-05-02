@@ -89,7 +89,7 @@ Inside of your Astro project, you'll see the following folders and files:
 ├── articles/
 ├── authors/
 ├── episodes/ # <--- Podcast episode markdown files live here
-├── scripts/  # <--- Python indexing script lives here
+├── python-scripts/  # <--- Python indexing script lives here
 │   └── process_and_index.py
 ├── src/
 │   ├── actions/ # astro actions, Api for to connect with notion
@@ -163,7 +163,7 @@ The website includes an experimental chatbot feature that allows users to ask qu
 - Ensure your `.env` file is configured correctly.
 - Run the script from the project root:
   ```bash
-  python scripts/process_and_index.py
+  python python-scripts/process_and_index.py
   ```
 - The script will scan for new/modified/deleted episode files based on the state file, generate embeddings using OpenAI for changes, and upsert/delete data in ChromaDB (either locally persisted or on the configured server).
 - **Run this script whenever you add or significantly modify episode markdown files.**

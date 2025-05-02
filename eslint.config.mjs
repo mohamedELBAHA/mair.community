@@ -51,6 +51,6 @@ export default [
     },
   },
   {
-    ignores: ["dist/**", ".astro", "scripts/*", ".venv/*"],
+    ignores: ["dist/**", ".astro", "python-scripts/*", ".venv/*"],
   },
 ];

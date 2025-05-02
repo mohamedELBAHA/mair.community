@@ -26,7 +26,8 @@ export default defineConfig({
   },
   experimental: { contentLayer: true, serverIslands: true },
   build: {
-    format: "file",
+    format: "directory",
+    assets: "assets"
   },
   redirects,
 
@@ -77,21 +78,32 @@ export default defineConfig({
     },
     optimizeDeps: {
       exclude: ["@resvg/resvg-js", "@astrojs/astro", "@hookform/resolvers", "tailwind-merge"],
+      include: ["devalue"]
     },
     ssr: {
-      noExternal: ["@astrojs/astro", "marked", "@hookform/resolvers", "tailwind-merge"],
+      noExternal: [
+        "@astrojs/astro",
+        "marked",
+        "@hookform/resolvers",
+        "tailwind-merge",
+        "openai",
+        "chromadb",
+        "devalue"
+      ],
+      external: ["node:*"]
     },
     build: {
       commonjsOptions: {
         include: [/node_modules/],
+        transformMixedEsModules: true
       },
       rollupOptions: {
         external: [
-          /scripts\/.*/,        // Everything in scripts directory
-          /\.py$/,             // Any Python files outside scripts
-          /\.venv\/.*/,        // Virtual environment directory
-          /requirements\.txt$/ // Requirements file
-        ],
+          /python-scripts\/.*/,  // Everything in python-scripts directory
+          /\.py$/,              // Any Python files outside python-scripts
+          /\.venv\/.*/,         // Virtual environment directory
+          /requirements\.txt$/  // Requirements file
+        ]
       }
     }
   },

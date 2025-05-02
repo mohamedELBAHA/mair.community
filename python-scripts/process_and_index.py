@@ -16,7 +16,7 @@ load_dotenv()
 # --- Configuration ---
 # Environment variables control the behavior
 MARKDOWN_PATH_PATTERN = os.environ.get("MARKDOWN_PATH_PATTERN", "episodes/**/*.md")
-STATE_FILE_PATH = os.environ.get("STATE_FILE_PATH", "./scripts/processing_state.json")
+STATE_FILE_PATH = os.environ.get("STATE_FILE_PATH", "./python-scripts/processing_state.json")
 # ChromaDB Connection: Set CHROMA_HOST for remote, otherwise uses local PersistentClient
 CHROMA_HOST = os.environ.get("CHROMA_HOST", None)
 CHROMA_PORT = os.environ.get("CHROMA_PORT", "8000")
