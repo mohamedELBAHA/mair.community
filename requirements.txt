@@ -1,7 +1,0 @@
-# requirements.txt
-
-openai          # For generating embeddings
-chromadb        # ChromaDB client library
-python-dotenv   # To load .env files locally (optional but good practice)
-python-frontmatter # To parse Markdown frontmatter
-markdown        # To parse Markdown content (if needed beyond frontmatter)

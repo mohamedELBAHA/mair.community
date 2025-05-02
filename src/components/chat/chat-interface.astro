@@ -76,10 +76,11 @@
       if (message.content.match(/[\u0600-\u06FF]/)) {
         messageBubble.setAttribute("dir", "rtl");
       }
-      // Make all links open in new tab
+      // Make all links open in new tab and add hover styles
       messageBubble.querySelectorAll("a").forEach(link => {
         link.setAttribute("target", "_blank");
         link.setAttribute("rel", "noopener noreferrer");
+        link.classList.add("text-blue-600", "hover:text-blue-800", "underline");
       });
     } else {
       messageBubble.textContent = message.content;
@@ -99,6 +100,7 @@
     if (chatMessages) {
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+    return messageElement;
   }
 
   async function handleSubmit(e: Event) {
@@ -127,30 +129,59 @@
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({
+          messages: [{ role: "user", content: message }],
+        }),
       });
 
       if (!response.ok) throw new Error("Network response was not ok");
 
-      const data = await response.json();
-
       // Remove typing indicator
       typingIndicator.remove();
 
-      // Add assistant message
+      // Create a new message element for the assistant's response
       const assistantMessage: Message = {
         role: "assistant",
-        content: data.response,
+        content: "",
       };
-      await addMessage(assistantMessage);
+      const messageElement = await addMessage(assistantMessage);
+      const contentElement = messageElement.querySelector("div");
+      if (!contentElement) throw new Error("Content element not found");
+
+      // Read the stream
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error("No reader available");
+
+      let buffer = "";
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        // Decode the chunk and add to buffer
+        const text = decoder.decode(value);
+        buffer += text;
+
+        // Update content immediately
+        const parsedContent = await marked.parse(buffer);
+        contentElement.innerHTML = parsedContent;
+        // Make all links open in new tab
+        contentElement.querySelectorAll("a").forEach(link => {
+          link.setAttribute("target", "_blank");
+          link.setAttribute("rel", "noopener noreferrer");
+        });
+        if (chatMessages) {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      }
     } catch (error) {
       console.error("Error:", error);
       typingIndicator.remove();
-      const errorMessage: Message = {
+      await addMessage({
         role: "assistant",
         content: "Sorry, I encountered an error. Please try again.",
-      };
-      await addMessage(errorMessage);
+      });
     }
   }
 
@@ -158,49 +189,34 @@
 </script>
 
 <style>
-  /* Add styles for markdown elements */
-  :global(.prose) {
-    @apply text-gray-800;
+  .prose a {
+    @apply text-blue-600 underline hover:text-blue-800;
   }
-  :global(.prose a) {
-    @apply text-blue-50 underline hover:text-blue-40;
+  .prose ul {
+    @apply list-inside list-disc;
   }
-  :global(.prose ul) {
-    @apply my-2 list-inside list-disc;
+  .prose ol {
+    @apply list-inside list-decimal;
   }
-  :global(.prose li) {
+  .prose li {
     @apply my-1;
   }
-  :global(.prose blockquote) {
-    @apply my-2 border-l-4 border-gray-300 pl-4 italic;
+  .prose p {
+    @apply my-2;
   }
-  :global(.prose strong) {
+  .prose strong {
     @apply font-bold;
   }
-  :global(.prose em) {
+  .prose em {
     @apply italic;
   }
-  /* RTL specific styles */
-  :global([dir="rtl"].prose ul) {
-    @apply list-inside;
+  .prose code {
+    @apply rounded bg-gray-100 px-1 py-0.5;
   }
-  :global([dir="rtl"].prose blockquote) {
-    @apply border-l-0 border-r-4 pl-0 pr-4;
+  .prose pre {
+    @apply my-2 overflow-x-auto rounded bg-gray-100 p-2;
   }
-
-  /* Animation for new messages */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
+  .prose blockquote {
+    @apply my-2 border-l-4 border-gray-200 pl-4 italic;
   }
 </style>

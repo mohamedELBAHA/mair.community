@@ -6,7 +6,6 @@ import icon from "astro-icon";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
-import { fileURLToPath } from "url";
 
 import rehypeExternalLinks from "rehype-external-links";
 
@@ -26,8 +25,7 @@ export default defineConfig({
   },
   experimental: { contentLayer: true, serverIslands: true },
   build: {
-    format: "directory",
-    assets: "assets"
+    format: "file",
   },
   redirects,
 
@@ -71,41 +69,9 @@ export default defineConfig({
   },
   vite: {
     assetsInclude: ["**/*.riv"],
-    resolve: {
-      alias: {
-        "@": fileURLToPath(new URL("./src", import.meta.url)),
-      },
-    },
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js", "@astrojs/astro", "@hookform/resolvers", "tailwind-merge"],
-      include: ["devalue"]
+      exclude: ["@resvg/resvg-js"],
     },
-    ssr: {
-      noExternal: [
-        "@astrojs/astro",
-        "marked",
-        "@hookform/resolvers",
-        "tailwind-merge",
-        "openai",
-        "chromadb",
-        "devalue"
-      ],
-      external: ["node:*"]
-    },
-    build: {
-      commonjsOptions: {
-        include: [/node_modules/],
-        transformMixedEsModules: true
-      },
-      rollupOptions: {
-        external: [
-          /python-scripts\/.*/,  // Everything in python-scripts directory
-          /\.py$/,              // Any Python files outside python-scripts
-          /\.venv\/.*/,         // Virtual environment directory
-          /requirements\.txt$/  // Requirements file
-        ]
-      }
-    }
   },
   scopedStyleStrategy: "where",
 });
