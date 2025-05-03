@@ -1,42 +1,37 @@
-"use client";
-
 import { useChat } from "@ai-sdk/react";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
+
+const components: Components = {
+  a: ({ ...props }) => (
+    <a
+      {...props}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 underline hover:text-blue-800"
+    />
+  ),
+  p: ({ ...props }) => <p {...props} className="mb-2" />,
+  ul: ({ ...props }) => (
+    <ul {...props} className="mb-2 list-inside list-disc" />
+  ),
+  ol: ({ ...props }) => (
+    <ol {...props} className="mb-2 list-inside list-decimal" />
+  ),
+  li: ({ ...props }) => <li {...props} className="mb-1" />,
+  code: ({ ...props }) => (
+    <code {...props} className="rounded bg-gray-100 px-1 py-0.5" />
+  ),
+  pre: ({ ...props }) => (
+    <pre {...props} className="my-2 overflow-x-auto rounded bg-gray-100 p-2" />
+  ),
+};
 
 export default function ChatInterface() {
   const { messages, input, handleInputChange, handleSubmit, isLoading, error } =
     useChat({
       api: "/api/chat",
     });
-
-  const components: Components = {
-    a: ({ ...props }) => (
-      <a
-        {...props}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 underline hover:text-blue-800"
-      />
-    ),
-    p: ({ ...props }) => <p {...props} className="mb-2" />,
-    ul: ({ ...props }) => (
-      <ul {...props} className="mb-2 list-inside list-disc" />
-    ),
-    ol: ({ ...props }) => (
-      <ol {...props} className="mb-2 list-inside list-decimal" />
-    ),
-    li: ({ ...props }) => <li {...props} className="mb-1" />,
-    code: ({ ...props }) => (
-      <code {...props} className="rounded bg-gray-100 px-1 py-0.5" />
-    ),
-    pre: ({ ...props }) => (
-      <pre
-        {...props}
-        className="my-2 overflow-x-auto rounded bg-gray-100 p-2"
-      />
-    ),
-  };
 
   return (
     <div className="flex h-[600px] flex-col bg-gray-50">

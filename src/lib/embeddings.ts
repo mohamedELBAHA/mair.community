@@ -14,7 +14,7 @@ const client = new ChromaClient({
 });
 
 const collection = client.getCollection({
-  name: "podcast_episodes",
+  name: import.meta.env.CHROMA_COLLECTION || "podcast_episodes",
 });
 
 interface DocumentMetadata {
@@ -33,19 +33,19 @@ interface Document {
 
 export async function getRelevantDocuments(
   query: string,
-  limit: number = 5
+  limit: number = Number(import.meta.env.N_RESULTS_CONTEXT) || 10
 ): Promise<Document[]> {
   try {
     // Get embedding for query
     const embedding = await openai.embeddings.create({
-      model: "text-embedding-3-small",
+      model: import.meta.env.OPENAI_EMBEDDING_MODEL || "text-embedding-3-small",
       input: query,
     });
 
     const coll = await collection;
     const results = await coll.query({
       queryEmbeddings: [embedding.data[0].embedding],
-      nResults: limit * 2, // Get more results to sort
+      nResults: Number(import.meta.env.N_RESULTS_RETRIEVE) || 20, // Get more results to sort
       include: [
         IncludeEnum.Metadatas,
         IncludeEnum.Documents,

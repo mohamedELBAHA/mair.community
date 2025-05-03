@@ -107,7 +107,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Use streamText with toDataStreamResponse for simpler streaming
     const result = await streamText({
-      model: openai("gpt-4-turbo"),
+      model: openai(import.meta.env.OPENAI_CHAT_MODEL || "gpt-4-turbo"),
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       maxTokens: 1000,
