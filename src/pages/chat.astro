@@ -1,7 +1,7 @@
 ---
 import Layout from "@/components/layout.astro";
 import Header from "@/components/header.astro";
-import ChatInterface from "@/components/chat/chat-interface.astro";
+import ChatInterface from "../components/chat/chat-interface";
 import { SITE } from "@/config";
 
 export const prerender = false;
@@ -26,7 +26,7 @@ export const prerender = false;
         </p>
       </div>
       <div class="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-lg">
-        <ChatInterface />
+        <ChatInterface client:load />
       </div>
     </main>
   </div>

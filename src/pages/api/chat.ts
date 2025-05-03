@@ -22,8 +22,8 @@ const SYSTEM_PROMPT = `You are a knowledgeable software engineering expert and m
 5.  **Grounding & Answering Specific Questions:**
     * When the user asks a specific question seeking information potentially covered in the podcast:
         * **Prioritize Context:** Base your answer **first and foremost** on the provided English "Context from podcast episodes". Analyze the snippets to find the most relevant information.
-        * **Prioritize Recent Episodes:** When multiple episodes contain relevant information, prioritize information from more recent episodes (which appear first in the context).
-        * **Synthesize and Cite:** Synthesize the information into a concise and clear answer in the appropriate output language. Integrate citations and Markdown YouTube links for relevant context snippets (see formatting rules below). Present multiple points as a bulleted list.
+        * **CRITICAL - Prioritize Recent Episodes:** The context is ordered with most recent episodes FIRST. You MUST prioritize information from the FIRST episodes in the context list, as they are the most recent and likely most relevant. Only use information from later episodes if the first episodes don't contain the specific information needed.
+        * **Synthesize and Cite:** Synthesize the information into a concise and clear answer in the appropriate output language. Integrate citations and Markdown YouTube links for relevant context snippets (see formatting rules below). Present multiple points as a bulleted list, ALWAYS starting with the most recent episodes.
     * **Handling Insufficient Context:** If the provided English context does not contain a direct answer to the user's specific question:
         * State clearly (in the appropriate output language) that the specific detail wasn't found *in the podcast segments provided*.
         * **Then, offer helpful next steps:** You can suggest related topics found in the context (summarizing them briefly), OR suggest that the information might be available online and encourage the user to search, OR (use sparingly) offer general software engineering knowledge, **clearly stating that this information is general knowledge and not from the podcast context.** Avoid making definitive statements if unsure.
@@ -35,7 +35,7 @@ const SYSTEM_PROMPT = `You are a knowledgeable software engineering expert and m
     * **Important:** Always use the exact \`timestamp_str\` from the context metadata for display, and the \`timestamp_sec\` for the YouTube URL parameter. For example, if the context shows \`timestamp_str: "00:42:00"\` and \`timestamp_sec: 2520\`, format it as: \`[Watch at 00:42:00]([YouTube URL]?t=2520s)\`.
 7.  **Structure (for Specific Questions based on Context):**
     * Start with a brief acknowledgement **in the appropriate output language**.
-    * Provide the answer clearly. **If multiple relevant points or episodes are found, present them as a bulleted list (\`- \`) in the appropriate output language, prioritizing more recent episodes.**
+    * Provide the answer clearly. **If multiple relevant points or episodes are found, present them as a bulleted list (\`- \`) in the appropriate output language, ALWAYS starting with the most recent episodes (which appear first in the context).**
     * **Integrate citations and relevant YouTube links directly within the answer sentences or list items.** Do **not** list sources separately at the end.
     * Keep the response focused.
 
@@ -80,7 +80,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Get relevant documents
     const relevantDocs = await getRelevantDocuments(lastMessage.content);
 
-    // Create context from documents
+    // Create context from documents with proper sorting
     const context = relevantDocs
       .sort((a, b) => {
         const dateA = new Date(a.metadata?.episode_date || 0);
@@ -95,42 +95,27 @@ export const POST: APIRoute = async ({ request }) => {
               ? `&t=${metadata.timestamp_sec}s`
               : `?t=${metadata.timestamp_sec}s`
             : "";
-        return `From episode "${metadata.episode_title}" (${metadata.youtube_url}${timestamp}):\n${doc.content}`;
+        return `Episode: "${metadata.episode_title}" (at ${metadata.timestamp_str}): ${doc.content} [Metadata: youtube_url='${metadata.youtube_url}${timestamp}', timestamp_sec=${metadata.timestamp_sec}]`;
       })
       .join("\n\n");
 
     // Create system message with context
     const systemMessage = {
       role: "system",
-      content: `${SYSTEM_PROMPT}
-
-Context from podcast episodes:
-${context}
-
-Remember to:
-1. Be concise and direct
-2. Include relevant YouTube links with timestamps
-3. Format links as markdown
-4. If you're not sure, say so`,
+      content: `${SYSTEM_PROMPT}\n\nContext from podcast episodes:\n${context}\n\nRemember to:\n1. Be concise and direct\n2. Include relevant YouTube links with timestamps\n3. Format links as markdown\n4. If you're not sure, say so`,
     };
 
-    // Start the streaming response using streamText
-    const { textStream } = streamText({
-      model: openai("gpt-4-turbo-preview"),
+    // Use streamText with toDataStreamResponse for simpler streaming
+    const result = await streamText({
+      model: openai("gpt-4-turbo"),
       messages: [systemMessage, ...messages],
       temperature: 0.7,
       maxTokens: 1000,
     });
 
-    // Return the stream directly
-    return new Response(textStream, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
-    });
+    return result.toDataStreamResponse();
   } catch (error) {
+    console.error("Error:", error);
     return new Response(
       JSON.stringify({
         error: "Internal Server Error",
