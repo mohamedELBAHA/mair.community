@@ -32,8 +32,6 @@ In this episode of GeeksBlabla, we invited Aboulfeth, a tech serial entrepreneur
 
 0:45:00 - Are Morocco and Moroccan companies ready for the cloud?
 
-0:45:00 - Are Morocco and Moroccan companies ready for the cloud?
-
 0:49:00 - Building a cloud company in Morocco! Wasn't that a challenge?
 
 0:51:00 - After Genious, you decided to build a restaurant 2.0! Why this decision?

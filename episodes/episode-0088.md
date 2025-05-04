@@ -18,7 +18,7 @@ Tech News & AMA #12 with our community members Otmane, Ismail, Abdelghani, Abder
 
 ## Notes
 
-0:01:00 - Intro and welcoming.
+0:00:30 - Intro and welcoming.
 
 0:01:00 - What did you learn this week ?
 

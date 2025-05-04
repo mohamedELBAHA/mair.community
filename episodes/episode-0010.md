@@ -34,7 +34,7 @@ In this episode of GeeksBlabla, we discuss with Mohamed Zakariae El Khdime about
 
 00:33:00 - How to found a startup in Dubai?
 
-00:46:00 - Advice for people who want to found a startup.
+00:40:00 - Advice for people who want to found a startup.
 
 00:46:00 - What kind of knowledge and amount of capital required for someone to take on entrepreneurship?
 

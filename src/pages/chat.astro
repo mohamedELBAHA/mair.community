@@ -1,0 +1,39 @@
+---
+import Layout from "@/components/layout.astro";
+import Header from "@/components/header.astro";
+import ChatInterface from "../components/chat/chat-interface";
+import { SITE } from "@/config";
+
+export const prerender = false;
+---
+
+<Layout title={`Chat with BlaBlator | ${SITE.title}`}>
+  <div class="bg-[#F2F4F7]">
+    <Header />
+    <main class="main mx-auto py-4 md:py-16">
+      <div class="mb-12 text-center">
+        <h1 class="mb-4 text-4xl font-bold">
+          Chat with BlaBlator
+          <span
+            class="ml-2 inline-block -translate-y-1 rounded bg-[#114997] px-2 py-0.5 text-sm font-medium text-white"
+            >BETA</span
+          >
+        </h1>
+        <p class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+          Ask questions about our podcast episodes and get instant answers
+          powered by BlaBlator. BlaBlator will search through our podcast
+          content to find relevant information for you.
+        </p>
+      </div>
+      <div class="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-lg">
+        <ChatInterface client:load />
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .main {
+    @apply px-4;
+  }
+</style>

@@ -28,7 +28,7 @@ In this episode of GeeksBlabla, team talks about the Software security, definiti
 
 00:17:00 - What is OWASP?
 
-00:23:00 - OWASP Top 10 of 2019
+00:20:00 - OWASP Top 10 of 2019
 
 00:23:00 - What is SQL injection attack and how to prevent it?
 

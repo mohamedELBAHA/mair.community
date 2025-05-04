@@ -59,8 +59,6 @@ In this episode of GeeksBlabla, our guest Mehdi Mourabit a a serial entrepreneur
 
 01:01:00 - Are there tools that give you your ranking and what you need to improve on your website?
 
-01:01:00 - Are there tools that give you your ranking and what you need to improve on your website?
-
 01:03:00 - What are your recommendations and advice to anyone who wants to start entrepreneurship?
 
 01:05:00 - Wrap up and Goodbye.

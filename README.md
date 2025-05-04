@@ -33,6 +33,22 @@ PUBLIC_CLOUDINARY_API_KEY=
 PUBLIC_CLOUDINARY_CLOUD_NAME=
 ```
 
+**Podcast Chatbot Feature API Keys/Config (Required for chatbot functionality):**
+
+```sh
+# Required
+OPENAI_API_KEY="sk-..." # Your OpenAI API Key
+CHROMA_URL="http://localhost:8000" # URL of your ChromaDB instance (local Docker or remote)
+CHROMA_TOKEN="your-token-here" # Token for ChromaDB authentication (if required)
+
+# Optional (with default values)
+CHROMA_COLLECTION="podcast_episodes" # Default collection name in ChromaDB
+OPENAI_CHAT_MODEL="gpt-4-turbo" # Default chat model
+OPENAI_EMBEDDING_MODEL="text-embedding-3-small" # Default embedding model
+N_RESULTS_RETRIEVE="20" # Number of results to retrieve from ChromaDB
+N_RESULTS_CONTEXT="5" # Number of results to include in the context
+```
+
 ## 🚀 Project Structure
 
 Inside of your Astro project, you'll see the following folders and files:
