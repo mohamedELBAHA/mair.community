@@ -13,19 +13,19 @@ We all agree that content is one of the most important aspects of any conference
 
 Having organized the [BlablaConf](https://blablaconf.com) conference for five years now, we have developed a process that we believe works quite well.
 
-As transparency is one of our core values, this article serves to share our process with you. It will provide answers for those interested in submitting a talk in the future, as well as insights into why your talk may not have been selected in the past.
+As transparency is one of our core values, In this article, we share our process with you.. It will provide answers for those interested in submitting a talk in the future, as well as insights into why your talk may not have been selected in the past.
 
 This article only covers the content selection process for BlablaConf, if you are interested in other aspects of the conference feel free to mention it in the comments section and we will cover it in another article.
 
 ## 🇲🇦 What is BlablaConf?
 
-For those who don't know, [BlablaConf](https://blablaconf.com) is our annual Geeksblabla community conference entirely in Moroccan Darija. It's a 5+1 days conference where speakers from various backgrounds and levels of expertise share their knowledge and experience with the community. Mostly online with few in-person days around Morocco.
+For those who don't know, [BlablaConf](https://blablaconf.com) is our annual Geeksblabla community conference entirely in Moroccan Darija. It's a 5 (virtual) and (at least 1 in person) days conference where speakers from various backgrounds and levels of expertise share their knowledge and experience with the community. Mostly online with few in-person days around Morocco.
 
 ## 📝 Call for papers
 
 After we agree on the date of the conference, typically in the first week of February, we open the call for papers three months prior to the event. The call for papers usually remains open for one and a half months.
 
-If you are not familiar with call for papers (CFP) term, it simply refers to a form that people need to fill out in order be part of the conference as speakers.
+If you are not familiar with call for papers (CFP) term, it simply refers to a form to collect proposals and topic suggestion from speakers that serves as potential content for the conference and from which we select our talks.
 
 We use [sessionize.com](https://sessionize.com/), a platform that helps us collect and manage submissions, making the selection process easier. We want to thank them for their excellent service, as it provides great assistance to us at no cost.
 
@@ -41,7 +41,7 @@ In the call for papers form, we ask for the following information:
 
 After we open the CFP, we begin communicating the CFP to our community members through our social media channels.
 
-Here is the stats of the CFP for the 2025 edition:
+Here are the stats of the CFP for the 2025 edition:
 
 ![CFP stats](./images/cfp-stats.png)
 
@@ -49,13 +49,13 @@ Here is the stats of the CFP for the 2025 edition:
 
 ## 🤝 Content committee
 
-As we believe BlablaConf is a community conference and it's by developers for developers. We create a content committee of around 20 people to help us select the best talks.
+As we believe BlablaConf is a community driven conference and it's by IT enthusiast to Tech practitioners. We create a content committee of around 20 people to help us select the best talks.
 
 For that we create a simple form and share it with the community through our social media channels asking for volunteers to help selecting talks.
 
 Normally we get around 70-100 submissions, and we select around 20 persons to join the content committee.
 
-The committee members are selected based on one rule: we should have a good mix of people with different backgrounds and expertise. You can think of them as a small representation of the Moroccan tech ecosystem that will attend the conference(developers, students, juniors, seniors, etc.).
+The group can be viewed as a microcosm of the Moroccan tech ecosystem that will attend the conference, such as developers, students, junior and senior talent, among others.
 
 Here are the faces of the committee members who assisted us in 2025 edition:
 
