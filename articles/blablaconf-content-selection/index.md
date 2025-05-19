@@ -13,7 +13,7 @@ We all agree that content is one of the most important aspects of any conference
 
 Having organized the [BlablaConf](https://blablaconf.com) conference for five years now, we have developed a process that we believe works quite well.
 
-As transparency is one of our core values, In this article, we share our process with you.. It will provide answers for those interested in submitting a talk in the future, as well as insights into why your talk may not have been selected in the past.
+As transparency is one of our core values, In this article, we share our process with you. It will provide answers for those interested in submitting a talk in the future, as well as insights into why your talk may not have been selected in the past.
 
 This article only covers the content selection process for BlablaConf, if you are interested in other aspects of the conference feel free to mention it in the comments section and we will cover it in another article.
 
@@ -45,7 +45,7 @@ Here are the stats of the CFP for the 2025 edition:
 
 ![CFP stats](./images/cfp-stats.png)
 
-> It's important to note that we do not invite speakers and all speakers must submit their talk throw the CFP form.
+> It's important to note that we do not invite speakers, and all speakers must submit their talk through the CFP form.
 
 ## 🤝 Content committee
 
