@@ -82,7 +82,7 @@ export const memberSchema = (ctx: SchemaContext) =>
     name: z.string(),
     link: z.string().url(),
     profile_image: ctx.image(),
-    status: z.enum(["active", "past"]),
+    status: z.enum(["active"]),
   });
 
 export const teamSchema = (ctx: SchemaContext) =>

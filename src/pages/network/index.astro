@@ -1,0 +1,675 @@
+---
+import Layout from "@/components/layout.astro";
+import Header from "@/components/header.astro";
+import { SITE } from "@/config";
+---
+
+<Layout title={`Network | ${SITE.title}`}>
+  <div class="bg-[#F2F4F7]">
+    <Header />
+    <main class="main mx-auto py-8 md:py-16">
+      <section class="mb-12 text-center">
+        <h1 class="mb-4 text-4xl font-bold">Moroccans in AI Research</h1>
+        <p class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+          Discover and connect with Moroccan researchers in Artificial
+          Intelligence.
+        </p>
+        <div class="mt-6">
+          <button
+            id="add-researcher-btn"
+            class="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-sm transition-colors hover:bg-blue-700"
+          >
+            <i class="fas fa-plus mr-2"></i>
+            Add a Researcher
+          </button>
+        </div>
+      </section>
+      <!-- Search and Filter Section -->
+      <div class="mb-8 rounded-lg bg-white p-6 shadow-sm">
+        <div
+          class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"
+        >
+          <!-- Search Input -->
+          <div class="relative flex-1 lg:max-w-md">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+              <i class="fas fa-search text-gray-400"></i>
+            </div>
+            <input
+              id="search"
+              type="text"
+              placeholder="Search by name, affiliation, or position..."
+              class="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            />
+          </div>
+
+          <!-- Filter and Sort Controls -->
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <!-- Interest Filter -->
+            <div class="flex items-center gap-2">
+              <label
+                for="interest-select"
+                class="text-sm font-medium text-gray-700">Filter by:</label
+              >
+              <select
+                id="interest-select"
+                class="rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              >
+                <option value="all">All Interests</option>
+              </select>
+            </div>
+
+            <!-- Sort Buttons -->
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-gray-700">Sort by:</span>
+              <div class="flex gap-1">
+                <button
+                  id="sort-name"
+                  onclick="sortByName()"
+                  class="sort-btn rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                >
+                  A-Z
+                </button>
+                <button
+                  id="sort-hindex"
+                  onclick="sortByHIndex()"
+                  class="sort-btn rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                >
+                  h-Index
+                </button>
+                <button
+                  id="sort-citations"
+                  onclick="sortByCitations()"
+                  class="sort-btn rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                >
+                  Citations
+                </button>
+                <button
+                  id="sort-shuffle"
+                  onclick="shuffleList()"
+                  class="sort-btn rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                >
+                  <i class="fas fa-random"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Count -->
+        <div id="results-count" class="mt-4 text-sm text-gray-600"></div>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <!-- Mobile Filter Toggle (hidden on larger screens) -->
+        <button
+          id="mobile-filter-toggle"
+          class="flex items-center justify-center gap-2 rounded-lg bg-white p-3 shadow-sm md:hidden"
+        >
+          <i class="fas fa-filter"></i>
+          <span>Filters & Sort</span>
+        </button>
+        <div
+          id="researcher-container"
+          class="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          <!-- Loading skeleton will be shown here initially -->
+          <div
+            id="loading-skeleton"
+            class="col-span-full flex items-center justify-center py-12"
+          >
+            <div class="text-center">
+              <div
+                class="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+              >
+              </div>
+              <p class="mt-2 text-gray-600">Loading researchers...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- No results message -->
+        <div id="no-results" class="col-span-full hidden py-12 text-center">
+          <div class="mx-auto max-w-sm">
+            <i class="fas fa-search mb-4 text-4xl text-gray-400"></i>
+            <h3 class="mb-2 text-lg font-medium text-gray-900">
+              No researchers found
+            </h3>
+            <p class="text-gray-600">
+              Try adjusting your search terms or filters to find what you're
+              looking for.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal for Adding Researcher -->
+  <div
+    id="add-researcher-modal"
+    class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black bg-opacity-50 p-4"
+  >
+    <div
+      class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg bg-white"
+    >
+      <div class="p-6">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-gray-900">Join Moroccans in AI</h2>
+          <button
+            id="close-modal"
+            class="text-gray-400 transition-colors hover:text-gray-600"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+
+        <p class="mb-3 font-medium text-gray-600">
+          Submit a profile to be featured in the MAIR network.
+        </p>
+        <p class="mb-6 text-sm text-gray-500">
+          To be considered for inclusion, the only criteria is that the
+          individual must have an h-index of 5 or higher, as recorded on their
+          Google Scholar profile.
+        </p>
+
+        <form
+          id="researcher-form"
+          action="https://formspree.io/f/xyzebenp"
+          method="POST"
+          class="space-y-4"
+        >
+          <div>
+            <label
+              for="name"
+              class="mb-1 block text-sm font-medium text-gray-700"
+              >Full Name</label
+            >
+            <input
+              type="text"
+              name="name"
+              id="name"
+              required
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            />
+          </div>
+
+          <div>
+            <label
+              for="email"
+              class="mb-1 block text-sm font-medium text-gray-700"
+              >Email Address</label
+            >
+            <input
+              type="email"
+              name="email"
+              id="email"
+              required
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            />
+          </div>
+
+          <div>
+            <label
+              for="affiliation"
+              class="mb-1 block text-sm font-medium text-gray-700"
+              >Affiliation</label
+            >
+            <input
+              type="text"
+              name="affiliation"
+              id="affiliation"
+              required
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            />
+          </div>
+
+          <div>
+            <label
+              for="interests"
+              class="mb-1 block text-sm font-medium text-gray-700"
+              >Research Interests</label
+            >
+            <input
+              type="text"
+              name="interests"
+              placeholder="e.g. NLP, Robotics"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            />
+          </div>
+
+          <div>
+            <label
+              for="profile"
+              class="mb-1 block text-sm font-medium text-gray-700"
+              >Profile Link (Google Scholar, LinkedIn, etc.)</label
+            >
+            <input
+              type="url"
+              name="profile"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            />
+          </div>
+
+          <div class="flex gap-3 pt-4">
+            <button
+              type="button"
+              id="cancel-btn"
+              class="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Message Modal -->
+  <div
+    id="success-modal"
+    class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black bg-opacity-50 p-4"
+  >
+    <div class="w-full max-w-sm rounded-lg bg-white">
+      <div class="p-6 text-center">
+        <div
+          class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100"
+        >
+          <i class="fas fa-check text-2xl text-green-600"></i>
+        </div>
+        <h3 class="mb-2 text-xl font-semibold text-gray-900">
+          Submission Successful!
+        </h3>
+        <p class="mb-6 text-gray-600">
+          Thank you for your submission. We'll review your profile and add it to
+          our network soon.
+        </p>
+        <button
+          id="close-success-modal"
+          class="w-full rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function () {
+    let allResearchers = [];
+    let currentSort = null;
+
+    function updateResultsCount(count, total) {
+      const resultsCount = document.getElementById("results-count");
+      if (resultsCount) {
+        if (count === total) {
+          resultsCount.textContent = `Showing all ${total} researchers`;
+        } else {
+          resultsCount.textContent = `Showing ${count} of ${total} researchers`;
+        }
+      }
+    }
+
+    function updateActiveSort(activeButton) {
+      // Remove active state from all sort buttons
+      document.querySelectorAll(".sort-btn").forEach(btn => {
+        btn.classList.remove("bg-blue-500", "text-white");
+        btn.classList.add("bg-gray-100", "text-gray-700");
+      });
+
+      // Add active state to clicked button
+      if (activeButton) {
+        activeButton.classList.remove("bg-gray-100", "text-gray-700");
+        activeButton.classList.add("bg-blue-500", "text-white");
+      }
+    }
+
+    function showLoading() {
+      const loadingSkeleton = document.getElementById("loading-skeleton");
+      const noResults = document.getElementById("no-results");
+      const container = document.getElementById("researcher-container");
+
+      if (loadingSkeleton) loadingSkeleton.style.display = "flex";
+      if (noResults) noResults.style.display = "none";
+      if (container)
+        container.innerHTML =
+          '<div id="loading-skeleton" class="col-span-full flex items-center justify-center py-12"><div class="text-center"><div class="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div><p class="mt-2 text-gray-600">Loading researchers...</p></div></div>';
+    }
+
+    function hideLoading() {
+      const loadingSkeleton = document.getElementById("loading-skeleton");
+      if (loadingSkeleton) loadingSkeleton.style.display = "none";
+    }
+
+    function renderResearchers(filter = null, query = "") {
+      const container = document.getElementById("researcher-container");
+      const noResults = document.getElementById("no-results");
+      if (!container) return;
+
+      hideLoading();
+      container.innerHTML = "";
+
+      const filtered = allResearchers.filter(r => {
+        // Ensure r and its properties are defined before accessing them
+        const interests = r && r.interests ? r.interests : [];
+        const name = r && r.name ? r.name : "";
+        const affiliation = r && r.affiliation ? r.affiliation : "";
+        const position = r && r.position ? r.position : "";
+
+        const matchesFilter =
+          !filter || filter === "all" || interests.includes(filter);
+        const q = query.toLowerCase();
+        const matchesSearch =
+          name.toLowerCase().includes(q) ||
+          affiliation.toLowerCase().includes(q) ||
+          position.toLowerCase().includes(q);
+        return matchesFilter && matchesSearch;
+      });
+
+      if (currentSort === "name") {
+        filtered.sort((a, b) => {
+          const nameA = a && a.name ? a.name : "";
+          const nameB = b && b.name ? b.name : "";
+          return nameA.localeCompare(nameB);
+        });
+      } else if (currentSort === "hindex") {
+        filtered.sort(
+          (a, b) =>
+            (b && b.hindex ? b.hindex : 0) - (a && a.hindex ? a.hindex : 0)
+        );
+      } else if (currentSort === "citations") {
+        filtered.sort(
+          (a, b) =>
+            (b && b.citedby ? b.citedby : 0) - (a && a.citedby ? a.citedby : 0)
+        );
+      }
+
+      // Update results count
+      const totalResearchers = allResearchers.filter(r => r && r.name).length;
+      updateResultsCount(filtered.length, totalResearchers);
+
+      // Show no results message if needed
+      if (filtered.length === 0) {
+        if (noResults) noResults.style.display = "block";
+        return;
+      } else {
+        if (noResults) noResults.style.display = "none";
+      }
+
+      filtered.forEach(r => {
+        // Ensure r and its properties are defined before creating a card
+        if (
+          !r ||
+          !r.name ||
+          !r.photo ||
+          !r.position ||
+          !r.affiliation ||
+          !r.interests
+        ) {
+          return; // Skip incomplete entries
+        }
+        const card = document.createElement("div");
+        card.className =
+          "group cursor-pointer rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg hover:border-blue-300";
+
+        // Fix the photo path to use public directory
+        const photoPath = r.photo.replace(
+          "./src/assets/profiles/",
+          "/profiles/"
+        );
+
+        card.innerHTML = `
+        <div class="flex flex-col items-center text-center">
+          <img class="h-20 w-20 rounded-full object-cover ring-4 ring-gray-100 transition-all duration-200" src="${photoPath}" alt="${r.name}" />
+          <h3 class="mt-4 text-lg font-semibold text-gray-900 transition-colors">${r.name}</h3>
+          <p class="mt-1 text-sm font-medium text-blue-600">${r.position}</p>
+          <p class="mt-1 text-sm text-gray-600">${r.affiliation}</p>
+          
+          ${
+            r.hindex || r.citedby
+              ? `
+          <div class="mt-3 flex gap-4 text-xs text-gray-500">
+            ${r.hindex ? `<span class="flex items-center gap-1"><i class="fas fa-chart-line"></i> h-index: ${r.hindex}</span>` : ""}
+            ${r.citedby ? `<span class="flex items-center gap-1"><i class="fas fa-quote-right"></i> ${r.citedby} citations</span>` : ""}
+          </div>
+          `
+              : ""
+          }
+          
+          <div class="mt-4 flex flex-wrap justify-center gap-1">
+            ${r.interests
+              .slice(0, 3)
+              .map(
+                tag =>
+                  `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors">${tag}</span>`
+              )
+              .join("")}
+            ${r.interests.length > 3 ? `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-500">+${r.interests.length - 3}</span>` : ""}
+          </div>
+          
+          <div class="mt-4 flex gap-3">
+            ${r.scholar ? `<a href="${r.scholar}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Google Scholar"><i class='fas fa-graduation-cap text-sm'></i></a>` : ""}
+            ${r.linkedin ? `<a href="${r.linkedin}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="LinkedIn"><i class='fab fa-linkedin text-sm'></i></a>` : ""}
+            ${r.website ? `<a href="${r.website}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Website"><i class='fas fa-globe text-sm'></i></a>` : ""}
+            ${r.twitter ? `<a href="${r.twitter}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Twitter"><i class='fab fa-twitter text-sm'></i></a>` : ""}
+          </div>
+        </div>
+      `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function renderFilterOptions(interests) {
+      const select = document.getElementById("interest-select");
+      const unique = [...new Set(interests.flat())].sort();
+
+      if (select) {
+        unique.forEach(interest => {
+          const option = document.createElement("option");
+          option.value = interest;
+          option.textContent = interest;
+          select.appendChild(option);
+        });
+
+        select.addEventListener("change", () => {
+          const selected = select.value;
+          const query =
+            document.getElementById("search")?.value.toLowerCase() || "";
+          renderResearchers(selected, query);
+        });
+      }
+    }
+
+    window.sortByName = function sortByName() {
+      currentSort = "name";
+      updateActiveSort(document.getElementById("sort-name"));
+      const filter = document.getElementById("interest-select")?.value || "all";
+      const query =
+        document.getElementById("search")?.value.toLowerCase() || "";
+      renderResearchers(filter, query);
+    };
+
+    window.sortByHIndex = function sortByHIndex() {
+      currentSort = "hindex";
+      updateActiveSort(document.getElementById("sort-hindex"));
+      const filter = document.getElementById("interest-select")?.value || "all";
+      const query =
+        document.getElementById("search")?.value.toLowerCase() || "";
+      renderResearchers(filter, query);
+    };
+
+    window.sortByCitations = function sortByCitations() {
+      currentSort = "citations";
+      updateActiveSort(document.getElementById("sort-citations"));
+      const filter = document.getElementById("interest-select")?.value || "all";
+      const query =
+        document.getElementById("search")?.value.toLowerCase() || "";
+      renderResearchers(filter, query);
+    };
+
+    window.shuffleList = function shuffleList() {
+      currentSort = null;
+      updateActiveSort(document.getElementById("sort-shuffle"));
+      allResearchers = allResearchers.sort(() => Math.random() - 0.5);
+      const filter = document.getElementById("interest-select")?.value || "all";
+      const query =
+        document.getElementById("search")?.value.toLowerCase() || "";
+      renderResearchers(filter, query);
+    };
+
+    document.getElementById("search")?.addEventListener("input", e => {
+      const target = e.target;
+      const query = target.value.toLowerCase();
+      const selected =
+        document.getElementById("interest-select")?.value || "all";
+
+      console.log("Search input:", query);
+
+      // Debounce search for better performance
+      clearTimeout(window.searchTimeout);
+      window.searchTimeout = setTimeout(() => {
+        renderResearchers(selected, query);
+      }, 300);
+    });
+
+    // Add change listener for select
+    document
+      .getElementById("interest-select")
+      ?.addEventListener("change", () => {
+        const selected = document.getElementById("interest-select").value;
+        const query =
+          document.getElementById("search")?.value.toLowerCase() || "";
+        console.log("Filter changed:", selected);
+        renderResearchers(selected, query);
+      });
+
+    // Modal functionality
+    const addResearcherBtn = document.getElementById("add-researcher-btn");
+    const modal = document.getElementById("add-researcher-modal");
+    const successModal = document.getElementById("success-modal");
+    const closeModal = document.getElementById("close-modal");
+    const cancelBtn = document.getElementById("cancel-btn");
+    const closeSuccessModal = document.getElementById("close-success-modal");
+    const researcherForm = document.getElementById("researcher-form");
+
+    // Open modal
+    addResearcherBtn?.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      document.body.style.overflow = "hidden"; // Prevent background scrolling
+    });
+
+    // Close modal functions
+    function closeModalHandler() {
+      modal.classList.add("hidden");
+      document.body.style.overflow = "auto";
+      researcherForm.reset(); // Reset form when closing
+    }
+
+    function closeSuccessModalHandler() {
+      successModal.classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
+
+    // Close modal events
+    closeModal?.addEventListener("click", closeModalHandler);
+    cancelBtn?.addEventListener("click", closeModalHandler);
+    closeSuccessModal?.addEventListener("click", closeSuccessModalHandler);
+
+    // Close modal when clicking outside
+    modal?.addEventListener("click", e => {
+      if (e.target === modal) {
+        closeModalHandler();
+      }
+    });
+
+    successModal?.addEventListener("click", e => {
+      if (e.target === successModal) {
+        closeSuccessModalHandler();
+      }
+    });
+
+    // Handle form submission
+    researcherForm?.addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const submitBtn = researcherForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+
+      // Show loading state
+      submitBtn.textContent = "Submitting...";
+      submitBtn.disabled = true;
+
+      try {
+        const formData = new FormData(researcherForm);
+        const response = await fetch(researcherForm.action, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        if (response.ok) {
+          // Close the form modal
+          closeModalHandler();
+
+          // Show success modal
+          successModal.classList.remove("hidden");
+          document.body.style.overflow = "hidden";
+        } else {
+          throw new Error("Form submission failed");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("There was an error submitting your form. Please try again.");
+      } finally {
+        // Reset button state
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Use a relative path so this works even if the site is served from a sub directory
+    showLoading();
+    fetch("/researchers_en.json")
+      .then(res => {
+        console.log("Fetch response:", res);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Data loaded:", data.length, "researchers");
+        allResearchers = data;
+        const interests = data
+          .map(r => (r && r.interests ? r.interests : []))
+          .filter(i => i.length > 0);
+        renderFilterOptions(interests);
+        renderResearchers();
+      })
+      .catch(error => {
+        console.error("Error loading researchers:", error);
+        hideLoading();
+        const container = document.getElementById("researcher-container");
+        if (container) {
+          container.innerHTML =
+            '<div class="col-span-full py-12 text-center"><div class="mx-auto max-w-sm"><i class="fas fa-exclamation-triangle mb-4 text-4xl text-red-400"></i><h3 class="mb-2 text-lg font-medium text-gray-900">Error loading researchers</h3><p class="text-gray-600">Please try refreshing the page. Error: ' +
+            error.message +
+            "</p></div></div>";
+        }
+      });
+  });
+</script>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
