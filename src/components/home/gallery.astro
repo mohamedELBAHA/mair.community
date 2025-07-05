@@ -4,6 +4,11 @@ import { getCollection } from "astro:content";
 const gallery = await getCollection("gallery");
 
 const getOptimizedImage = (url: string) => {
+  // For local images, return as-is
+  if (url.startsWith("/")) {
+    return url;
+  }
+  // For Cloudinary URLs, apply transformations
   return url.replace(
     "upload",
     "upload/f_auto,q_auto,b_auto,c_fill_pad,g_auto,h_800,ar_16:9"

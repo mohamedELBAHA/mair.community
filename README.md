@@ -25,17 +25,6 @@ pnpm run dev
 To simplify project management, we added mock data to ensure the website functions in development mode without requiring any external API keys. However, if you want to work with real data for the gallery, episode planning, or adding new episodes through the website, you will need the following API keys:
 
 ```sh
-NOTION_API_KEY=
-GEEKSBLABLA_NOTION_DATABASE_ID=
-YOUTUBE_API_KEY=
-CLOUDINARY_API_SECRET=
-PUBLIC_CLOUDINARY_API_KEY=
-PUBLIC_CLOUDINARY_CLOUD_NAME=
-```
-
-**Podcast Chatbot Feature API Keys/Config (Required for chatbot functionality):**
-
-```sh
 # Required
 OPENAI_API_KEY="sk-..." # Your OpenAI API Key
 CHROMA_URL="http://localhost:8000" # URL of your ChromaDB instance (local Docker or remote)

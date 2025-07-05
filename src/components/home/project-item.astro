@@ -1,11 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
-import RiveAnimation from "@/components/rive-animation.astro";
 
 export interface ProjectType {
   title: string;
   description: string;
-  riveAnimation: string;
+  image: string;
   badge?: string;
   links: {
     text: string;
@@ -34,13 +33,14 @@ const { project } = Astro.props as Props;
     <span class="relative z-10 text-neutral-dark-20/50">{">_"}</span>
   </div>
   <div class="flex flex-col items-start p-2 md:p-6">
-    <RiveAnimation
-      animation={project.riveAnimation}
-      id={project.riveAnimation}
-      className="max-h-[350px] w-full"
-      width={350}
-      height={350}
-    />
+    <div class="flex justify-center items-center p-4 w-full">
+      <img
+        src={project.image}
+        alt={project.title}
+        class="max-h-[200px] w-full object-contain rounded-md"
+        loading="lazy"
+      />
+    </div>
 
     <div class="flex-1 pt-0 md:pt-8">
       <div class="mb-2 flex items-start text-[#1A1C1E]/80">

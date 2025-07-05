@@ -2,7 +2,6 @@
 import { ButtonLink } from "../button";
 import Header from "../header.astro";
 import { Icon } from "astro-icon/components";
-import HeroAnimation from "./hero-animation.astro";
 ---
 
 <section class="relative overflow-hidden bg-[#DCE9FA]">
@@ -10,41 +9,34 @@ import HeroAnimation from "./hero-animation.astro";
     <div class="bg-grid-pattern absolute inset-0 opacity-10"></div>
   </div>
   <Header />
-  <div class="main relative z-10 mx-auto pt-2 md:pt-16">
-    <div class="flex flex-col items-center lg:flex-row">
-      <div class="z-10">
+  <div class="main relative z-10 mx-auto pb-2 pt-2 md:pb-8 md:pt-16">
+    <div class="flex flex-col items-center lg:flex-row lg:justify-center">
+      <div class="z-10 flex flex-col items-center text-center">
         <h1
-          class="motion-preset-slide-down mt-4 block w-full max-w-screen-lg text-center font-sans text-3xl font-extrabold motion-delay-[100ms] md:hidden md:text-left md:text-title"
+          class="motion-preset-slide-down mt-4 block w-full max-w-screen-lg text-center font-sans text-3xl font-extrabold motion-delay-[100ms] md:hidden md:text-center md:text-title"
         >
-          Shaping the future of Moroccan Tech community, one step at a time
+          Connecting Moroccan Minds in AI — Across Borders, Across Generations
         </h1>
 
         <div
-          class="hidden w-full max-w-screen-lg text-center font-sans text-heading-lg font-bold md:block md:text-left md:text-title"
+          class="hidden w-full max-w-screen-lg text-center font-sans text-heading-lg font-bold md:block md:text-center md:text-title"
         >
-          <p class="m-preset-typewriter-[22] motion-loop-once">
-            Shaping the future of
+          <p class="m-preset-typewriter-[20] motion-loop-once">
+            Connecting Moroccan Minds in AI
           </p>
           <p
-            class="m-preset-typewriter-[22] motion-delay-[500ms] motion-loop-once"
+            class="m-preset-typewriter-[20] motion-delay-[500ms] motion-loop-once"
           >
-            Moroccan Tech community,
-          </p>
-          <p
-            class="m-preset-typewriter-[18] motion-delay-[1000ms] motion-loop-once"
-          >
-            one step at a time
+            Across Borders, Across Generations
           </p>
         </div>
         <p
-          class="text-md motion-preset-slide-down my-4 max-w-[600px] text-center font-sans font-thin motion-delay-[200ms] motion-ease-spring-smooth md:my-8 md:text-left md:text-label-sm md:motion-delay-[1200ms]"
+          class="text-md motion-preset-slide-down my-4 max-w-[600px] text-center font-sans font-thin motion-delay-[200ms] motion-ease-spring-smooth md:my-8 md:text-center md:text-label-sm md:motion-delay-[1200ms]"
         >
-          Your journey from learning to leading unfolds: insightful Podcast,
-          aspiring videos, cutting edge OSS projects, in depth conferences and
-          many more.
+          From first steps to frontier research — explore inspiring talks, practical resources, global opportunities, and a vibrant community empowering Moroccan excellence in AI.
         </p>
         <div
-          class="hidden justify-center space-x-4 py-4 md:flex md:flex-row md:justify-start"
+          class="hidden justify-center space-x-4 py-2 md:flex md:flex-row md:justify-center"
         >
           <ButtonLink
             href="#projects"
@@ -57,22 +49,18 @@ import HeroAnimation from "./hero-animation.astro";
             href="/podcast"
             className="motion-preset-slide-down hidden self-center motion-delay-[1800ms] motion-ease-spring-smooth md:flex"
           >
-            Podcast <Icon name="arrow-right" class="ml-2" />
+            Join Discord Server <Icon name="arrow-right" class="ml-2" />
           </ButtonLink>
         </div>
       </div>
     </div>
   </div>
-  <div
-    class="main motion-preset-slide-up pointer-events-none relative z-20 mx-auto mt-2 px-4 motion-delay-[600ms] motion-ease-spring-smooth md:-mt-52 md:motion-delay-[1600ms]"
-  >
-    <HeroAnimation />
-  </div>
 </section>
 
 <style>
   .bg-grid-pattern {
-    background-image: linear-gradient(to right, #636161 1px, transparent 1px),
+    background-image:
+      linear-gradient(to right, #636161 1px, transparent 1px),
       linear-gradient(to bottom, #636161 1px, transparent 1px);
     background-size: 100px 100px; /* Smaller squares for mobile screens */
     animation: move-grid 8s linear infinite 2s;

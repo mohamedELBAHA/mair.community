@@ -2,10 +2,10 @@ import type { FormsSubmissions, Site, SocialObjects } from "./types";
 
 export const SITE: Site = {
   website: "https://geeksblabla.community/", // replace this with your deployed domain
-  author: "Geeksblabla Community",
+  author: "MAIR",
   profile: "https://geeksblabla.community/",
   desc: "Home of the largest tech community in Morocco, with a focus on sharing knowledge in Moroccan Darija.",
-  title: "Geeksblabla Community",
+  title: "MAIR",
   ogImage: "community.jpg",
   lightAndDarkMode: true,
   postPerIndex: 4,
@@ -31,34 +31,14 @@ export const SOCIALS: SocialObjects = {
     linkTitle: `${SITE.title} on Github`,
     active: true,
   },
-  youtube: {
-    href: "https://www.youtube.com/@GeeksBlaBla01",
-    linkTitle: `${SITE.title} on YouTube`,
-    active: true,
-  },
   linkedin: {
     href: "https://www.linkedin.com/company/geeksblabla-community",
     linkTitle: `${SITE.title} on LinkedIn`,
     active: true,
   },
-  facebook: {
-    href: "https://www.facebook.com/geeksblabla",
-    linkTitle: `${SITE.title} on Facebook`,
-    active: true,
-  },
-  x: {
-    href: "https://twitter.com/geeksblabla",
-    linkTitle: `${SITE.title} on Twitter`,
-    active: true,
-  },
-  instagram: {
-    href: "https://www.instagram.com/geeksblabla",
-    linkTitle: `${SITE.title} on Instagram`,
-    active: true,
-  },
-  spotify: {
-    href: "https://open.spotify.com/show/0UlTBXh7iH6x0HO6FgYzAD",
-    linkTitle: `${SITE.title} on Spotify`,
+  discord: {
+    href: "https://discord.gg/geeksblabla",
+    linkTitle: `${SITE.title} on Discord`,
     active: true,
   },
 };
