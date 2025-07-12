@@ -1,7 +1,7 @@
 /**
  * This file is used to generate the redirects for the Astro redirects plugin.
  * example
- * /linkedin -> geeksblabla linkedin page
+ * /linkedin -> mair linkedin page
  * /contribute -> how to contribute article
  * ...
  *
