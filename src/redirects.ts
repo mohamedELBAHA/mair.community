@@ -40,24 +40,12 @@ type AstroRedirects = {
   [key: string]: string;
 };
 
-// redirects /blabla -> /podcast
-const oldPodcastRedirects: Redirect[] = [
-  {
-    name: "blabla",
-    path: "/blabla/[...slug]",
-    link: "/podcast/[...slug]",
-  },
-];
-
 export const getAstroRedirects = () => {
   const redirects = {} as AstroRedirects;
   socialRedirects.forEach(redirect => {
     redirects[redirect.path] = redirect.link;
   });
   formsRedirects.forEach(redirect => {
-    redirects[redirect.path] = redirect.link;
-  });
-  oldPodcastRedirects.forEach(redirect => {
     redirects[redirect.path] = redirect.link;
   });
   return redirects;

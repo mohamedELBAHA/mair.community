@@ -6,7 +6,7 @@
     "created_at": "2025-07-02T00:00:00Z",
     "width": 1920,
     "height": 1080,
-    "url": "/team/gallery/ICLR-1.jpeg"
+    "url": "/gallery/ICLR-1.jpeg"
   },
   {
     "id": "gallery/ICLR-2",
@@ -15,7 +15,7 @@
     "created_at": "2025-07-02T00:00:00Z",
     "width": 1920,
     "height": 1080,
-    "url": "/team/gallery/ICLR-2.jpeg"
+    "url": "/gallery/ICLR-2.jpeg"
   },
   {
     "id": "gallery/ICLR-3",
@@ -24,6 +24,6 @@
     "created_at": "2025-07-02T00:00:00Z",
     "width": 1920,
     "height": 1080,
-    "url": "/team/gallery/ICLR-3.jpeg"
+    "url": "/gallery/ICLR-3.jpeg"
   }
 ]
