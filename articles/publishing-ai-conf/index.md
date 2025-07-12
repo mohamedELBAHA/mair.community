@@ -5,7 +5,7 @@ slug: "Publishing-in-top-tier-AI-conferences-is-harder-than-ever"
 keywords: ["Conferences", "ICLR", "Publications"]
 pubDatetime: 2025-01-21
 authors: ["elbaha"] # the name of the author file
-description: "Discover how Geeksblabla Campus is empowering students, fostering collaboration, and growing Morocco's tech ecosystem through university partnerships."
+description: "Explore the harsh realities of publishing in top AI conferences like ICLR, where submissions have quintupled since 2020 but acceptance rates remain unchanged. Discover evidence-based strategies for improving your chances in an exponentially competitive landscape.."
 ogImage: "./images/iclr.png"
 ---
 
@@ -20,6 +20,7 @@ Growth is exponential (≈46 % CAGR), while the global acceptance rate hovers ar
 ![orals](images/orals.png)
 
 ## What Separates Accepted From Rejected?
+
 Desk rejections = 25 % of submissions
 Common causes: formatting, missing anonymisation, lack of baselines, irreproducible code.
 Seniority premium (≈ ×3 odds)
@@ -30,6 +31,7 @@ Strategic fit
 Tracks such as Efficient ML or Alignment & Safety historically exhibit acceptance rates 4–6 pp above the conference mean. Topic selection is a strategic parameter, not an afterthought.
 
 ## Takeaways for the PhD Author
+
 Treat acceptance as a multivariate optimisation problem — idea and presentation and positioning.
 Exploit accessible covariates (writing grade, compliance, senior mentorship) that shift odds measurably.
 Leverage community infrastructure; individual brilliance scales poorly against exponential submission growth.

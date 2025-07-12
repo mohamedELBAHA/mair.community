@@ -32,12 +32,12 @@ export const SOCIALS: SocialObjects = {
     active: true,
   },
   linkedin: {
-    href: "https://www.linkedin.com/company/geeksblabla-community",
+    href: "https://www.linkedin.com/company/mairma/",
     linkTitle: `${SITE.title} on LinkedIn`,
     active: true,
   },
   discord: {
-    href: "https://discord.gg/geeksblabla",
+    href: "https://lnkd.in/et9MW3_i",
     linkTitle: `${SITE.title} on Discord`,
     active: true,
   },
