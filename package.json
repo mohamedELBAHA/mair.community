@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "astro build --config astro.config.preview.mjs && astro preview --config astro.config.preview.mjs",
     "deploy": "astro build && wrangler deploy",
     "sync": "astro sync",
     "astro": "astro",
