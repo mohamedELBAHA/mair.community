@@ -5,15 +5,15 @@ import { SITE } from "@/config";
 ---
 
 <Layout title={`Network | ${SITE.title}`}>
-  <div class="relative bg-[#F2F4F7] overflow-hidden">
+  <div class="relative overflow-hidden bg-[#F2F4F7]">
     <!-- Moroccan Pattern Background -->
     <div class="absolute inset-0 z-0">
       <div class="moroccan-pattern-1 absolute inset-0 opacity-10"></div>
       <div class="moroccan-pattern-2 absolute inset-0 opacity-5"></div>
     </div>
-    
+
     <Header />
-    <main class="main mx-auto py-8 md:py-16 relative z-10">
+    <main class="main relative z-10 mx-auto py-8 md:py-16">
       <section class="mb-12 text-center">
         <h1 class="mb-4 text-4xl font-bold">Moroccans in AI Research</h1>
         <p class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
@@ -301,230 +301,441 @@ import { SITE } from "@/config";
     </div>
   </div>
 </Layout>
-
 <script is:inline>
   document.addEventListener("DOMContentLoaded", function () {
     class ResearcherNetwork {
       constructor() {
-        this.allResearchers = [];
-        this.currentSort = null;
-        this.searchTimeout = null;
-        this.isLoading = false;
-        
+        // Core data
+        this.researchers = [];
+        this.filteredResearchers = [];
+        this.activeSort = "name"; // Set default sort to name
+        this.searchTimeout = null; // For debouncing search
+
         // DOM elements
-        this.elements = {
-          container: document.getElementById("researcher-container"),
-          searchInput: document.getElementById("search"),
-          interestSelect: document.getElementById("interest-select"),
-          resultsCount: document.getElementById("results-count"),
-          noResults: document.getElementById("no-results"),
-          loadingSkeleton: document.getElementById("loading-skeleton"),
-          // Sort buttons
-          sortName: document.getElementById("sort-name"),
-          sortHindex: document.getElementById("sort-hindex"),
-          sortCitations: document.getElementById("sort-citations"),
-          sortShuffle: document.getElementById("sort-shuffle"),
-          // Modal elements
-          addResearcherBtn: document.getElementById("add-researcher-btn"),
-          modal: document.getElementById("add-researcher-modal"),
-          successModal: document.getElementById("success-modal"),
-          closeModal: document.getElementById("close-modal"),
-          cancelBtn: document.getElementById("cancel-btn"),
-          closeSuccessModal: document.getElementById("close-success-modal"),
-          researcherForm: document.getElementById("researcher-form")
+        this.container = document.getElementById("researcher-container");
+        this.searchInput = document.getElementById("search");
+        this.interestSelect = document.getElementById("interest-select");
+        this.resultsCount = document.getElementById("results-count");
+        this.noResults = document.getElementById("no-results");
+        this.loadingSkeleton = document.getElementById("loading-skeleton");
+
+        console.log("Search input found:", !!this.searchInput);
+        console.log("Interest select found:", !!this.interestSelect);
+
+        // Sort buttons
+        this.sortBtns = {
+          name: document.getElementById("sort-name"),
+          hindex: document.getElementById("sort-hindex"),
+          citations: document.getElementById("sort-citations"),
+          shuffle: document.getElementById("sort-shuffle"),
         };
-        
+
+        // Modal elements
+        this.addResearcherBtn = document.getElementById("add-researcher-btn");
+        this.modal = document.getElementById("add-researcher-modal");
+        this.closeModalBtn = document.getElementById("close-modal");
+        this.cancelBtn = document.getElementById("cancel-btn");
+        this.researcherForm = document.getElementById("researcher-form");
+        this.successModal = document.getElementById("success-modal");
+        this.closeSuccessModalBtn = document.getElementById(
+          "close-success-modal"
+        );
+
+        // Initialize
         this.init();
       }
 
       async init() {
         try {
           this.bindEvents();
-          this.showLoading();
-          await this.loadResearchers();
-          this.initializeFilters();
-          this.renderResearchers();
+          await this.fetchResearchers();
+
+          // Set initial state after loading
+          if (this.researchers.length > 0) {
+            console.log("Setting initial state with all researchers");
+            this.filteredResearchers = [...this.researchers]; // Start with all researchers
+            this.setupInterestFilter();
+            this.applySorting(); // Apply default sorting
+            this.renderResearchers();
+            this.updateActiveSortButton(this.activeSort); // Highlight default sort button
+          } else {
+            console.error("No researchers were loaded");
+            this.showNoResults();
+          }
         } catch (error) {
-          this.handleError("Failed to initialize network", error);
+          console.error("Failed to initialize researcher network:", error);
+          this.showErrorMessage(error);
         }
       }
 
       bindEvents() {
-        // Search input with debouncing
-        this.elements.searchInput?.addEventListener("input", (e) => {
-          this.handleSearch(e.target.value);
-        });
+        // Search input
+        if (this.searchInput) {
+          this.searchInput.addEventListener(
+            "input",
+            this.handleSearch.bind(this)
+          );
+        } else {
+          console.warn("Search input element not found");
+        }
 
         // Interest filter
-        this.elements.interestSelect?.addEventListener("change", (e) => {
-          this.handleFilterChange(e.target.value);
-        });
+        if (this.interestSelect) {
+          this.interestSelect.addEventListener(
+            "change",
+            this.handleFilterChange.bind(this)
+          );
+        } else {
+          console.warn("Interest select element not found");
+        }
 
-        // Sort buttons - remove inline onclick handlers
-        this.elements.sortName?.addEventListener("click", () => this.sortByName());
-        this.elements.sortHindex?.addEventListener("click", () => this.sortByHIndex());
-        this.elements.sortCitations?.addEventListener("click", () => this.sortByCitations());
-        this.elements.sortShuffle?.addEventListener("click", () => this.shuffleList());
+        // Sort buttons
+        if (this.sortBtns.name) {
+          this.sortBtns.name.addEventListener("click", () =>
+            this.sortResearchers("name")
+          );
+        }
+        if (this.sortBtns.hindex) {
+          this.sortBtns.hindex.addEventListener("click", () =>
+            this.sortResearchers("hindex")
+          );
+        }
+        if (this.sortBtns.citations) {
+          this.sortBtns.citations.addEventListener("click", () =>
+            this.sortResearchers("citations")
+          );
+        }
+        if (this.sortBtns.shuffle) {
+          this.sortBtns.shuffle.addEventListener("click", () =>
+            this.shuffleResearchers()
+          );
+        }
 
         // Modal events
-        this.bindModalEvents();
-      }
+        if (this.addResearcherBtn) {
+          this.addResearcherBtn.addEventListener("click", () =>
+            this.openModal()
+          );
+        }
+        if (this.closeModalBtn) {
+          this.closeModalBtn.addEventListener("click", () => this.closeModal());
+        }
+        if (this.cancelBtn) {
+          this.cancelBtn.addEventListener("click", () => this.closeModal());
+        }
+        if (this.closeSuccessModalBtn) {
+          this.closeSuccessModalBtn.addEventListener("click", () =>
+            this.closeSuccessModal()
+          );
+        }
+        if (this.researcherForm) {
+          this.researcherForm.addEventListener("submit", e =>
+            this.handleFormSubmit(e)
+          );
+        }
 
-      bindModalEvents() {
-        // Open modal
-        this.elements.addResearcherBtn?.addEventListener("click", () => {
-          this.openModal();
-        });
-
-        // Close modal events
-        this.elements.closeModal?.addEventListener("click", () => this.closeModal());
-        this.elements.cancelBtn?.addEventListener("click", () => this.closeModal());
-        this.elements.closeSuccessModal?.addEventListener("click", () => this.closeSuccessModal());
-
-        // Close modal when clicking outside
-        this.elements.modal?.addEventListener("click", (e) => {
-          if (e.target === this.elements.modal) {
-            this.closeModal();
-          }
-        });
-
-        this.elements.successModal?.addEventListener("click", (e) => {
-          if (e.target === this.elements.successModal) {
-            this.closeSuccessModal();
-          }
-        });
-
-        // Handle form submission
-        this.elements.researcherForm?.addEventListener("submit", (e) => {
-          this.handleFormSubmission(e);
-        });
-      }
-
-      handleSearch(query) {
-        clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => {
-          const filter = this.elements.interestSelect?.value || "all";
-          this.renderResearchers(filter, query.toLowerCase());
-        }, 300);
-      }
-
-      handleFilterChange(filter) {
-        const query = this.elements.searchInput?.value.toLowerCase() || "";
-        this.renderResearchers(filter, query);
-      }
-
-      async loadResearchers() {
-        try {
-          const response = await fetch("/researchers_en.json");
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          this.allResearchers = data.filter(this.isValidResearcher);
-          console.log(`Loaded ${this.allResearchers.length} valid researchers`);
-        } catch (error) {
-          throw new Error(`Failed to load researchers: ${error.message}`);
+        // Close modals when clicking outside
+        if (this.modal) {
+          this.modal.addEventListener("click", e => {
+            if (e.target === this.modal) this.closeModal();
+          });
+        }
+        if (this.successModal) {
+          this.successModal.addEventListener("click", e => {
+            if (e.target === this.successModal) this.closeSuccessModal();
+          });
         }
       }
 
-      isValidResearcher(researcher) {
-        return researcher && 
-               researcher.name && 
-               researcher.photo && 
-               researcher.position && 
-               researcher.affiliation && 
-               Array.isArray(researcher.interests);
+      async fetchResearchers() {
+        this.showLoading();
+
+        try {
+          console.log("Fetching researchers data...");
+          // Try with absolute URL if relative URL fails
+          let response;
+
+          try {
+            response = await fetch("/researchers_en.json");
+            if (!response.ok)
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          } catch {
+            console.warn(
+              "Failed to fetch with relative path, trying absolute path"
+            );
+            // Try with a different path as fallback
+            const absolutePath =
+              window.location.origin + "/researchers_en.json";
+            response = await fetch(absolutePath);
+            if (!response.ok)
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log(`Loaded ${data.length} researchers from JSON`);
+
+          if (!data || !Array.isArray(data) || data.length === 0) {
+            throw new Error("Invalid or empty data received");
+          }
+
+          // Basic validation and normalization
+          this.researchers = data
+            .filter(r => r && r.name) // Basic validation
+            .map(r => ({
+              ...r,
+              // Normalize fields to prevent errors
+              name: r.name || "Unknown",
+              position: r.position || "Researcher",
+              affiliation: r.affiliation || "",
+              interests: Array.isArray(r.interests) ? r.interests : [],
+              hindex: parseInt(r.hindex) || 0,
+              citedby: parseInt(r.citedby) || 0,
+            }));
+
+          console.log(`Processed ${this.researchers.length} valid researchers`);
+
+          // If we have researchers but none are processed as valid, something is wrong with the data format
+          if (data.length > 0 && this.researchers.length === 0) {
+            console.error("Data format issue - sample data:", data[0]);
+          }
+
+          return this.researchers;
+        } catch (error) {
+          console.error("Error fetching researchers:", error);
+          throw error;
+        } finally {
+          this.hideLoading();
+        }
       }
 
-      initializeFilters() {
-        if (!this.elements.interestSelect) return;
+      setupInterestFilter() {
+        if (!this.interestSelect) return;
 
-        const allInterests = this.allResearchers
+        console.log("Setting up interest filter");
+
+        // Extract all interests
+        const allInterests = this.researchers
           .flatMap(r => r.interests || [])
           .filter(Boolean);
-        
+
+        // Get unique interests and sort them
         const uniqueInterests = [...new Set(allInterests)].sort();
 
-        // Clear existing options except "All Interests"
-        const firstOption = this.elements.interestSelect.querySelector('option[value="all"]');
-        this.elements.interestSelect.innerHTML = '';
-        if (firstOption) {
-          this.elements.interestSelect.appendChild(firstOption);
+        console.log("Found interests:", uniqueInterests);
+
+        // Keep the "All Interests" option
+        const allOption = this.interestSelect.querySelector(
+          'option[value="all"]'
+        );
+        this.interestSelect.innerHTML = "";
+
+        if (allOption) {
+          this.interestSelect.appendChild(allOption);
+        } else {
+          const option = document.createElement("option");
+          option.value = "all";
+          option.textContent = "All Interests";
+          this.interestSelect.appendChild(option);
         }
 
+        // Add interest options
         uniqueInterests.forEach(interest => {
           const option = document.createElement("option");
           option.value = interest;
           option.textContent = interest;
-          this.elements.interestSelect.appendChild(option);
+          this.interestSelect.appendChild(option);
         });
+
+        console.log(
+          `Added ${uniqueInterests.length} unique interests to filter`
+        );
       }
 
-      renderResearchers(filter = "all", query = "") {
-        if (!this.elements.container) return;
+      handleFilterChange(event) {
+        const selectedInterest = event.target.value;
+        console.log(`Filter changed to: "${selectedInterest}"`);
+        this.applyFiltersAndSort();
+      }
 
-        this.hideLoading();
-        this.elements.container.innerHTML = "";
+      handleSearch(event) {
+        // Add debouncing to prevent excessive filtering
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => {
+          console.log(`SEARCH DEBUG - Query: "${event.target.value}"`);
+          // Print sample researcher for debugging
+          if (this.researchers.length > 0) {
+            console.log(
+              "SEARCH DEBUG - Sample researcher:",
+              this.researchers[0]
+            );
+          }
+          this.applyFiltersAndSort();
+        }, 250);
+      }
 
-        const filtered = this.filterResearchers(filter, query);
-        const sorted = this.sortResearchers(filtered);
+      applyFiltersAndSort() {
+        const query = this.searchInput?.value?.toLowerCase().trim() || "";
+        const interest = this.interestSelect?.value || "all";
 
-        this.updateResultsCount(sorted.length, this.allResearchers.length);
+        console.log(
+          `FILTER DEBUG - Applying filters - Query: "${query}", Interest: "${interest}"`
+        );
+        console.log(
+          `FILTER DEBUG - Starting with ${this.researchers.length} researchers`
+        );
 
-        if (sorted.length === 0) {
+        // Filter by interest and search query
+        this.filteredResearchers = this.researchers.filter(researcher => {
+          // Interest filter
+          const matchesInterest =
+            interest === "all" ||
+            (researcher.interests &&
+              Array.isArray(researcher.interests) &&
+              researcher.interests.some(i => i === interest));
+
+          // If no search query, just check interest
+          if (!query) {
+            return matchesInterest;
+          }
+
+          // Create searchable text from researcher data
+          const nameMatch = (researcher.name || "")
+            .toLowerCase()
+            .includes(query);
+          const positionMatch = (researcher.position || "")
+            .toLowerCase()
+            .includes(query);
+          const affiliationMatch = (researcher.affiliation || "")
+            .toLowerCase()
+            .includes(query);
+
+          // Check for matches in interests
+          const interestsMatch =
+            Array.isArray(researcher.interests) &&
+            researcher.interests.some(i => i.toLowerCase().includes(query));
+
+          const matches =
+            nameMatch || positionMatch || affiliationMatch || interestsMatch;
+
+          // Log matches for debugging
+          if (matches && matchesInterest) {
+            console.log(`FILTER DEBUG - Match: ${researcher.name}`);
+          }
+
+          return matchesInterest && matches;
+        });
+
+        console.log(
+          `FILTER DEBUG - Filtered down to ${this.filteredResearchers.length} researchers`
+        );
+
+        // Apply sorting
+        this.applySorting();
+
+        // Render the filtered and sorted researchers
+        this.renderResearchers();
+      }
+
+      sortResearchers(sortType) {
+        console.log(`Sorting by: ${sortType}`);
+        this.activeSort = sortType;
+        this.updateActiveSortButton(sortType);
+        this.applySorting();
+        this.renderResearchers();
+      }
+
+      applySorting() {
+        console.log(`Applying sort: ${this.activeSort}`);
+
+        switch (this.activeSort) {
+          case "name":
+            this.filteredResearchers.sort((a, b) =>
+              a.name.localeCompare(b.name)
+            );
+            break;
+          case "hindex":
+            this.filteredResearchers.sort(
+              (a, b) => (b.hindex || 0) - (a.hindex || 0)
+            );
+            break;
+          case "citations":
+            this.filteredResearchers.sort(
+              (a, b) => (b.citedby || 0) - (a.citedby || 0)
+            );
+            break;
+          // No need for shuffle case as it's handled separately
+        }
+      }
+
+      shuffleResearchers() {
+        console.log("Shuffling researchers");
+        this.activeSort = "shuffle";
+        this.updateActiveSortButton("shuffle");
+
+        // Fisher-Yates shuffle algorithm
+        for (let i = this.filteredResearchers.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [this.filteredResearchers[i], this.filteredResearchers[j]] = [
+            this.filteredResearchers[j],
+            this.filteredResearchers[i],
+          ];
+        }
+
+        this.renderResearchers();
+      }
+
+      updateActiveSortButton(sortType) {
+        // Remove active class from all buttons
+        Object.values(this.sortBtns).forEach(btn => {
+          if (btn) {
+            btn.classList.remove("bg-blue-500", "text-white");
+            btn.classList.add("bg-gray-100", "text-gray-700");
+          }
+        });
+
+        // Add active class to selected button
+        const activeBtn = this.sortBtns[sortType];
+        if (activeBtn) {
+          activeBtn.classList.remove("bg-gray-100", "text-gray-700");
+          activeBtn.classList.add("bg-blue-500", "text-white");
+        }
+      }
+
+      renderResearchers() {
+        if (!this.container) {
+          console.error("Researcher container not found");
+          return;
+        }
+
+        // Clear container
+        this.container.innerHTML = "";
+
+        // Update results count
+        this.updateResultsCount();
+
+        // Show no results message if needed
+        if (this.filteredResearchers.length === 0) {
+          console.log("No researchers to display");
           this.showNoResults();
           return;
         }
 
         this.hideNoResults();
-        sorted.forEach(researcher => {
+
+        // Create and append researcher cards
+        this.filteredResearchers.forEach(researcher => {
           const card = this.createResearcherCard(researcher);
-          this.elements.container.appendChild(card);
+          this.container.appendChild(card);
         });
-      }
 
-      filterResearchers(filter, query) {
-        return this.allResearchers.filter(researcher => {
-          const matchesFilter = filter === "all" || 
-                               (researcher.interests && researcher.interests.includes(filter));
-          
-          if (!query) return matchesFilter;
-
-          const searchText = [
-            researcher.name,
-            researcher.affiliation,
-            researcher.position,
-            ...(researcher.interests || [])
-          ].join(" ").toLowerCase();
-
-          return matchesFilter && searchText.includes(query);
-        });
-      }
-
-      sortResearchers(researchers) {
-        const sortedResearchers = [...researchers];
-        
-        switch (this.currentSort) {
-          case "name":
-            return sortedResearchers.sort((a, b) => 
-              (a.name || "").localeCompare(b.name || "")
-            );
-          case "hindex":
-            return sortedResearchers.sort((a, b) => 
-              (b.hindex || 0) - (a.hindex || 0)
-            );
-          case "citations":
-            return sortedResearchers.sort((a, b) => 
-              (b.citedby || 0) - (a.citedby || 0)
-            );
-          default:
-            return sortedResearchers;
-        }
+        console.log(
+          `Rendered ${this.filteredResearchers.length} researcher cards`
+        );
       }
 
       createResearcherCard(researcher) {
         const card = document.createElement("div");
-        card.className = 
+        card.className =
           "group cursor-pointer rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg hover:border-blue-300";
 
         const photoPath = this.getPhotoPath(researcher.photo);
@@ -539,8 +750,8 @@ import { SITE } from "@/config";
                  alt="${researcher.name}"
                  onerror="this.src='/profiles/default-avatar.png'" />
             <h3 class="mt-4 text-lg font-semibold text-gray-900 transition-colors">${researcher.name}</h3>
-            <p class="mt-1 text-sm font-medium text-blue-600">${researcher.position}</p>
-            <p class="mt-1 text-sm text-gray-600">${researcher.affiliation}</p>
+            <p class="mt-1 text-sm font-medium text-blue-600">${researcher.position || ""}</p>
+            <p class="mt-1 text-sm text-gray-600">${researcher.affiliation || ""}</p>
             ${metrics}
             ${interests}
             ${socialLinks}
@@ -552,18 +763,19 @@ import { SITE } from "@/config";
 
       getPhotoPath(photo) {
         if (!photo) return "/profiles/default-avatar.png";
-        return photo.replace("./src/assets/profiles/", "/profiles/");
+        return photo.replace("./profiles/", "/profiles/");
       }
 
       formatMetrics(researcher) {
-        const hasMetrics = researcher.hindex || researcher.citedby;
-        if (!hasMetrics) return "";
+        if (!researcher.hindex && !researcher.citedby) return "";
 
-        const hindex = researcher.hindex ? 
-          `<span class="flex items-center gap-1"><i class="fas fa-chart-line"></i> h-index: ${this.formatNumber(researcher.hindex)}</span>` : "";
-        
-        const citations = researcher.citedby ? 
-          `<span class="flex items-center gap-1"><i class="fas fa-quote-right"></i> ${this.formatNumber(researcher.citedby)} citations</span>` : "";
+        const hindex = researcher.hindex
+          ? `<span class="flex items-center gap-1"><i class="fas fa-chart-line"></i> h-index: ${this.formatNumber(researcher.hindex)}</span>`
+          : "";
+
+        const citations = researcher.citedby
+          ? `<span class="flex items-center gap-1"><i class="fas fa-quote-right"></i> ${this.formatNumber(researcher.citedby)} citations</span>`
+          : "";
 
         return `
           <div class="mt-3 flex gap-4 text-xs text-gray-500">
@@ -574,180 +786,161 @@ import { SITE } from "@/config";
       }
 
       formatNumber(num) {
-        if (num >= 1000) {
-          return (num / 1000).toFixed(1) + "k";
-        }
-        return num.toString();
+        if (!num) return "0";
+        return num >= 1000 ? (num / 1000).toFixed(1) + "k" : num.toString();
       }
 
       formatInterests(interests) {
-        if (!interests.length) return "";
+        if (!interests || !interests.length) return "";
 
         const displayedInterests = interests.slice(0, 3);
         const remainingCount = interests.length - 3;
 
-        const interestTags = displayedInterests
-          .map(tag => `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors">${tag}</span>`)
+        const tags = displayedInterests
+          .map(
+            tag =>
+              `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors">${tag}</span>`
+          )
           .join("");
 
-        const remainingTag = remainingCount > 0 ? 
-          `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-500">+${remainingCount}</span>` : "";
+        const moreTag =
+          remainingCount > 0
+            ? `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-500">+${remainingCount}</span>`
+            : "";
 
         return `
           <div class="mt-4 flex flex-wrap justify-center gap-1">
-            ${interestTags}
-            ${remainingTag}
+            ${tags}
+            ${moreTag}
           </div>
         `;
       }
 
       formatSocialLinks(researcher) {
         const links = [];
-        
+
         if (researcher.scholar) {
-          links.push(`<a href="${researcher.scholar}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Google Scholar"><i class='fas fa-graduation-cap text-sm'></i></a>`);
+          links.push(
+            `<a href="${researcher.scholar}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Google Scholar"><i class='fas fa-graduation-cap text-sm'></i></a>`
+          );
         }
-        
+
         if (researcher.linkedin) {
-          links.push(`<a href="${researcher.linkedin}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="LinkedIn"><i class='fab fa-linkedin text-sm'></i></a>`);
+          links.push(
+            `<a href="${researcher.linkedin}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="LinkedIn"><i class='fab fa-linkedin text-sm'></i></a>`
+          );
         }
-        
+
         if (researcher.website) {
-          links.push(`<a href="${researcher.website}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Website"><i class='fas fa-globe text-sm'></i></a>`);
+          links.push(
+            `<a href="${researcher.website}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Website"><i class='fas fa-globe text-sm'></i></a>`
+          );
         }
-        
+
         if (researcher.twitter) {
-          links.push(`<a href="${researcher.twitter}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Twitter"><i class='fab fa-twitter text-sm'></i></a>`);
+          links.push(
+            `<a href="${researcher.twitter}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Twitter"><i class='fab fa-twitter text-sm'></i></a>`
+          );
         }
 
-        return links.length ? `<div class="mt-4 flex gap-3">${links.join("")}</div>` : "";
+        return links.length
+          ? `<div class="mt-4 flex gap-3">${links.join("")}</div>`
+          : "";
       }
 
-      // Sort methods
-      sortByName() {
-        this.currentSort = "name";
-        this.updateActiveSort(this.elements.sortName);
-        this.applyCurrentFilters();
-      }
+      updateResultsCount() {
+        if (!this.resultsCount) return;
 
-      sortByHIndex() {
-        this.currentSort = "hindex";
-        this.updateActiveSort(this.elements.sortHindex);
-        this.applyCurrentFilters();
-      }
+        const filtered = this.filteredResearchers.length;
+        const total = this.researchers.length;
 
-      sortByCitations() {
-        this.currentSort = "citations";
-        this.updateActiveSort(this.elements.sortCitations);
-        this.applyCurrentFilters();
-      }
-
-      shuffleList() {
-        this.currentSort = null;
-        this.updateActiveSort(this.elements.sortShuffle);
-        this.allResearchers = this.allResearchers.sort(() => Math.random() - 0.5);
-        this.applyCurrentFilters();
-      }
-
-      applyCurrentFilters() {
-        const filter = this.elements.interestSelect?.value || "all";
-        const query = this.elements.searchInput?.value.toLowerCase() || "";
-        this.renderResearchers(filter, query);
-      }
-
-      updateActiveSort(activeButton) {
-        // Remove active state from all sort buttons
-        document.querySelectorAll(".sort-btn").forEach(btn => {
-          btn.classList.remove("bg-blue-500", "text-white");
-          btn.classList.add("bg-gray-100", "text-gray-700");
-        });
-
-        // Add active state to clicked button
-        if (activeButton) {
-          activeButton.classList.remove("bg-gray-100", "text-gray-700");
-          activeButton.classList.add("bg-blue-500", "text-white");
-        }
-      }
-
-      updateResultsCount(count, total) {
-        if (!this.elements.resultsCount) return;
-        
-        if (count === total) {
-          this.elements.resultsCount.textContent = `Showing all ${total} researchers`;
+        if (filtered === total) {
+          this.resultsCount.textContent = `Showing all ${total} researchers`;
         } else {
-          this.elements.resultsCount.textContent = `Showing ${count} of ${total} researchers`;
-        }
-      }
-
-      showLoading() {
-        this.isLoading = true;
-        if (this.elements.container) {
-          this.elements.container.innerHTML = `
-            <div id="loading-skeleton" class="col-span-full flex items-center justify-center py-12">
-              <div class="text-center">
-                <div class="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
-                <p class="mt-2 text-gray-600">Loading researchers...</p>
-              </div>
-            </div>
-          `;
-        }
-      }
-
-      hideLoading() {
-        this.isLoading = false;
-        const loadingSkeleton = document.getElementById("loading-skeleton");
-        if (loadingSkeleton) {
-          loadingSkeleton.remove();
+          this.resultsCount.textContent = `Showing ${filtered} of ${total} researchers`;
         }
       }
 
       showNoResults() {
-        if (this.elements.noResults) {
-          this.elements.noResults.style.display = "block";
+        if (this.noResults) {
+          this.noResults.style.display = "block";
         }
       }
 
       hideNoResults() {
-        if (this.elements.noResults) {
-          this.elements.noResults.style.display = "none";
+        if (this.noResults) {
+          this.noResults.style.display = "none";
         }
       }
 
-      // Modal methods
+      showLoading() {
+        if (this.loadingSkeleton) {
+          this.loadingSkeleton.style.display = "flex";
+        }
+      }
+
+      hideLoading() {
+        if (this.loadingSkeleton) {
+          this.loadingSkeleton.style.display = "none";
+        }
+      }
+
+      showErrorMessage(error) {
+        if (!this.container) return;
+
+        this.container.innerHTML = `
+          <div class="col-span-full py-12 text-center">
+            <div class="mx-auto max-w-sm">
+              <i class="fas fa-exclamation-triangle mb-4 text-4xl text-red-400"></i>
+              <h3 class="mb-2 text-lg font-medium text-gray-900">Error loading researchers</h3>
+              <p class="text-gray-600">Please try refreshing the page. Error: ${error.message}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      // Modal methods remain unchanged
       openModal() {
-        if (this.elements.modal) {
-          this.elements.modal.classList.remove("hidden");
+        if (this.modal) {
+          this.modal.classList.remove("hidden");
           document.body.style.overflow = "hidden";
         }
       }
 
       closeModal() {
-        if (this.elements.modal) {
-          this.elements.modal.classList.add("hidden");
+        if (this.modal) {
+          this.modal.classList.add("hidden");
           document.body.style.overflow = "auto";
-          this.elements.researcherForm?.reset();
+          if (this.researcherForm) this.researcherForm.reset();
         }
       }
 
       closeSuccessModal() {
-        if (this.elements.successModal) {
-          this.elements.successModal.classList.add("hidden");
+        if (this.successModal) {
+          this.successModal.classList.add("hidden");
           document.body.style.overflow = "auto";
         }
       }
 
-      async handleFormSubmission(e) {
+      async handleFormSubmit(e) {
         e.preventDefault();
-        
-        const submitBtn = this.elements.researcherForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
+
+        if (!this.researcherForm) return;
+
+        const submitBtn = this.researcherForm.querySelector(
+          'button[type="submit"]'
+        );
+        const originalText = submitBtn ? submitBtn.textContent : "";
 
         try {
-          submitBtn.textContent = "Submitting...";
-          submitBtn.disabled = true;
+          if (submitBtn) {
+            submitBtn.textContent = "Submitting...";
+            submitBtn.disabled = true;
+          }
 
-          const formData = new FormData(this.elements.researcherForm);
-          const response = await fetch(this.elements.researcherForm.action, {
+          const formData = new FormData(this.researcherForm);
+
+          const response = await fetch(this.researcherForm.action, {
             method: "POST",
             body: formData,
             headers: {
@@ -757,8 +950,8 @@ import { SITE } from "@/config";
 
           if (response.ok) {
             this.closeModal();
-            if (this.elements.successModal) {
-              this.elements.successModal.classList.remove("hidden");
+            if (this.successModal) {
+              this.successModal.classList.remove("hidden");
               document.body.style.overflow = "hidden";
             }
           } else {
@@ -768,34 +961,18 @@ import { SITE } from "@/config";
           console.error("Error submitting form:", error);
           alert("There was an error submitting your form. Please try again.");
         } finally {
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-        }
-      }
-
-      handleError(message, error) {
-        console.error(message, error);
-        this.hideLoading();
-        
-        if (this.elements.container) {
-          this.elements.container.innerHTML = `
-            <div class="col-span-full py-12 text-center">
-              <div class="mx-auto max-w-sm">
-                <i class="fas fa-exclamation-triangle mb-4 text-4xl text-red-400"></i>
-                <h3 class="mb-2 text-lg font-medium text-gray-900">Error loading researchers</h3>
-                <p class="text-gray-600">Please try refreshing the page. Error: ${error.message}</p>
-              </div>
-            </div>
-          `;
+          if (submitBtn) {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+          }
         }
       }
     }
 
-    // Initialize the network
+    // Initialize
     new ResearcherNetwork();
   });
 </script>
-
 
 <link
   rel="stylesheet"
