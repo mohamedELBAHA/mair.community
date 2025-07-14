@@ -649,9 +649,12 @@ import { SITE } from "@/config";
 
         switch (this.activeSort) {
           case "name":
-            this.filteredResearchers.sort((a, b) =>
-              a.name.localeCompare(b.name)
-            );
+            // Sort by lastName, then firstName for tie-breaker
+            this.filteredResearchers.sort((a, b) => {
+              const last = a.lastName.localeCompare(b.lastName);
+              if (last !== 0) return last;
+              return a.firstName.localeCompare(b.firstName);
+            });
             break;
           case "hindex":
             this.filteredResearchers.sort(

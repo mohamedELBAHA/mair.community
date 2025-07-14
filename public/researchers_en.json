@@ -1,4 +1,6 @@
 [   {
+        "firstName": "Khalil",
+        "lastName": "Mrini",
         "name": "Khalil Mrini",
         "affiliation": "Grammarly",
         "position": "Research scientist",
@@ -16,6 +18,8 @@
         "lastupdate": "2024-08-04"  
     },
     {
+        "firstName": "Rajaa",
+        "lastName": "El Hamdani",
         "name": "Rajaa El Hamdani",
         "affiliation": "Telecom Paris",
         "position": "PhD Student",
@@ -34,6 +38,8 @@
         "lastupdate": "2024-08-04"  
     },
     {
+        "firstName": "Ismail",
+        "lastName": "Berrada",
         "name": "Ismail Berrada",
         "affiliation": "UM6P",
         "position": "Professor",
@@ -55,6 +61,8 @@
         "lastupdate": "2024-08-04"  
     },
     {
+        "firstName": "Abdelkader",
+        "lastName": "El Mahdaouy",
         "name": "Abdelkader El Mahdaouy",
         "affiliation": "UM6P",
         "position": "AI Researcher",
@@ -74,6 +82,8 @@
         "lastupdate": "2024-08-04"
     },
         {
+        "firstName": "Salima",
+        "lastName": "Lamsiyah",
         "name": "Salima Lamsiyah",
         "affiliation": "Luxembourg University",
         "position": "Postdoctoral Researcher",
@@ -89,17 +99,19 @@
            "Transfer Learning",
            "Large Language Models"
         ],
-        "citedby": 192,
+        "citedby": 198,
         "lastupdate": "2024-08-04"
     },
         {
+        "firstName": "Oucheikh",
+        "lastName": "Rachid",
         "name": "Oucheikh Rachid",
         "affiliation": "Lund University",
         "position": "Postdoctoral Researcher",
         "hindex": 11,
         "photo": "./profiles/ouchikh.jpeg",
-        "scholar": "https://scholar.google.fr/citations?user=ToOococAAAAJ&hl=fr",
-        "linkedin": "https://www.linkedin.com/in/salima-lamsiyah-9a772971/?originalSubdomain=lu",
+        "scholar": "https://scholar.google.com/citations?user=HSzTmXYAAAAJ&hl=fr",
+        "linkedin": "https://www.linkedin.com/in/rachid-oucheikh-95926524/",
         "website": "",
         "twitter": "",
         "interests": [
@@ -108,10 +120,12 @@
            "Algorithms",
            "Data Mining"
         ],
-        "citedby": 686,
+        "citedby": 692,
         "lastupdate": "2024-08-04"
     },
     {
+        "firstName": "Imane",
+        "lastName": "Fouad",
         "name": "Imane Fouad",
         "affiliation": "UM6P",
         "position": "Assistant Professor",
@@ -126,10 +140,12 @@
             "Privacy",
             "Web Privacy Measurements"
         ],
-        "citedby": 281,
+        "citedby": 284,
         "lastupdate": "2024-08-04"
     }, 
     {
+        "firstName": "Karima",
+        "lastName": "Echihabi",
         "name": "Karima Echihabi",
         "affiliation": "UM6P",
         "position": "Assistant Professor",
@@ -149,6 +165,8 @@
         "lastupdate": "2024-08-04"
     },
     {
+        "firstName": "Salim",
+        "lastName": "Chemlal",
         "name": "Salim Chemlal",
         "affiliation": "AI71",
         "position": "Director of Product at AI71 ",
@@ -166,14 +184,16 @@
             "Natural Language Processing",
             "Computational Linguistics"
         ],
-        "citedby": 77,
+        "citedby": 80,
         "lastupdate": "2024-08-04"
     },
     {
+        "firstName": "Redouane",
+        "lastName": "Lguensat",
         "name": "Redouane Lguensat",
         "affiliation": "IPSL - Sorbonne Université",
         "position": "Climate Data Scientist",
-        "hindex": 12,
+        "hindex": 14,
         "photo": "./profiles/redouane-lguensat.jpg",
         "scholar": "https://scholar.google.com/citations?hl=fr&user=DuiyaQoAAAAJ",
         "linkedin": "https://www.linkedin.com/in/redouanelguensat/s",
@@ -186,18 +206,20 @@
             "Climate Informatics",
             "Numerical Modeling"
         ],
-        "citedby": 670,
+        "citedby": 1199,
         "lastupdate": "2023-08-04"
     },
 
     {
+        "firstName": "Karim",
+        "lastName": "Bouzoubaa",
         "name": "Karim Bouzoubaa",
         "affiliation": "Mohammed V University",
         "position": "Professor at Mohammadia School of Engineers",
         "hindex": 10,
         "photo": "./profiles/karim-bouzoubaa.jpg",
         "scholar": "https://scholar.google.com/citations?hl=fr&user=ArRLQkkAAAAJ",
-        "linkedin": "",
+        "linkedin": "https://www.linkedin.com/in/karim-bouzoubaa-7b158319/",
         "website": "http://www.emi.ac.ma/bouzoubaa",
         "twitter": "",
         "interests": [
@@ -205,15 +227,17 @@
             "Artificial Intelligence",
             "Inverse Problems"
         ],
-        "citedby": 309,
+        "citedby": 456,
         "lastupdate": "2023-08-04"
     },
 
     {
+        "firstName": "Kaoutar",
+        "lastName": "El Maghraoui",
         "name": "Kaoutar El Maghraoui",
         "affiliation": "IBM",
         "position": "Principal Research Scientist",
-        "hindex": 17,
+        "hindex": 20,
         "photo": "./profiles/kaoutar-elmaghraoui.png",
         "scholar": "https://scholar.google.com/citations?user=yDp6rbcAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/kaoutar-el-maghraoui/",
@@ -226,14 +250,16 @@
             "Distributed Systems",
             "Storage"
         ],
-        "citedby": 1122,
+        "citedby": 1812,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Mourad",
+        "lastName": "Gridach",
         "name": "Mourad Gridach",
         "affiliation": "Oxford University",
         "position": "Senior Research Associate",
-        "hindex": 13,
+        "hindex": 14,
         "photo": "./profiles/mourad-gridach.png",
         "scholar": "https://scholar.google.com/citations?user=lQh2xTAAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/mourad-gridach-17b24320/",
@@ -245,14 +271,16 @@
             "Natural Language Processing",
             "Computer Vision"
         ],
-        "citedby": 595,
+        "citedby": 814,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Abdelhak",
+        "lastName": "Mahmoudi",
         "name": "Abdelhak Mahmoudi",
         "affiliation": "Mohammed V University",
         "position": "Associate Professor",
-        "hindex": 11,
+        "hindex": 13,
         "photo": "./profiles/abdelhak-mahmoudi.jpg",
         "scholar": "https://scholar.google.com/citations?user=AzGLAKoAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/abdelhak-mahmoudi-754a6820/",
@@ -265,14 +293,16 @@
             "Computer Vision",
             "Natural Language Processing"
         ],
-        "citedby": 476,
+        "citedby": 673,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Tariq",
+        "lastName": "Daouda",
         "name": "Tariq Daouda",
         "affiliation": "UM6P",
         "position": "Associate Professor",
-        "hindex": 9,
+        "hindex": 10,
         "photo": "./profiles/tariq-daouda.jpg",
         "scholar": "https://scholar.google.com/citations?user=XZtR-UkAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/tariqdaouda/",
@@ -285,14 +315,16 @@
             "Bioinformatics",
             "Single Cell Sequencing"
         ],
-        "citedby": 711,
+        "citedby": 922,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Amine",
+        "lastName": "Abouaomar",
         "name": "Amine Abouaomar",
         "affiliation": "Al Akhawayn University",
         "position": "Associate Professor",
-        "hindex": 11,
+        "hindex": 13,
         "photo": "./profiles/amine-abouaomar.jpg",
         "scholar": "https://scholar.google.com/citations?user=EheYr3oAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/amine-abouaomar-7ab472244/",
@@ -304,14 +336,16 @@
             "Federated Learning",
             "Multi-Agent Reinforcement Learning"
         ],
-        "citedby": 361,
+        "citedby": 793,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Maha",
+        "lastName": "ELbayad",
         "name": "Maha ELbayad",
         "affiliation": "Meta AI",
         "position": "Research scientist",
-        "hindex": 8,
+        "hindex": 12,
         "photo": "./profiles/maha-elbayad.jpg",
         "scholar": "https://scholar.google.com/citations?user=4MFYc7AAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/elbayadm/",
@@ -323,14 +357,16 @@
             "Natural Language Processing",
             "Machine Translation"
         ],
-        "citedby": 473,
+        "citedby": 2217,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Hajar",
+        "lastName": "Mousannif",
         "name": "Hajar Mousannif",
         "affiliation": "Cadi Ayyad University",
         "position": "Associate Professor",
-        "hindex": 21,
+        "hindex": 22,
         "photo": "./profiles/hajar-mousannif.jpeg",
         "scholar": "https://scholar.google.com/citations?user=93WZ-rYAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/hajar-mousannif/",
@@ -343,14 +379,16 @@
             "IoT",
             "Machine Translation"
         ],
-        "citedby": 2706,
+        "citedby": 4024,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Mohamed",
+        "lastName": "Daoudi",
         "name": "Mohamed Daoudi",
         "affiliation": "IMT Nord Europe",
         "position": "Professor",
-        "hindex": 46,
+        "hindex": 47,
         "photo": "./profiles/mohamed-daoudi.jpg",
         "scholar": "https://scholar.google.com/citations?hl=fr&user=7UoD6McAAAAJ",
         "linkedin": "https://www.linkedin.com/in/mohameddaoudi/",
@@ -361,14 +399,16 @@
             "Shape Analysis",
             "Computer Vision"
         ],
-        "citedby": 7005,
+        "citedby": 7873,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Hicham",
+        "lastName": "Hajji",
         "name": "Hicham Hajji",
         "affiliation": "School of Geomatics, IAV",
         "position": "Professor",
-        "hindex": 7,
+        "hindex": 10,
         "photo": "./profiles/hicham-hajji.jpeg",
         "scholar": "https://scholar.google.com/citations?user=-iAQwIIAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/dr-hajji-hicham-6601606/",
@@ -379,14 +419,16 @@
             "Artificial Intelligence",
             "Spatial Database"
         ],
-        "citedby": 124,
+        "citedby": 331,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Halima",
+        "lastName": "Bensmail",
         "name": "Halima Bensmail",
         "affiliation": "Qatar Computing Research Institute",
         "position": "Principal Scientist",
-        "hindex": 26,
+        "hindex": 30,
         "photo": "./profiles/halima-bensmail.jpeg",
         "scholar": "https://scholar.google.com/citations?user=Nlf0C2EAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/halima-bensmail-41016149/",
@@ -397,14 +439,16 @@
             "Bioinformatics",
             "Artificial Intelligence"
         ],
-        "citedby": 2479,
+        "citedby": 3293,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Rachid",
+        "lastName": "Guerraoui",
         "name": "Rachid Guerraoui",
         "affiliation": "EPFL",
         "position": "Professor",
-        "hindex": 76,
+        "hindex": 82,
         "photo": "./profiles/rachid-guerraoui.jpeg",
         "scholar": "https://scholar.google.com/citations?user=_TR-7CEAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/rachid-guerraoui-40587b15/",
@@ -416,14 +460,16 @@
             "Concurrency",
             "Programming Languages"
         ],
-        "citedby": 30659,
+        "citedby": 35500,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Malik",
+        "lastName": "Ghallab",
         "name": "Malik Ghallab",
         "affiliation": "CNRS-LAAS",
         "position": "Research Director",
-        "hindex": 33,
+        "hindex": 35,
         "photo": "./profiles/malik-ghallab.jpeg",
         "scholar": "https://scholar.google.com/citations?user=A4v885AAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/malikghallab/",
@@ -434,14 +480,16 @@
             "Robotics",
             "Automated Planning"
         ],
-        "citedby": 11498,
+        "citedby": 12969,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Soundouss",
+        "lastName": "Messoudi",
         "name": "Soundouss Messoudi",
         "affiliation": "Université de Technologie de Compiègne",
         "position": "Lecturer",
-        "hindex": 4,
+        "hindex": 5,
         "photo": "./profiles/soundouss-messoudi.jpeg",
         "scholar": "https://scholar.google.com/citations?user=2JqnKisAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/soundoussmessoudi",
@@ -454,14 +502,16 @@
             "Conformal Prediction",
             "Uncertainty Quantification"
         ],
-        "citedby": 46,
+        "citedby": 151,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Imane",
+        "lastName": "Khaouja",
         "name": "Imane Khaouja",
         "affiliation": "University of Kent",
         "position": "PostDoc Researcher",
-        "hindex": 4,
+        "hindex": 5,
         "photo": "./profiles/imane-khaouja.jpeg",
         "scholar": "https://scholar.google.com/citations?user=WkmqfFgAAAAJ&hl=fr&oi=ao#d=gs_hdr_drw&t=1691324284394",
         "linkedin": "https://www.linkedin.com/in/imane-khaouja-85229515b",
@@ -472,14 +522,16 @@
             "Machine Learning",
             "Natural Language Processing"
         ],
-        "citedby": 83,
+        "citedby": 207,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Ali",
+        "lastName": "Idri",
         "name": "Ali Idri",
         "affiliation": "Mohammed V University",
         "position": "Professor",
-        "hindex": 38,
+        "hindex": 45,
         "photo": "./profiles/ali-idri.jpeg",
         "scholar": "https://scholar.google.com/citations?user=XPGHiPsAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/ali-idri-245762152/?originalSubdomain=ma",
@@ -492,14 +544,16 @@
             "Software Engineering",
             "Software Effort Estimation"
         ],
-        "citedby": 7060,
+        "citedby": 10070,
         "lastupdate": "2023-08-06"
     },
     {
+        "firstName": "Soufiane",
+        "lastName": "Hayou",
         "name": "Soufiane Hayou",
-        "affiliation": "National University of Singapore",
-        "position": "Peng Tsu Ann Assistant Professor",
-        "hindex": 8,
+        "affiliation": "Simons Institute for the Theory of Computing",
+        "position": "AI Researcher",
+        "hindex": 15,
         "photo": "./profiles/soufiane-hayou.jpg",
         "scholar": "https://scholar.google.com/citations?user=JBb5zekAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://uk.linkedin.com/in/soufiane-hayou-8a506b84",
@@ -512,14 +566,16 @@
             "Optimization",
             "Stochastic Processes"
         ],
-        "citedby": 408,
+        "citedby": 1128,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "El Mahdi",
+        "lastName": "El Mhamdi",
         "name": "El Mahdi El Mhamdi",
         "affiliation": "École Polytechnique",
         "position": "AI/ML security researcher Assistant Professor",
-        "hindex": 14,
+        "hindex": 17,
         "photo": "./profiles/elmahdi-elmhamdi.jpg",
         "scholar": "https://scholar.google.com/citations?user=kNA-WLQAAAAJ&hl=en&oi=ao",
         "linkedin": "https://www.linkedin.com/in/mahdielmhamdi/",
@@ -531,14 +587,16 @@
             "Complex Systems",
             "Machine Learning"
         ],
-        "citedby": 2178,
+        "citedby": 4470,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Mehdi",
+        "lastName": "Cherti",
         "name": "Mehdi Cherti",
         "affiliation": " Jülich Super-computing Center",
         "position": "PostDoc Researcher",
-        "hindex": 8,
+        "hindex": 13,
         "photo": "./profiles/mehdi-cherti.jpg",
         "scholar": "https://scholar.google.com/citations?user=JgOyYi8AAAAJ&hl=en&oi=ao",
         "linkedin": "https://www.linkedin.com/in/mehdi-cherti",
@@ -549,14 +607,16 @@
             "Few-Shot Learning",
             "Meta-Learning"
         ],
-        "citedby": 587,
+        "citedby": 6154,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Amal",
+        "lastName": "El Fallah Seghrouchni",
         "name": "Amal El Fallah Seghrouchni",
         "affiliation": "UM6P",
-        "position": "Executive President of Ai Movement",
-        "hindex": 24,
+        "position": "Executive President of Ai Movement / Minister of Digital Transition and Administrative Reform ",
+        "hindex": 26,
         "photo": "./profiles/amal-elfallah.jpg",
         "scholar": "https://scholar.google.com/citations?user=CPwNXK4AAAAJ&hl=en&oi=ao",
         "linkedin": "https://www.linkedin.com/in/amal-el-fallah-seghrouchni-7459363/",
@@ -568,14 +628,16 @@
             "Multi-Agent Systems",
             "Ambient Intelligence"
         ],
-        "citedby": 3432,
+        "citedby": 3838,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Abdellah",
+        "lastName": "Adib",
         "name": "Abdellah Adib",
         "affiliation": "FST Mohammedia",
         "position": "Professor",
-        "hindex": 23,
+        "hindex": 25,
         "photo": "./profiles/abdellah-adib.jpeg",
         "scholar": "https://scholar.google.com/citations?user=bP5yWokAAAAJ&hl=fr",
         "linkedin": "https://www.linkedin.com/in/abdellah-adib-85a95547/",
@@ -587,14 +649,16 @@
             "Emotion Detection",
             "Arabic Machine Translation"
         ],
-        "citedby": 1505,
+        "citedby": 2005,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Ayoub",
+        "lastName": "Karine",
         "name": "Ayoub Karine",
         "affiliation": " ISEN YNCREA Ouest",
         "position": "Associate Professor",
-        "hindex": 6,
+        "hindex": 10,
         "photo": "./profiles/ayoub-karine.jpeg",
         "scholar": "https://scholar.google.fr/citations?user=acAw9KAAAAAJ&hl=fr",
         "linkedin": "https://www.linkedin.com/in/ayoub-karine-a01ba384",
@@ -605,14 +669,16 @@
             "Computer Vision",
             "Deep Learning"
         ],
-        "citedby": 143,
+        "citedby": 248,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Afaf",
+        "lastName": "Taik",
         "name": "Afaf Taik",
         "affiliation": "Mila",
         "position": "PostDoc Researcher",
-        "hindex": 7,
+        "hindex": 8,
         "photo": "./profiles/afaf-taik.jpg",
         "scholar": "https://scholar.google.com/citations?user=NcQKeqsAAAAJ&hl=en",
         "linkedin": "https://www.linkedin.com/in/afaf-ta%C3%AFk-44548a12b/",
@@ -625,14 +691,16 @@
             "Wireless Communication",
             "Edge Computing"
         ],
-        "citedby": 290,
+        "citedby": 693,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Hamd",
+        "lastName": "Ait Abdelali",
         "name": "Hamd Ait Abdelali",
         "affiliation": "Mohammed V University",
         "position": "Research scientist",
-        "hindex": 6,
+        "hindex": 9,
         "photo": "./profiles/hamd-ait.jpeg",
         "scholar": "https://scholar.google.com/citations?user=31DC6xAAAAAJ&hl=en",
         "linkedin": "https://www.linkedin.com/in/hamd-ait-abdelali-572a874b/?originalSubdomain=ma",
@@ -642,14 +710,16 @@
             "Artificial Intelligence",
             "Signal Processing"
         ],
-        "citedby": 104,
+        "citedby": 189,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Younes",
+        "lastName": "Raoui",
         "name": "Younes Raoui",
         "affiliation": "Mohammed V University",
         "position":"Professor",
-        "hindex": 5,
+        "hindex": 4,
         "photo": "./profiles/raoui-younes.jpeg",
         "scholar": "https://scholar.google.com/citations?user=_lU88P4AAAAJ&hl=fr",
         "linkedin": "https://www.linkedin.com/in/youn%C3%A8s-raoui-9824981a/",
@@ -660,14 +730,16 @@
             "Robotics",
             "Machine Learning"
         ],
-        "citedby": 78,
+        "citedby": 88,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Yassir",
+        "lastName": "Jedra",
         "name": "Yassir Jedra",
         "affiliation": " KTH Royal Institute of Technology ",
         "position":"Ph.D. student",
-        "hindex": 5,
+        "hindex": 11,
         "photo": "./profiles/yassir-jedra.jpeg",
         "scholar": "https://scholar.google.com/citations?user=tePNfWQAAAAJ&hl=fr",
         "linkedin": "https://www.linkedin.com/in/yassirjedra/",
@@ -678,14 +750,16 @@
             "Bandits",  
             "Control"
         ],
-        "citedby": 206,
+        "citedby": 489,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Loubna",
+        "lastName": "Benabbou",
         "name": "Loubna Benabbou",
         "affiliation": "University of Quebec at Rimouski",
         "position":"Professor",
-        "hindex": 10,
+        "hindex": 17,
         "photo": "./profiles/loubna-Benabbou.jpeg",
         "scholar": "https://scholar.google.com/citations?user=S8bzEmUAAAAJ&hl=en",
         "linkedin": "https://www.linkedin.com/in/lbenabbou/",
@@ -695,14 +769,16 @@
             "Machine Learning",
             "Management and Decision Sciences"
         ],
-        "citedby": 463,
+        "citedby": 987,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Mohamed Amine",
+        "lastName": "Bennouna",
         "name": "Mohamed Amine Bennouna",
         "affiliation": "MIT Operations Research Center",
         "position":"Ph.D. student",
-        "hindex": 10,
+        "hindex": 7,
         "photo": "./profiles/amine-bennouna.jpeg",
         "scholar": "https://scholar.google.fr/citations?user=-acf4MQAAAAJ&hl=en",
         "linkedin": "https://www.linkedin.com/in/mohammed-amine-bennouna/",
@@ -714,10 +790,12 @@
             "Data-Driven Decision Making",
             "Statistical Learning"
         ],
-        "citedby": 190,
+        "citedby": 492,
         "lastupdate": "2023-08-04"
     },
     {
+        "firstName": "Hamza",
+        "lastName": "ES-SAMAALI",
         "name": "Hamza ES-SAMAALI",
         "affiliation": "Hassan II University",
         "position":"AI/ML researcher",
@@ -732,14 +810,16 @@
             "Information Security",
             "Machine Learning"
         ],
-        "citedby": 329,
+        "citedby": 412,
         "lastupdate": "2023-12-19"
     },
     {
+        "firstName": "Maha",
+        "lastName": "GMIRA",
         "name": "Maha GMIRA",
         "affiliation": " United Nations for Development",
         "position":"Expert in AI strategy",
-        "hindex": 4,
+        "hindex": 8,
         "photo": "./profiles/maha-gmira.jpeg",
         "scholar": "https://scholar.google.fr/citations?user=LYfbL_kAAAAJ&hl=en",
         "linkedin": "https://www.linkedin.com/in/maha-g-68175613a/",
@@ -751,14 +831,16 @@
             "Operations Research",
             "Transportation and Logistics"
         ],
-        "citedby": 170,
+        "citedby": 361,
         "lastupdate": "2023-12-19"
     },
     {
+        "firstName": "Mounir",
+        "lastName": "GHOGHO",
         "name": "Mounir GHOGHO",
-        "affiliation": "Université Internationale de Rabat",
+        "affiliation": "UM6P",
         "position":"Professor",
-        "hindex": 44,
+        "hindex": 48,
         "photo": "./profiles/mounir-ghogho.jpeg",
         "scholar": "https://scholar.google.fr/citations?user=aIXHNpAAAAAJ&hl=en&oi=ao",
         "linkedin": "https://www.linkedin.com/in/mounir-ghogho-25927bb/",
@@ -769,14 +851,16 @@
             "Signal Processing",
             "Wireless Communication"
         ],
-        "citedby": 8063,
+        "citedby": 9899,
         "lastupdate": "2023-12-19"
     },
     {
+        "firstName": "Sanae",
+        "lastName": "Lotfi",
         "name": "Sanae Lotfi",
         "affiliation": "New York University",
         "position":"Ph.D. student",
-        "hindex": 6,
+        "hindex": 7,
         "photo": "./profiles/sanae-lotfi.jpg",
         "scholar": "https://scholar.google.com/citations?user=0GyjMX4AAAAJ&authuser=2",
         "linkedin": "https://www.linkedin.com/in/sanae-lotfi-636825127",
@@ -788,14 +872,16 @@
             "Generative Models",
             "Artificial Intelligence"
         ],
-        "citedby": 174,
+        "citedby": 373,
         "lastupdate": "2024-02-09"
     },
     {
+        "firstName": "Mehdi",
+        "lastName": "Bennis",
         "name": "Mehdi Bennis",
         "affiliation": "University Oulu",
         "position":"Professor, Head of ICON",
-        "hindex": 85,
+        "hindex": 94,
         "photo": "./profiles/mehdi-bennis.jpg",
         "scholar": "https://scholar.google.com/citations?user=RW4sJu8AAAAJ&hl=en",
         "linkedin": "https://www.linkedin.com/in/mehdi-bennis-56a4715/",
@@ -807,14 +893,16 @@
             "Semantic Communication",
             "Protocol Learning"
         ],
-        "citedby": 41851,
+        "citedby": 56148,
         "lastupdate": "2024-02-09"
     },
     {
+        "firstName": "Mounim",
+        "lastName": "Yacoubi",
         "name": "Mounim Yacoubi",
         "affiliation": "University Oulu",
         "position":"Professor, Head of ICON",
-        "hindex": 28,
+        "hindex": 31,
         "photo": "./profiles/mounim-yacoubi.jpeg",
         "scholar": "https://scholar.google.com/citations?hl=en&user=ObFYefYAAAAJ",
         "linkedin": "https://www.linkedin.com/in/moun%C3%AEm-a-el-yacoubi-26b1269/",
@@ -827,14 +915,16 @@
             "Statistical Pattern Recognition",
             "Data Mining"
         ],
-        "citedby": 3257,
+        "citedby": 4029,
         "lastupdate": "2024-02-09"
     },
     {
+        "firstName": "Abdellah",
+        "lastName": "El Mekki",
         "name": "Abdellah El Mekki",
         "affiliation": "MBUZAI",
         "position":"NLP Researcher",
-        "hindex": 8,
+        "hindex": 9,
         "photo": "./profiles/abdellah-mekki.jpeg",
         "scholar": "https://scholar.google.com/citations?user=0hheG2YAAAAJ&hl=en",
         "linkedin": "https://www.linkedin.com/in/abdellah-el-mekki",
@@ -846,14 +936,16 @@
             "Natural Language Processing",
             "Deep Learning"
         ],
-        "citedby": 208,
+        "citedby": 436,
         "lastupdate": "2024-02-09"
     },
     {
+        "firstName": "El Habib",
+        "lastName": "Nfaoui",
         "name": "El Habib Nfaoui",
         "affiliation": "Sidi Mohamed Ben Abdellah University",
         "position":"Associate Professor",
-        "hindex": 13,
+        "hindex": 14,
         "photo": "./profiles/Elhabib-Nfaoui.jpeg",
         "scholar": "https://scholar.google.fr/citations?user=XWiiQh8AAAAJ&hl=fr",
         "linkedin": "https://www.linkedin.com/in/el-habib-nfaoui-b813289b/?originalSubdomain=ma",
@@ -865,14 +957,16 @@
             "Natural Language Processing",
             "Multi-Agent Systems"
         ],
-        "citedby": 755,
+        "citedby": 852,
         "lastupdate": "2024-02-09"
     },
     {
+        "firstName": "Loubna",
+        "lastName": "Ben Allal",
         "name": "Loubna Ben Allal",
         "affiliation": "HuggingFace",
         "position":" ML Research Engineer ",
-        "hindex": 7,
+        "hindex": 13,
         "photo": "./profiles/Loubna-benallal.jpeg",
         "scholar": "https://scholar.google.fr/citations?hl=fr&user=reU1i-sAAAAJ",
         "linkedin": "https://www.linkedin.com/in/loubna-ben-allal-238690152/",
@@ -883,14 +977,16 @@
             "Machine Learning",
             "Large Language Models"
         ],
-        "citedby": 1357,
+        "citedby": 4809,
         "lastupdate": "2024-02-09"
     },
     {
+        "firstName": "Nouamane",
+        "lastName": "Tazi",
         "name": "Nouamane Tazi",
         "affiliation": "HuggingFace",
         "position":" ML Research Engineer ",
-        "hindex": 5,
+        "hindex": 6,
         "photo": "./profiles/nouamaneTazi.jpg",
         "scholar": "https://scholar.google.com/citations?view_op=list_works&hl=fr&hl=fr&user=q2bZs1IAAAAJ",
         "linkedin": "https://www.linkedin.com/in/nouamanetazi/",
@@ -902,10 +998,12 @@
             "Large Language Models",
             "Natural Language Processing"
         ], 
-        "citedby": 1840,
+        "citedby": 3801,
         "lastupdate": "2024-02-09"
     },
     {
+        "firstName": "Mohammed",
+        "lastName": "El Rhabi",
         "name": "Mohammed El Rhabi",
         "affiliation": "Centrale Casablanca",
         "position":"Professor",
@@ -922,14 +1020,16 @@
             "Signal Processing",
             "Image Processing"
         ], 
-        "citedby": 360,
+        "citedby": 396,
         "lastupdate": "2024-10-08"
     },
     {
+        "firstName": "Rachid",
+        "lastName": "Ejjami",
         "name": "Rachid Ejjami",
         "affiliation": "École Nationale des Ponts et Chaussées",
         "position":"AI Modeler",
-        "hindex": 7,
+        "hindex": 9,
         "photo": "./profiles/ejjami.jpeg",
         "scholar": "https://scholar.google.com/citations?user=K0VRCNoAAAAJ&hl=fr",
         "linkedin": "https://www.linkedin.com/in/rachid-eljamai-252307129/",
@@ -941,10 +1041,12 @@
             "Big Data",
             "Machine Learning"
         ], 
-        "citedby": 129,
+        "citedby": 218,
         "lastupdate": "2024-10-08"
     },
     {
+        "firstName": "Zyad",
+        "lastName": "Benomar",
         "name": "Zyad Benomar",
         "affiliation": "École Polytechnique",
         "position":"Ph.D. student",
@@ -959,15 +1061,17 @@
             "Theoretical Computer Science",
             "Learning Augmented Algorithms"
         ],
-        "citedby": 70,
+        "citedby": 74,
         "lastupdate": "2024-10-08"
     },
     
     {
+        "firstName": "Amine",
+        "lastName": "Ouasfi",
         "name": "Amine Ouasfi",
         "affiliation": "INRIA",
         "position":"Ph.D. student",
-        "hindex": 5,
+        "hindex": 6,
         "photo": "./profiles/ouasfi.jpeg",
         "scholar": "https://scholar.google.com/citations?user=IdcK7TcAAAAJ&hl=en",
         "linkedin": "https://fr.linkedin.com/in/amine-ouasfi",
@@ -978,16 +1082,18 @@
             "3D Computer Vision",
             "Deep Learning"
         ],
-        "citedby": 65,
+        "citedby": 78,
         "lastupdate": "2025-04-25"
     },
     {
+        "firstName": "Yassine",
+        "lastName": "Abbahaddou",
         "name": "Yassine Abbahaddou",
         "affiliation": "École Polytechnique",
         "position":"Ph.D. student",
         "hindex": 3,
         "photo": "./profiles/abbahaddou.jpeg",
-        "scholar": "https://scholar.google.com/citations?user=IdcK7TcAAAAJ&hl=en",
+        "scholar": "https://scholar.google.com/citations?user=deIYDVsAAAAJ&hl=en&oi=ao",
         "linkedin": "https://www.linkedin.com/in/yassineabbahaddou/",
         "website": "https://abbahaddou.github.io/",
         "twitter": "",
@@ -996,10 +1102,12 @@
             "Natural Language Processing",
             "Machine Learning"
         ],
-        "citedby": 35,
+        "citedby": 51,
         "lastupdate": "2024-10-08"
     },
         {
+        "firstName": "El Houcine",
+        "lastName": "Bergou",
         "name": "El Houcine Bergou",
         "affiliation": "UM6P",
         "position":"Professor",
@@ -1013,16 +1121,18 @@
             "Numerical Optimization",
             "Machine Learning"
         ],
-        "citedby": 869,
+        "citedby": 918,
         "lastupdate": "2024-10-08"
     },
         {
+        "firstName": "Youssef",
+        "lastName": "Allouah",
         "name": "Youssef Allouah",
         "affiliation": "EPFL",
         "position": "PhD Student",
-        "hindex": 5,
+        "hindex": 6,
         "photo": "./profiles/allouah.jpeg",
-        "scholar": "https://scholar.google.com/citations?user=93WZ-rYAAAAJ&hl=fr&oi=ao",
+        "scholar": "https://scholar.google.com/citations?hl=fr&user=kVZu88cAAAAJ",
         "linkedin": "https://www.linkedin.com/in/youssef-allouah-8ab264190",
         "website": "https://youssefallouah.com/",
         "twitter": "",
@@ -1034,11 +1144,13 @@
            "Optimization",
            "Federated Learning"
         ],
-        "citedby": 142,
+        "citedby": 186,
         "lastupdate": "2025-03-04"
     },
     
         {
+        "firstName": "Aissam",
+        "lastName": "Outchakoucht",
         "name": "Aissam Outchakoucht",
         "affiliation": "Affiniti AI",
         "position": "Conversational AI Specialist",
@@ -1053,14 +1165,16 @@
             "Cyber Security",
             "Internet of Things"
         ],
-        "citedby": 437,
+        "citedby": 447,
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Yassir",
+        "lastName": "Bendou",
         "name": "Yassir Bendou",
         "affiliation": "Sigma Nova",
         "position": "Research scientist",
-        "hindex": 3,
+        "hindex": 4,
         "photo": "./profiles/bendou.jpeg",
         "scholar": "https://scholar.google.com/citations?user=Hfzg6rcAAAAJ&hl=fr&oi=ao",
         "linkedin": "https://www.linkedin.com/in/yassir-bendou/",
@@ -1071,10 +1185,12 @@
             "Few-Shot Learning",
             "Deep Learning"
         ],
-        "citedby": 113,
+        "citedby": 129,
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Mohammed",
+        "lastName": "El Hassouni",
         "name": "Mohammed El Hassouni",
         "affiliation": "Mohammed V University in Rabat",
         "position": "Professor",
@@ -1089,14 +1205,16 @@
             "Computer Vision",
             "Medical Imaging"
         ],
-        "citedby": 2292,
+        "citedby": 2424,
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Otmane",
+        "lastName": "Sakhi",
         "name": "Otmane Sakhi",
         "affiliation": "Criteo",
         "position": "Machine Learning Researcher",
-        "hindex": 26,
+        "hindex": 7,
         "photo": "./profiles/sakhi.jpg",
         "scholar": "https://scholar.google.co.uk/citations?user=tv8vKlkAAAAJ&hl=en",
         "linkedin": "https://www.linkedin.com/in/otmane-sakhi",
@@ -1107,14 +1225,16 @@
             "Reinforcement Learning",
             "Recommender Systems"
         ],
-        "citedby": 105,
+        "citedby": 120,
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Achraf",
+        "lastName": "El Allali",
         "name": "Achraf El Allali",
         "affiliation": "UM6P",
         "position": "Associate Professor",
-        "hindex": 26,
+        "hindex": 17,
         "photo": "./profiles/allali.jpeg",
         "scholar": "https://scholar.google.co.uk/citations?user=MmAKXPAAAAAJ&hl=en&oi=ao",
         "linkedin": "https://www.linkedin.com/in/achraf-el-allali-16148238/",
@@ -1125,10 +1245,12 @@
             "Computational Biology",
             "Bioinformatics"
         ],
-        "citedby": 752,
+        "citedby": 856,
         "lastupdate": "2025-03-04"
     },
             {
+        "firstName": "Kenza",
+        "lastName": "Bouzid",
         "name": "Kenza Bouzid",
         "affiliation": "Microsoft",
         "position": "Applied Researcher",
@@ -1147,6 +1269,8 @@
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Mohamed",
+        "lastName": "LAZAAR",
         "name": "Mohamed LAZAAR",
         "affiliation": "Mohammed V University in Rabat",
         "position": "Professor",
@@ -1162,10 +1286,12 @@
             "Deep Learning",
             "Social Network Analysis"
         ],
-        "citedby": 1589,
+        "citedby": 1668,
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Othmane",
+        "lastName": "Marfoq",
         "name": "Othmane Marfoq",
         "affiliation": "Facebook",
         "position": "PostDoc Researcher",
@@ -1180,10 +1306,12 @@
             "Optimization",
             "Federated Learning"
         ],
-        "citedby":784 ,
+        "citedby":862 ,
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Addi",
+        "lastName": "Ait-Mlouk",
         "name": "Addi Ait-Mlouk",
         "affiliation": "University of Skövde, Sweden",
         "position": "Associate Professor",
@@ -1198,10 +1326,12 @@
             "Federated Learning", 
             "Data Privacy"
         ],
-        "citedby": 549,
+        "citedby": 566,
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Ismail",
+        "lastName": "Alaoui Abdellaoui",
         "name": "Ismail Alaoui Abdellaoui",
         "affiliation": "NeuraFirst",
         "position": "Founder - AI Engineer",
@@ -1218,10 +1348,12 @@
             "Predictive Maintenance",
             "Graph Neural Networks"
         ],
-        "citedby": 92,
+        "citedby": 98,
         "lastupdate": "2025-03-04"
     },
         {
+        "firstName": "Yassine",
+        "lastName": "El Kheir",
         "name": "Yassine El Kheir",
         "affiliation": "German Research Center for Artificial Intelligence",
         "position": "PhD Researcher",
@@ -1236,10 +1368,12 @@
             "Self-Supervised Learning",
             "Pronunciation Assessment"
         ],
-        "citedby": 96,
+        "citedby": 117,
         "lastupdate": "2025-03-04"
     },
     {
+        "firstName": "Mohamed",
+        "lastName": "Youssfi",
         "name": "Mohamed Youssfi",
         "affiliation": "ENSET Mohammedia",
         "position": "Professor",
@@ -1255,7 +1389,7 @@
             "Parallel Computing",
             "Distributed Systems"
         ],
-        "citedby": 1268,
+        "citedby": 1292,
         "lastupdate": "2025-03-04"
     }
 ]
