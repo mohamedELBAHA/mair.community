@@ -1,12 +1,12 @@
 import type { FormsSubmissions, Site, SocialObjects } from "./types";
 
 export const SITE: Site = {
-  website: "https://geeksblabla.community/", // replace this with your deployed domain
+  website: "https://mair.ma", // replace this with your deployed domain
   author: "MAIR",
   profile: "https://geeksblabla.community/",
-  desc: "Home of the largest tech community in Morocco, with a focus on sharing knowledge in Moroccan Darija.",
+  desc: "Moroccans In AI Research (MAIR)",
   title: "MAIR",
-  ogImage: "community.jpg",
+  ogImage: "marima_cover.jpeg",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 10,
