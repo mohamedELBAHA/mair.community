@@ -40,7 +40,7 @@ import { SITE } from "@/config";
           <input
             id="name-search"
             type="text"
-            placeholder="Search by researcher name..."
+            placeholder="Search by first name, last name, or full name..."
             class="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
           />
         </div>
@@ -381,19 +381,24 @@ import { SITE } from "@/config";
         console.log("📊 Raw data:", data.length);
         console.log("📊 Sample:", data[0]);
 
-        // Process data exactly like test-search
-        allResearchers = data.map(r => ({
-          ...r,
-          name: r.name || "Unknown",
-          firstName: r.firstName || (r.name ? r.name.split(" ")[0] : ""),
-          lastName:
-            r.lastName || (r.name ? r.name.split(" ").slice(1).join(" ") : ""),
-          position: r.position || "Researcher",
-          affiliation: r.affiliation || "",
-          interests: Array.isArray(r.interests) ? r.interests : [],
-          hindex: parseInt(r.hindex) || 0,
-          citedby: parseInt(r.citedby) || 0,
-        }));
+        // Enhanced data processing with better name handling
+        allResearchers = data.map(r => {
+          // Use existing firstName/lastName if available, otherwise parse from name
+          const name = r.name || "Unknown";
+          const nameParts = name.split(/\s+/).filter(part => part.length > 0);
+          
+          return {
+            ...r,
+            name: name,
+            firstName: r.firstName || (nameParts.length > 0 ? nameParts[0] : ""),
+            lastName: r.lastName || (nameParts.length > 1 ? nameParts.slice(1).join(" ") : ""),
+            position: r.position || "Researcher",
+            affiliation: r.affiliation || "",
+            interests: Array.isArray(r.interests) ? r.interests : [],
+            hindex: parseInt(r.hindex) || 0,
+            citedby: parseInt(r.citedby) || 0,
+          };
+        });
 
         console.log("✅ Processed:", allResearchers.length);
         updateStatus(
@@ -442,7 +447,7 @@ import { SITE } from "@/config";
       console.log("✅ Search event bound");
     }
 
-    // Perform name search - EXACT COPY from test-search
+    // Perform comprehensive name search
     function performNameSearch(query) {
       console.log("🎯 Performing name search:", query);
 
@@ -454,19 +459,37 @@ import { SITE } from "@/config";
 
       const queryLower = query.toLowerCase();
 
-      // Name search first
+      // Enhanced name search with comprehensive matching
       const nameMatches = allResearchers.filter(r => {
         const name = (r.name || "").toLowerCase();
         const firstName = (r.firstName || "").toLowerCase();
         const lastName = (r.lastName || "").toLowerCase();
+        
+        // Split the full name into individual words for more flexible matching
+        const nameWords = name.split(/\s+/).filter(word => word.length > 0);
+        const queryWords = queryLower.split(/\s+/).filter(word => word.length > 0);
 
-        const matches =
+        // Check various matching scenarios
+        const matches = 
+          // Direct substring matching in any name field
           name.includes(queryLower) ||
           firstName.includes(queryLower) ||
-          lastName.includes(queryLower);
+          lastName.includes(queryLower) ||
+          
+          // Check if any query word matches any name word (partial matching)
+          queryWords.some(queryWord => 
+            nameWords.some(nameWord => nameWord.includes(queryWord))
+          ) ||
+          
+          // Check if query matches start of first name or last name
+          firstName.startsWith(queryLower) ||
+          lastName.startsWith(queryLower) ||
+          
+          // Check if any name word starts with the query
+          nameWords.some(nameWord => nameWord.startsWith(queryLower));
 
         if (matches) {
-          console.log("✅ Name match:", r.name);
+          console.log("✅ Name match:", r.name, "| Query:", query);
         }
 
         return matches;
@@ -486,9 +509,13 @@ import { SITE } from "@/config";
       }
 
       console.log("🎯 Final filtered:", filteredResearchers.length);
-      updateStatus(
-        `Found ${filteredResearchers.length} researcher(s) matching "${query}"`
-      );
+      
+      // Enhanced status message with search details
+      if (filteredResearchers.length === 0) {
+        updateStatus(`No researchers found matching "${query}". Try searching by first name, last name, or full name.`);
+      } else {
+        updateStatus(`Found ${filteredResearchers.length} researcher(s) matching "${query}"`);
+      }
 
       applySorting();
       renderResearchers();
