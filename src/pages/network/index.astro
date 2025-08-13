@@ -386,12 +386,15 @@ import { SITE } from "@/config";
           // Use existing firstName/lastName if available, otherwise parse from name
           const name = r.name || "Unknown";
           const nameParts = name.split(/\s+/).filter(part => part.length > 0);
-          
+
           return {
             ...r,
             name: name,
-            firstName: r.firstName || (nameParts.length > 0 ? nameParts[0] : ""),
-            lastName: r.lastName || (nameParts.length > 1 ? nameParts.slice(1).join(" ") : ""),
+            firstName:
+              r.firstName || (nameParts.length > 0 ? nameParts[0] : ""),
+            lastName:
+              r.lastName ||
+              (nameParts.length > 1 ? nameParts.slice(1).join(" ") : ""),
             position: r.position || "Researcher",
             affiliation: r.affiliation || "",
             interests: Array.isArray(r.interests) ? r.interests : [],
@@ -401,9 +404,7 @@ import { SITE } from "@/config";
         });
 
         console.log("✅ Processed:", allResearchers.length);
-        updateStatus(
-          `Ready! ${allResearchers.length} researchers loaded. Try searching by name.`
-        );
+        updateStatus(`${allResearchers.length} researchers loaded.`);
 
         // Setup everything AFTER data is loaded - KEY FIX
         setupSearch(allResearchers);
@@ -464,27 +465,26 @@ import { SITE } from "@/config";
         const name = (r.name || "").toLowerCase();
         const firstName = (r.firstName || "").toLowerCase();
         const lastName = (r.lastName || "").toLowerCase();
-        
+
         // Split the full name into individual words for more flexible matching
         const nameWords = name.split(/\s+/).filter(word => word.length > 0);
-        const queryWords = queryLower.split(/\s+/).filter(word => word.length > 0);
+        const queryWords = queryLower
+          .split(/\s+/)
+          .filter(word => word.length > 0);
 
         // Check various matching scenarios
-        const matches = 
+        const matches =
           // Direct substring matching in any name field
           name.includes(queryLower) ||
           firstName.includes(queryLower) ||
           lastName.includes(queryLower) ||
-          
           // Check if any query word matches any name word (partial matching)
-          queryWords.some(queryWord => 
+          queryWords.some(queryWord =>
             nameWords.some(nameWord => nameWord.includes(queryWord))
           ) ||
-          
           // Check if query matches start of first name or last name
           firstName.startsWith(queryLower) ||
           lastName.startsWith(queryLower) ||
-          
           // Check if any name word starts with the query
           nameWords.some(nameWord => nameWord.startsWith(queryLower));
 
@@ -509,12 +509,16 @@ import { SITE } from "@/config";
       }
 
       console.log("🎯 Final filtered:", filteredResearchers.length);
-      
+
       // Enhanced status message with search details
       if (filteredResearchers.length === 0) {
-        updateStatus(`No researchers found matching "${query}". Try searching by first name, last name, or full name.`);
+        updateStatus(
+          `No researchers found matching "${query}". Try searching by first name, last name, or full name.`
+        );
       } else {
-        updateStatus(`Found ${filteredResearchers.length} researcher(s) matching "${query}"`);
+        updateStatus(
+          `Found ${filteredResearchers.length} researcher(s) matching "${query}"`
+        );
       }
 
       applySorting();
