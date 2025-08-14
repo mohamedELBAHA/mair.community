@@ -646,29 +646,6 @@ import { SITE } from "@/config";
         if (btn) {
           btn.classList.remove("bg-blue-500", "text-white");
           btn.classList.add("bg-gray-100", "text-gray-700");
-      applySorting() {
-        console.log(`Applying sort: ${this.activeSort}`);
-
-        switch (this.activeSort) {
-          case "name":
-            // Sort by lastName, then firstName for tie-breaker
-            this.filteredResearchers.sort((a, b) => {
-              const last = a.lastName.localeCompare(b.lastName);
-              if (last !== 0) return last;
-              return a.firstName.localeCompare(b.firstName);
-            });
-            break;
-          case "hindex":
-            this.filteredResearchers.sort(
-              (a, b) => (b.hindex || 0) - (a.hindex || 0)
-            );
-            break;
-          case "citations":
-            this.filteredResearchers.sort(
-              (a, b) => (b.citedby || 0) - (a.citedby || 0)
-            );
-            break;
-          // No need for shuffle case as it's handled separately
         }
       });
 
