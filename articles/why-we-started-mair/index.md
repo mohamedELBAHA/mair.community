@@ -4,7 +4,7 @@ tags: ["hackathons", "teens in tech", "game development"]
 keywords: ["How to organize a hackathon", "High school hackathon story"]
 pubDatetime: 2025-01-02
 authors: ["elbaha"]
-slug: organizing-tech-hackathon-at-15
+slug: why-I-started-mair
 ogImage: ./images/Why.png
 description: "A personal reflection on the motivations behind launching MAIR, a community connecting Moroccan AI researchers across borders and generations to foster visibility, mentorship, and world-class research."
 ---

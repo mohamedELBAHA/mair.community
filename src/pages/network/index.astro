@@ -30,24 +30,29 @@ import { SITE } from "@/config";
           </button>
         </div>
       </section>
+
+      <!-- Separate Search Bar -->
+      <div class="mb-6 rounded-lg bg-white p-4 shadow-sm">
+        <div class="relative mx-auto max-w-md">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="fas fa-search text-gray-400"></i>
+          </div>
+          <input
+            id="name-search"
+            type="text"
+            placeholder="Search by first name, last name, or full name..."
+            class="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
+        </div>
+        <div id="search-status" class="mt-2 text-center text-sm text-gray-600">
+        </div>
+      </div>
+
       <!-- Search and Filter Section -->
       <div class="mb-8 rounded-lg bg-white p-6 shadow-sm">
         <div
           class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"
         >
-          <!-- Search Input -->
-          <div class="relative flex-1 lg:max-w-md">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3">
-              <i class="fas fa-search text-gray-400"></i>
-            </div>
-            <input
-              id="search"
-              type="text"
-              placeholder="Search by name, affiliation, or position..."
-              class="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-            />
-          </div>
-
           <!-- Filter and Sort Controls -->
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
             <!-- Interest Filter -->
@@ -302,348 +307,345 @@ import { SITE } from "@/config";
   </div>
 </Layout>
 <script is:inline>
+  console.log("🚀 Network page - separate search approach");
+
   document.addEventListener("DOMContentLoaded", function () {
-    class ResearcherNetwork {
-      constructor() {
-        // Core data
-        this.researchers = [];
-        this.filteredResearchers = [];
-        this.activeSort = "name"; // Set default sort to name
-        this.searchTimeout = null; // For debouncing search
+    console.log("🚀 DOM loaded");
 
-        // DOM elements
-        this.container = document.getElementById("researcher-container");
-        this.searchInput = document.getElementById("search");
-        this.interestSelect = document.getElementById("interest-select");
-        this.resultsCount = document.getElementById("results-count");
-        this.noResults = document.getElementById("no-results");
-        this.loadingSkeleton = document.getElementById("loading-skeleton");
+    // Get DOM elements - SEPARATE SEARCH
+    const nameSearchInput = document.getElementById("name-search");
+    const searchStatus = document.getElementById("search-status");
+    const interestSelect = document.getElementById("interest-select");
+    const resultsCount = document.getElementById("results-count");
+    const container = document.getElementById("researcher-container");
+    const noResults = document.getElementById("no-results");
+    const loadingSkeleton = document.getElementById("loading-skeleton");
 
-        console.log("Search input found:", !!this.searchInput);
-        console.log("Interest select found:", !!this.interestSelect);
+    // Sort buttons
+    const sortBtns = {
+      name: document.getElementById("sort-name"),
+      hindex: document.getElementById("sort-hindex"),
+      citations: document.getElementById("sort-citations"),
+      shuffle: document.getElementById("sort-shuffle"),
+    };
 
-        // Sort buttons
-        this.sortBtns = {
-          name: document.getElementById("sort-name"),
-          hindex: document.getElementById("sort-hindex"),
-          citations: document.getElementById("sort-citations"),
-          shuffle: document.getElementById("sort-shuffle"),
-        };
+    // Modal elements
+    const addResearcherBtn = document.getElementById("add-researcher-btn");
+    const modal = document.getElementById("add-researcher-modal");
+    const closeModalBtn = document.getElementById("close-modal");
+    const cancelBtn = document.getElementById("cancel-btn");
+    const researcherForm = document.getElementById("researcher-form");
+    const successModal = document.getElementById("success-modal");
+    const closeSuccessModalBtn = document.getElementById("close-success-modal");
 
-        // Modal elements
-        this.addResearcherBtn = document.getElementById("add-researcher-btn");
-        this.modal = document.getElementById("add-researcher-modal");
-        this.closeModalBtn = document.getElementById("close-modal");
-        this.cancelBtn = document.getElementById("cancel-btn");
-        this.researcherForm = document.getElementById("researcher-form");
-        this.successModal = document.getElementById("success-modal");
-        this.closeSuccessModalBtn = document.getElementById(
-          "close-success-modal"
-        );
+    console.log("🔍 Elements found:", {
+      nameSearchInput: !!nameSearchInput,
+      searchStatus: !!searchStatus,
+      interestSelect: !!interestSelect,
+      container: !!container,
+    });
 
-        // Initialize
-        this.init();
+    if (!nameSearchInput) {
+      console.error("❌ Name search input not found!");
+      return;
+    }
+
+    // Data variables
+    let allResearchers = [];
+    let filteredResearchers = [];
+    let activeSort = "name";
+
+    // Show status
+    function updateStatus(message, isError = false) {
+      if (searchStatus) {
+        searchStatus.textContent = message;
+        searchStatus.className = `mt-2 text-center text-sm ${isError ? "text-red-600" : "text-gray-600"}`;
       }
+      console.log(isError ? "❌" : "✅", message);
+    }
 
-      async init() {
-        try {
-          this.bindEvents();
-          await this.fetchResearchers();
+    // Show loading
+    if (loadingSkeleton) {
+      loadingSkeleton.style.display = "flex";
+    }
+    updateStatus("Loading researchers...");
 
-          // Set initial state after loading
-          if (this.researchers.length > 0) {
-            console.log("Setting initial state with all researchers");
-            this.filteredResearchers = [...this.researchers]; // Start with all researchers
-            this.setupInterestFilter();
-            this.applySorting(); // Apply default sorting
-            this.renderResearchers();
-            this.updateActiveSortButton(this.activeSort); // Highlight default sort button
-          } else {
-            console.error("No researchers were loaded");
-            this.showNoResults();
-          }
-        } catch (error) {
-          console.error("Failed to initialize researcher network:", error);
-          this.showErrorMessage(error);
-        }
-      }
+    // Load data - EXACTLY like working test-search pattern
+    fetch("/researchers_en.json")
+      .then(response => {
+        console.log("📡 Response:", response.status);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(data => {
+        console.log("📊 Raw data:", data.length);
+        console.log("📊 Sample:", data[0]);
 
-      bindEvents() {
-        // Search input
-        if (this.searchInput) {
-          this.searchInput.addEventListener(
-            "input",
-            this.handleSearch.bind(this)
-          );
-        } else {
-          console.warn("Search input element not found");
-        }
+        // Enhanced data processing with better name handling
+        allResearchers = data.map(r => {
+          // Use existing firstName/lastName if available, otherwise parse from name
+          const name = r.name || "Unknown";
+          const nameParts = name.split(/\s+/).filter(part => part.length > 0);
 
-        // Interest filter
-        if (this.interestSelect) {
-          this.interestSelect.addEventListener(
-            "change",
-            this.handleFilterChange.bind(this)
-          );
-        } else {
-          console.warn("Interest select element not found");
-        }
-
-        // Sort buttons
-        if (this.sortBtns.name) {
-          this.sortBtns.name.addEventListener("click", () =>
-            this.sortResearchers("name")
-          );
-        }
-        if (this.sortBtns.hindex) {
-          this.sortBtns.hindex.addEventListener("click", () =>
-            this.sortResearchers("hindex")
-          );
-        }
-        if (this.sortBtns.citations) {
-          this.sortBtns.citations.addEventListener("click", () =>
-            this.sortResearchers("citations")
-          );
-        }
-        if (this.sortBtns.shuffle) {
-          this.sortBtns.shuffle.addEventListener("click", () =>
-            this.shuffleResearchers()
-          );
-        }
-
-        // Modal events
-        if (this.addResearcherBtn) {
-          this.addResearcherBtn.addEventListener("click", () =>
-            this.openModal()
-          );
-        }
-        if (this.closeModalBtn) {
-          this.closeModalBtn.addEventListener("click", () => this.closeModal());
-        }
-        if (this.cancelBtn) {
-          this.cancelBtn.addEventListener("click", () => this.closeModal());
-        }
-        if (this.closeSuccessModalBtn) {
-          this.closeSuccessModalBtn.addEventListener("click", () =>
-            this.closeSuccessModal()
-          );
-        }
-        if (this.researcherForm) {
-          this.researcherForm.addEventListener("submit", e =>
-            this.handleFormSubmit(e)
-          );
-        }
-
-        // Close modals when clicking outside
-        if (this.modal) {
-          this.modal.addEventListener("click", e => {
-            if (e.target === this.modal) this.closeModal();
-          });
-        }
-        if (this.successModal) {
-          this.successModal.addEventListener("click", e => {
-            if (e.target === this.successModal) this.closeSuccessModal();
-          });
-        }
-      }
-
-      async fetchResearchers() {
-        this.showLoading();
-
-        try {
-          console.log("Fetching researchers data...");
-          // Try with absolute URL if relative URL fails
-          let response;
-
-          try {
-            response = await fetch("/researchers_en.json");
-            if (!response.ok)
-              throw new Error(`HTTP error! Status: ${response.status}`);
-          } catch {
-            console.warn(
-              "Failed to fetch with relative path, trying absolute path"
-            );
-            // Try with a different path as fallback
-            const absolutePath =
-              window.location.origin + "/researchers_en.json";
-            response = await fetch(absolutePath);
-            if (!response.ok)
-              throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const data = await response.json();
-          console.log(`Loaded ${data.length} researchers from JSON`);
-
-          if (!data || !Array.isArray(data) || data.length === 0) {
-            throw new Error("Invalid or empty data received");
-          }
-
-          // Basic validation and normalization
-          this.researchers = data
-            .filter(r => r && r.name) // Basic validation
-            .map(r => ({
-              ...r,
-              // Normalize fields to prevent errors
-              name: r.name || "Unknown",
-              position: r.position || "Researcher",
-              affiliation: r.affiliation || "",
-              interests: Array.isArray(r.interests) ? r.interests : [],
-              hindex: parseInt(r.hindex) || 0,
-              citedby: parseInt(r.citedby) || 0,
-            }));
-
-          console.log(`Processed ${this.researchers.length} valid researchers`);
-
-          // If we have researchers but none are processed as valid, something is wrong with the data format
-          if (data.length > 0 && this.researchers.length === 0) {
-            console.error("Data format issue - sample data:", data[0]);
-          }
-
-          return this.researchers;
-        } catch (error) {
-          console.error("Error fetching researchers:", error);
-          throw error;
-        } finally {
-          this.hideLoading();
-        }
-      }
-
-      setupInterestFilter() {
-        if (!this.interestSelect) return;
-
-        console.log("Setting up interest filter");
-
-        // Extract all interests
-        const allInterests = this.researchers
-          .flatMap(r => r.interests || [])
-          .filter(Boolean);
-
-        // Get unique interests and sort them
-        const uniqueInterests = [...new Set(allInterests)].sort();
-
-        console.log("Found interests:", uniqueInterests);
-
-        // Keep the "All Interests" option
-        const allOption = this.interestSelect.querySelector(
-          'option[value="all"]'
-        );
-        this.interestSelect.innerHTML = "";
-
-        if (allOption) {
-          this.interestSelect.appendChild(allOption);
-        } else {
-          const option = document.createElement("option");
-          option.value = "all";
-          option.textContent = "All Interests";
-          this.interestSelect.appendChild(option);
-        }
-
-        // Add interest options
-        uniqueInterests.forEach(interest => {
-          const option = document.createElement("option");
-          option.value = interest;
-          option.textContent = interest;
-          this.interestSelect.appendChild(option);
+          return {
+            ...r,
+            name: name,
+            firstName:
+              r.firstName || (nameParts.length > 0 ? nameParts[0] : ""),
+            lastName:
+              r.lastName ||
+              (nameParts.length > 1 ? nameParts.slice(1).join(" ") : ""),
+            position: r.position || "Researcher",
+            affiliation: r.affiliation || "",
+            interests: Array.isArray(r.interests) ? r.interests : [],
+            hindex: parseInt(r.hindex) || 0,
+            citedby: parseInt(r.citedby) || 0,
+          };
         });
 
-        console.log(
-          `Added ${uniqueInterests.length} unique interests to filter`
+        console.log("✅ Processed:", allResearchers.length);
+        updateStatus(`${allResearchers.length} researchers loaded.`);
+
+        // Setup everything AFTER data is loaded - KEY FIX
+        setupSearch(allResearchers);
+        setupInterestFilter();
+        setupSorting();
+        setupModals();
+
+        // Initial render
+        filteredResearchers = [...allResearchers];
+        applySorting();
+        renderResearchers();
+        updateActiveSortButton(activeSort);
+
+        if (loadingSkeleton) {
+          loadingSkeleton.style.display = "none";
+        }
+      })
+      .catch(error => {
+        console.error("❌ Error:", error);
+        updateStatus(`Error: ${error.message}`, true);
+        if (loadingSkeleton) {
+          loadingSkeleton.style.display = "none";
+        }
+      });
+
+    // Setup search - EXACTLY like working test-search pattern
+    function setupSearch(researchers) {
+      console.log(
+        "🔧 Setting up search with",
+        researchers.length,
+        "researchers"
+      );
+
+      nameSearchInput.addEventListener("input", function (e) {
+        const query = e.target.value.trim().toLowerCase();
+        console.log("🔍 Search query:", query);
+
+        performNameSearch(query);
+      });
+
+      console.log("✅ Search event bound");
+    }
+
+    // Perform comprehensive name search
+    function performNameSearch(query) {
+      console.log("🎯 Performing name search:", query);
+
+      if (!query.trim()) {
+        // If no search query, apply interest filter only
+        applyInterestFilter();
+        return;
+      }
+
+      const queryLower = query.toLowerCase();
+
+      // Enhanced name search with comprehensive matching
+      const nameMatches = allResearchers.filter(r => {
+        const name = (r.name || "").toLowerCase();
+        const firstName = (r.firstName || "").toLowerCase();
+        const lastName = (r.lastName || "").toLowerCase();
+
+        // Split the full name into individual words for more flexible matching
+        const nameWords = name.split(/\s+/).filter(word => word.length > 0);
+        const queryWords = queryLower
+          .split(/\s+/)
+          .filter(word => word.length > 0);
+
+        // Check various matching scenarios
+        const matches =
+          // Direct substring matching in any name field
+          name.includes(queryLower) ||
+          firstName.includes(queryLower) ||
+          lastName.includes(queryLower) ||
+          // Check if any query word matches any name word (partial matching)
+          queryWords.some(queryWord =>
+            nameWords.some(nameWord => nameWord.includes(queryWord))
+          ) ||
+          // Check if query matches start of first name or last name
+          firstName.startsWith(queryLower) ||
+          lastName.startsWith(queryLower) ||
+          // Check if any name word starts with the query
+          nameWords.some(nameWord => nameWord.startsWith(queryLower));
+
+        if (matches) {
+          console.log("✅ Name match:", r.name, "| Query:", query);
+        }
+
+        return matches;
+      });
+
+      console.log("🎯 Name matches found:", nameMatches.length);
+
+      // Then apply interest filter to name results
+      const selectedInterest = interestSelect ? interestSelect.value : "all";
+
+      if (selectedInterest === "all") {
+        filteredResearchers = nameMatches;
+      } else {
+        filteredResearchers = nameMatches.filter(
+          r => r.interests && r.interests.includes(selectedInterest)
         );
       }
 
-      handleFilterChange(event) {
-        const selectedInterest = event.target.value;
-        console.log(`Filter changed to: "${selectedInterest}"`);
-        this.applyFiltersAndSort();
-      }
+      console.log("🎯 Final filtered:", filteredResearchers.length);
 
-      handleSearch(event) {
-        // Add debouncing to prevent excessive filtering
-        clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => {
-          console.log(`SEARCH DEBUG - Query: "${event.target.value}"`);
-          // Print sample researcher for debugging
-          if (this.researchers.length > 0) {
-            console.log(
-              "SEARCH DEBUG - Sample researcher:",
-              this.researchers[0]
-            );
-          }
-          this.applyFiltersAndSort();
-        }, 250);
-      }
-
-      applyFiltersAndSort() {
-        const query = this.searchInput?.value?.toLowerCase().trim() || "";
-        const interest = this.interestSelect?.value || "all";
-
-        console.log(
-          `FILTER DEBUG - Applying filters - Query: "${query}", Interest: "${interest}"`
+      // Enhanced status message with search details
+      if (filteredResearchers.length === 0) {
+        updateStatus(
+          `No researchers found matching "${query}". Try searching by first name, last name, or full name.`
         );
-        console.log(
-          `FILTER DEBUG - Starting with ${this.researchers.length} researchers`
+      } else {
+        updateStatus(
+          `Found ${filteredResearchers.length} researcher(s) matching "${query}"`
         );
-
-        // Filter by interest and search query
-        this.filteredResearchers = this.researchers.filter(researcher => {
-          // Interest filter
-          const matchesInterest =
-            interest === "all" ||
-            (researcher.interests &&
-              Array.isArray(researcher.interests) &&
-              researcher.interests.some(i => i === interest));
-
-          // If no search query, just check interest
-          if (!query) {
-            return matchesInterest;
-          }
-
-          // Create searchable text from researcher data
-          const nameMatch = (researcher.name || "")
-            .toLowerCase()
-            .includes(query);
-          const positionMatch = (researcher.position || "")
-            .toLowerCase()
-            .includes(query);
-          const affiliationMatch = (researcher.affiliation || "")
-            .toLowerCase()
-            .includes(query);
-
-          // Check for matches in interests
-          const interestsMatch =
-            Array.isArray(researcher.interests) &&
-            researcher.interests.some(i => i.toLowerCase().includes(query));
-
-          const matches =
-            nameMatch || positionMatch || affiliationMatch || interestsMatch;
-
-          // Log matches for debugging
-          if (matches && matchesInterest) {
-            console.log(`FILTER DEBUG - Match: ${researcher.name}`);
-          }
-
-          return matchesInterest && matches;
-        });
-
-        console.log(
-          `FILTER DEBUG - Filtered down to ${this.filteredResearchers.length} researchers`
-        );
-
-        // Apply sorting
-        this.applySorting();
-
-        // Render the filtered and sorted researchers
-        this.renderResearchers();
       }
 
-      sortResearchers(sortType) {
-        console.log(`Sorting by: ${sortType}`);
-        this.activeSort = sortType;
-        this.updateActiveSortButton(sortType);
-        this.applySorting();
-        this.renderResearchers();
+      applySorting();
+      renderResearchers();
+    }
+
+    // Apply interest filter only
+    function applyInterestFilter() {
+      const selectedInterest = interestSelect ? interestSelect.value : "all";
+
+      if (selectedInterest === "all") {
+        filteredResearchers = [...allResearchers];
+      } else {
+        filteredResearchers = allResearchers.filter(
+          r => r.interests && r.interests.includes(selectedInterest)
+        );
       }
 
+      updateStatus(`Showing ${filteredResearchers.length} researcher(s)`);
+      applySorting();
+      renderResearchers();
+    }
+
+    function setupInterestFilter() {
+      if (!interestSelect) return;
+
+      const allInterests = allResearchers
+        .flatMap(r => r.interests || [])
+        .filter(Boolean);
+      const uniqueInterests = [...new Set(allInterests)].sort();
+
+      interestSelect.innerHTML = "";
+
+      // Add "All Interests" option
+      const allOption = document.createElement("option");
+      allOption.value = "all";
+      allOption.textContent = "All Interests";
+      interestSelect.appendChild(allOption);
+
+      // Add interest options
+      uniqueInterests.forEach(interest => {
+        const option = document.createElement("option");
+        option.value = interest;
+        option.textContent = interest;
+        interestSelect.appendChild(option);
+      });
+
+      // Interest filter event
+      interestSelect.addEventListener("change", function (e) {
+        console.log("🎯 Interest changed:", e.target.value);
+
+        // Re-apply search with new interest filter
+        const query = nameSearchInput.value.trim();
+        if (query) {
+          performNameSearch(query);
+        } else {
+          applyInterestFilter();
+        }
+      });
+    }
+
+    function setupSorting() {
+      if (sortBtns.name) {
+        sortBtns.name.addEventListener("click", () => sortResearchers("name"));
+      }
+      if (sortBtns.hindex) {
+        sortBtns.hindex.addEventListener("click", () =>
+          sortResearchers("hindex")
+        );
+      }
+      if (sortBtns.citations) {
+        sortBtns.citations.addEventListener("click", () =>
+          sortResearchers("citations")
+        );
+      }
+      if (sortBtns.shuffle) {
+        sortBtns.shuffle.addEventListener("click", () => shuffleResearchers());
+      }
+    }
+
+    function sortResearchers(sortType) {
+      activeSort = sortType;
+      updateActiveSortButton(sortType);
+      applySorting();
+      renderResearchers();
+    }
+
+    function applySorting() {
+      switch (activeSort) {
+        case "name":
+          filteredResearchers.sort((a, b) => {
+            const last = a.lastName.localeCompare(b.lastName);
+            if (last !== 0) return last;
+            return a.firstName.localeCompare(b.firstName);
+          });
+          break;
+        case "hindex":
+          filteredResearchers.sort((a, b) => (b.hindex || 0) - (a.hindex || 0));
+          break;
+        case "citations":
+          filteredResearchers.sort(
+            (a, b) => (b.citedby || 0) - (a.citedby || 0)
+          );
+          break;
+      }
+    }
+
+    function shuffleResearchers() {
+      activeSort = "shuffle";
+      updateActiveSortButton("shuffle");
+
+      for (let i = filteredResearchers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filteredResearchers[i], filteredResearchers[j]] = [
+          filteredResearchers[j],
+          filteredResearchers[i],
+        ];
+      }
+
+      renderResearchers();
+    }
+
+    function updateActiveSortButton(sortType) {
+      Object.values(sortBtns).forEach(btn => {
+        if (btn) {
+          btn.classList.remove("bg-blue-500", "text-white");
+          btn.classList.add("bg-gray-100", "text-gray-700");
       applySorting() {
         console.log(`Applying sort: ${this.activeSort}`);
 
@@ -668,312 +670,254 @@ import { SITE } from "@/config";
             break;
           // No need for shuffle case as it's handled separately
         }
+      });
+
+      const activeBtn = sortBtns[sortType];
+      if (activeBtn) {
+        activeBtn.classList.remove("bg-gray-100", "text-gray-700");
+        activeBtn.classList.add("bg-blue-500", "text-white");
+      }
+    }
+
+    function renderResearchers() {
+      if (!container) return;
+
+      container.innerHTML = "";
+      updateResultsCount();
+
+      if (filteredResearchers.length === 0) {
+        showNoResults();
+        return;
       }
 
-      shuffleResearchers() {
-        console.log("Shuffling researchers");
-        this.activeSort = "shuffle";
-        this.updateActiveSortButton("shuffle");
+      hideNoResults();
 
-        // Fisher-Yates shuffle algorithm
-        for (let i = this.filteredResearchers.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [this.filteredResearchers[i], this.filteredResearchers[j]] = [
-            this.filteredResearchers[j],
-            this.filteredResearchers[i],
-          ];
-        }
+      filteredResearchers.forEach(researcher => {
+        const card = createResearcherCard(researcher);
+        container.appendChild(card);
+      });
 
-        this.renderResearchers();
-      }
+      console.log("✅ Rendered", filteredResearchers.length, "cards");
+    }
 
-      updateActiveSortButton(sortType) {
-        // Remove active class from all buttons
-        Object.values(this.sortBtns).forEach(btn => {
-          if (btn) {
-            btn.classList.remove("bg-blue-500", "text-white");
-            btn.classList.add("bg-gray-100", "text-gray-700");
-          }
-        });
+    // ...existing card rendering functions...
+    function createResearcherCard(researcher) {
+      const card = document.createElement("div");
+      card.className =
+        "group cursor-pointer rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg hover:border-blue-300";
 
-        // Add active class to selected button
-        const activeBtn = this.sortBtns[sortType];
-        if (activeBtn) {
-          activeBtn.classList.remove("bg-gray-100", "text-gray-700");
-          activeBtn.classList.add("bg-blue-500", "text-white");
-        }
-      }
+      const photoPath = researcher.photo
+        ? researcher.photo.replace("./profiles/", "/profiles/")
+        : "/profiles/default-avatar.png";
+      const metrics = formatMetrics(researcher);
+      const interests = formatInterests(researcher.interests || []);
+      const socialLinks = formatSocialLinks(researcher);
 
-      renderResearchers() {
-        if (!this.container) {
-          console.error("Researcher container not found");
-          return;
-        }
+      card.innerHTML = `
+        <div class="flex flex-col items-center text-center">
+          <img class="h-20 w-20 rounded-full object-cover ring-4 ring-gray-100 transition-all duration-200" 
+               src="${photoPath}" 
+               alt="${researcher.name}"
+               onerror="this.src='/profiles/default-avatar.png'" />
+          <h3 class="mt-4 text-lg font-semibold text-gray-900 transition-colors">${researcher.name}</h3>
+          <p class="mt-1 text-sm font-medium text-blue-600">${researcher.position || ""}</p>
+          <p class="mt-1 text-sm text-gray-600">${researcher.affiliation || ""}</p>
+          ${metrics}
+          ${interests}
+          ${socialLinks}
+        </div>
+      `;
 
-        // Clear container
-        this.container.innerHTML = "";
+      return card;
+    }
 
-        // Update results count
-        this.updateResultsCount();
+    function formatMetrics(researcher) {
+      if (!researcher.hindex && !researcher.citedby) return "";
 
-        // Show no results message if needed
-        if (this.filteredResearchers.length === 0) {
-          console.log("No researchers to display");
-          this.showNoResults();
-          return;
-        }
+      const hindex = researcher.hindex
+        ? `<span class="flex items-center gap-1"><i class="fas fa-chart-line"></i> h-index: ${formatNumber(researcher.hindex)}</span>`
+        : "";
 
-        this.hideNoResults();
+      const citations = researcher.citedby
+        ? `<span class="flex items-center gap-1"><i class="fas fa-quote-right"></i> ${formatNumber(researcher.citedby)} citations</span>`
+        : "";
 
-        // Create and append researcher cards
-        this.filteredResearchers.forEach(researcher => {
-          const card = this.createResearcherCard(researcher);
-          this.container.appendChild(card);
-        });
+      return `<div class="mt-3 flex gap-4 text-xs text-gray-500">${hindex}${citations}</div>`;
+    }
 
-        console.log(
-          `Rendered ${this.filteredResearchers.length} researcher cards`
+    function formatNumber(num) {
+      if (!num) return "0";
+      return num >= 1000 ? (num / 1000).toFixed(1) + "k" : num.toString();
+    }
+
+    function formatInterests(interests) {
+      if (!interests || !interests.length) return "";
+
+      const displayedInterests = interests.slice(0, 3);
+      const remainingCount = interests.length - 3;
+
+      const tags = displayedInterests
+        .map(
+          tag =>
+            `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors">${tag}</span>`
+        )
+        .join("");
+
+      const moreTag =
+        remainingCount > 0
+          ? `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-500">+${remainingCount}</span>`
+          : "";
+
+      return `<div class="mt-4 flex flex-wrap justify-center gap-1">${tags}${moreTag}</div>`;
+    }
+
+    function formatSocialLinks(researcher) {
+      const links = [];
+
+      if (researcher.scholar) {
+        links.push(
+          `<a href="${researcher.scholar}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Google Scholar"><i class='fas fa-graduation-cap text-sm'></i></a>`
         );
       }
 
-      createResearcherCard(researcher) {
-        const card = document.createElement("div");
-        card.className =
-          "group cursor-pointer rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg hover:border-blue-300";
-
-        const photoPath = this.getPhotoPath(researcher.photo);
-        const metrics = this.formatMetrics(researcher);
-        const interests = this.formatInterests(researcher.interests || []);
-        const socialLinks = this.formatSocialLinks(researcher);
-
-        card.innerHTML = `
-          <div class="flex flex-col items-center text-center">
-            <img class="h-20 w-20 rounded-full object-cover ring-4 ring-gray-100 transition-all duration-200" 
-                 src="${photoPath}" 
-                 alt="${researcher.name}"
-                 onerror="this.src='/profiles/default-avatar.png'" />
-            <h3 class="mt-4 text-lg font-semibold text-gray-900 transition-colors">${researcher.name}</h3>
-            <p class="mt-1 text-sm font-medium text-blue-600">${researcher.position || ""}</p>
-            <p class="mt-1 text-sm text-gray-600">${researcher.affiliation || ""}</p>
-            ${metrics}
-            ${interests}
-            ${socialLinks}
-          </div>
-        `;
-
-        return card;
+      if (researcher.linkedin) {
+        links.push(
+          `<a href="${researcher.linkedin}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="LinkedIn"><i class='fab fa-linkedin text-sm'></i></a>`
+        );
       }
 
-      getPhotoPath(photo) {
-        if (!photo) return "/profiles/default-avatar.png";
-        return photo.replace("./profiles/", "/profiles/");
+      if (researcher.website) {
+        links.push(
+          `<a href="${researcher.website}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Website"><i class='fas fa-globe text-sm'></i></a>`
+        );
       }
 
-      formatMetrics(researcher) {
-        if (!researcher.hindex && !researcher.citedby) return "";
-
-        const hindex = researcher.hindex
-          ? `<span class="flex items-center gap-1"><i class="fas fa-chart-line"></i> h-index: ${this.formatNumber(researcher.hindex)}</span>`
-          : "";
-
-        const citations = researcher.citedby
-          ? `<span class="flex items-center gap-1"><i class="fas fa-quote-right"></i> ${this.formatNumber(researcher.citedby)} citations</span>`
-          : "";
-
-        return `
-          <div class="mt-3 flex gap-4 text-xs text-gray-500">
-            ${hindex}
-            ${citations}
-          </div>
-        `;
+      if (researcher.twitter) {
+        links.push(
+          `<a href="${researcher.twitter}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Twitter"><i class='fab fa-twitter text-sm'></i></a>`
+        );
       }
 
-      formatNumber(num) {
-        if (!num) return "0";
-        return num >= 1000 ? (num / 1000).toFixed(1) + "k" : num.toString();
+      return links.length
+        ? `<div class="mt-4 flex gap-3">${links.join("")}</div>`
+        : "";
+    }
+
+    function updateResultsCount() {
+      if (!resultsCount) return;
+
+      const filtered = filteredResearchers.length;
+      const total = allResearchers.length;
+
+      if (filtered === total) {
+        resultsCount.textContent = `Showing all ${total} researchers`;
+      } else {
+        resultsCount.textContent = `Showing ${filtered} of ${total} researchers`;
+      }
+    }
+
+    function showNoResults() {
+      if (noResults) noResults.style.display = "block";
+    }
+
+    function hideNoResults() {
+      if (noResults) noResults.style.display = "none";
+    }
+
+    // Modal functions
+    function setupModals() {
+      if (addResearcherBtn) {
+        addResearcherBtn.addEventListener("click", openModal);
+      }
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", closeModal);
+      }
+      if (cancelBtn) {
+        cancelBtn.addEventListener("click", closeModal);
+      }
+      if (closeSuccessModalBtn) {
+        closeSuccessModalBtn.addEventListener("click", closeSuccessModal);
+      }
+      if (researcherForm) {
+        researcherForm.addEventListener("submit", handleFormSubmit);
       }
 
-      formatInterests(interests) {
-        if (!interests || !interests.length) return "";
-
-        const displayedInterests = interests.slice(0, 3);
-        const remainingCount = interests.length - 3;
-
-        const tags = displayedInterests
-          .map(
-            tag =>
-              `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700 transition-colors">${tag}</span>`
-          )
-          .join("");
-
-        const moreTag =
-          remainingCount > 0
-            ? `<span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-500">+${remainingCount}</span>`
-            : "";
-
-        return `
-          <div class="mt-4 flex flex-wrap justify-center gap-1">
-            ${tags}
-            ${moreTag}
-          </div>
-        `;
+      // Close modals when clicking outside
+      if (modal) {
+        modal.addEventListener("click", e => {
+          if (e.target === modal) closeModal();
+        });
       }
+      if (successModal) {
+        successModal.addEventListener("click", e => {
+          if (e.target === successModal) closeSuccessModal();
+        });
+      }
+    }
 
-      formatSocialLinks(researcher) {
-        const links = [];
+    function openModal() {
+      if (modal) {
+        modal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+    }
 
-        if (researcher.scholar) {
-          links.push(
-            `<a href="${researcher.scholar}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Google Scholar"><i class='fas fa-graduation-cap text-sm'></i></a>`
-          );
+    function closeModal() {
+      if (modal) {
+        modal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+        if (researcherForm) researcherForm.reset();
+      }
+    }
+
+    function closeSuccessModal() {
+      if (successModal) {
+        successModal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      if (!researcherForm) return;
+
+      const submitBtn = researcherForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : "";
+
+      try {
+        if (submitBtn) {
+          submitBtn.textContent = "Submitting...";
+          submitBtn.disabled = true;
         }
 
-        if (researcher.linkedin) {
-          links.push(
-            `<a href="${researcher.linkedin}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="LinkedIn"><i class='fab fa-linkedin text-sm'></i></a>`
-          );
-        }
+        const formData = new FormData(researcherForm);
+        const response = await fetch(researcherForm.action, {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        });
 
-        if (researcher.website) {
-          links.push(
-            `<a href="${researcher.website}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Website"><i class='fas fa-globe text-sm'></i></a>`
-          );
-        }
-
-        if (researcher.twitter) {
-          links.push(
-            `<a href="${researcher.twitter}" target="_blank" class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-all" title="Twitter"><i class='fab fa-twitter text-sm'></i></a>`
-          );
-        }
-
-        return links.length
-          ? `<div class="mt-4 flex gap-3">${links.join("")}</div>`
-          : "";
-      }
-
-      updateResultsCount() {
-        if (!this.resultsCount) return;
-
-        const filtered = this.filteredResearchers.length;
-        const total = this.researchers.length;
-
-        if (filtered === total) {
-          this.resultsCount.textContent = `Showing all ${total} researchers`;
+        if (response.ok) {
+          closeModal();
+          if (successModal) {
+            successModal.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+          }
         } else {
-          this.resultsCount.textContent = `Showing ${filtered} of ${total} researchers`;
+          throw new Error("Form submission failed");
         }
-      }
-
-      showNoResults() {
-        if (this.noResults) {
-          this.noResults.style.display = "block";
-        }
-      }
-
-      hideNoResults() {
-        if (this.noResults) {
-          this.noResults.style.display = "none";
-        }
-      }
-
-      showLoading() {
-        if (this.loadingSkeleton) {
-          this.loadingSkeleton.style.display = "flex";
-        }
-      }
-
-      hideLoading() {
-        if (this.loadingSkeleton) {
-          this.loadingSkeleton.style.display = "none";
-        }
-      }
-
-      showErrorMessage(error) {
-        if (!this.container) return;
-
-        this.container.innerHTML = `
-          <div class="col-span-full py-12 text-center">
-            <div class="mx-auto max-w-sm">
-              <i class="fas fa-exclamation-triangle mb-4 text-4xl text-red-400"></i>
-              <h3 class="mb-2 text-lg font-medium text-gray-900">Error loading researchers</h3>
-              <p class="text-gray-600">Please try refreshing the page. Error: ${error.message}</p>
-            </div>
-          </div>
-        `;
-      }
-
-      // Modal methods remain unchanged
-      openModal() {
-        if (this.modal) {
-          this.modal.classList.remove("hidden");
-          document.body.style.overflow = "hidden";
-        }
-      }
-
-      closeModal() {
-        if (this.modal) {
-          this.modal.classList.add("hidden");
-          document.body.style.overflow = "auto";
-          if (this.researcherForm) this.researcherForm.reset();
-        }
-      }
-
-      closeSuccessModal() {
-        if (this.successModal) {
-          this.successModal.classList.add("hidden");
-          document.body.style.overflow = "auto";
-        }
-      }
-
-      async handleFormSubmit(e) {
-        e.preventDefault();
-
-        if (!this.researcherForm) return;
-
-        const submitBtn = this.researcherForm.querySelector(
-          'button[type="submit"]'
-        );
-        const originalText = submitBtn ? submitBtn.textContent : "";
-
-        try {
-          if (submitBtn) {
-            submitBtn.textContent = "Submitting...";
-            submitBtn.disabled = true;
-          }
-
-          const formData = new FormData(this.researcherForm);
-
-          const response = await fetch(this.researcherForm.action, {
-            method: "POST",
-            body: formData,
-            headers: {
-              Accept: "application/json",
-            },
-          });
-
-          if (response.ok) {
-            this.closeModal();
-            if (this.successModal) {
-              this.successModal.classList.remove("hidden");
-              document.body.style.overflow = "hidden";
-            }
-          } else {
-            throw new Error("Form submission failed");
-          }
-        } catch (error) {
-          console.error("Error submitting form:", error);
-          alert("There was an error submitting your form. Please try again.");
-        } finally {
-          if (submitBtn) {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-          }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("There was an error submitting your form. Please try again.");
+      } finally {
+        if (submitBtn) {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
         }
       }
     }
 
-    // Initialize
-    new ResearcherNetwork();
+    console.log("✅ Separate search setup complete");
   });
 </script>
 

@@ -1391,5 +1391,84 @@
         ],
         "citedby": 1292,
         "lastupdate": "2025-03-04"
+    },
+    {
+        "firstName": "Zakaria",
+        "lastName": "Kaddari",
+        "name": "Zakaria Kaddari",
+        "affiliation": "L'École Nationale de l'Intelligence Artificielle et du Digital de Berkane",
+        "position": "Professor",
+        "hindex": 5,
+        "photo": "./profiles/Kaddari.jpg",
+        "scholar": "https://scholar.google.com/citations?user=upXnorIAAAAJ",
+        "linkedin": "https://www.linkedin.com/in/zkaddari/",
+        "website": "",
+        "twitter": "",
+        "interests": [
+            "Natural Language Processing",
+            "Question Answering",
+            "Biomedical QA"
+        ],
+        "citedby": 79,
+        "lastupdate": "2025-03-04"
+    },
+    {
+        "firstName": "Yousra",
+        "lastName": "Chtouki",
+        "name": "Yousra Chtouki",
+        "affiliation": "Al Akhawayn University",
+        "position": "Professor",
+        "hindex": 6,
+        "photo": "./profiles/chtouki.jpeg",
+        "scholar": "https://scholar.google.com/citations?user=roRuUqwAAAAJ&hl=fr&oi=ao",
+        "linkedin": "https://www.linkedin.com/in/yousra-chtouki-phd-697abb15/",
+        "website": "",
+        "twitter": "",
+        "interests": [
+            "Machine Learning",
+            "TinyML"
+        ],
+        "citedby": 510,
+        "lastupdate": "2025-03-04"
+    },
+    {
+        "firstName": "Mohamed El Amine",
+        "lastName": "Seddik",
+        "name": "Mohamed El Amine Seddik ",
+        "affiliation": "TII",
+        "position": "AI Researcher",
+        "hindex": 11,
+        "photo": "./profiles/seddik.jpg",
+        "scholar": "https://scholar.google.com/citations?user=85Hxd24AAAAJ&hl=en",
+        "linkedin": "https://www.linkedin.com/in/melaseddik",
+        "website": "https://melaseddik.github.io",
+        "twitter": "",
+        "interests": [
+            "Large Language Models",
+            "Reasoning",
+            "Random Matrix Theory"
+        ],
+        "citedby": 504,
+        "lastupdate": "2025-03-04"
+    },
+    {
+        "firstName": "Amine Mohamed ",
+        "lastName": "Aboussalah",
+        "name": "Amine Mohamed Aboussalah",
+        "affiliation": "New York University",
+        "position": "Professor",
+        "hindex": 7,
+        "photo": "./profiles/Aboussalah.png",
+        "scholar": "https://scholar.google.com/citations?user=2b1c0eMAAAAJ&hl=en",
+        "linkedin": "https://www.linkedin.com/in/amine-aboussalah-89b761281/",
+        "website": "https://amineaboussalah.github.io",
+        "twitter": "",
+        "interests": [
+            "Machine Learning",
+            "Dynamical Systems",
+            "Information Geometry"
+        ],
+        "citedby": 435,
+        "lastupdate": "2025-03-04"
     }
 ]

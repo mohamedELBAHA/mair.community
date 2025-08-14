@@ -12,10 +12,11 @@ export async function getStaticPaths() {
   }));
 }
 
-export const GET: APIRoute = async ({ props }) =>
-  new Response(
-    await generateOgImageForArticle(props as CollectionEntry<"blog">),
-    {
-      headers: { "Content-Type": "image/png" },
-    }
+export const GET: APIRoute = async ({ props }) => {
+  const buffer = await generateOgImageForArticle(
+    props as CollectionEntry<"blog">
   );
+  return new Response(new Uint8Array(buffer), {
+    headers: { "Content-Type": "image/png" },
+  });
+};
