@@ -31,79 +31,120 @@ import { SITE } from "@/config";
         </div>
       </section>
 
-      <!-- Separate Search Bar -->
-      <div class="mb-6 rounded-lg bg-white p-4 shadow-sm">
-        <div class="relative mx-auto max-w-md">
-          <div class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <i class="fas fa-search text-gray-400"></i>
-          </div>
-          <input
-            id="name-search"
-            type="text"
-            placeholder="Search by first name, last name, or full name..."
-            class="w-full rounded-lg border border-gray-300 py-3 pl-10 pr-4 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          />
-        </div>
-        <div id="search-status" class="mt-2 text-center text-sm text-gray-600">
-        </div>
-      </div>
-
       <!-- Search and Filter Section -->
-      <div class="mb-8 rounded-lg bg-white p-6 shadow-sm">
-        <div
-          class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"
-        >
-          <!-- Filter and Sort Controls -->
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <!-- Interest Filter -->
-            <div class="flex items-center gap-2">
-              <label
-                for="interest-select"
-                class="text-sm font-medium text-gray-700">Filter by:</label
+      <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-lg">
+        <!-- Main Content -->
+        <div class="p-6">
+          <!-- Search Bar -->
+          <div class="mb-6">
+            <label
+              for="name-search"
+              class="mb-2 block text-sm font-medium text-gray-700"
+            >
+              Search Researchers
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-4">
+                <i class="fas fa-search text-gray-400"></i>
+              </div>
+              <input
+                id="name-search"
+                type="text"
+                placeholder="Search by name, affiliation, or position."
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-12 pr-4 text-gray-900 placeholder-gray-500 transition-all duration-200 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-200"
+              />
+            </div>
+            <div id="search-status" class="mt-2 text-sm text-gray-600"></div>
+          </div>
+
+          <!-- Filters and Sort Section -->
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <!-- Filter Controls -->
+            <div class="space-y-4">
+              <h3
+                class="text-sm font-semibold uppercase tracking-wide text-gray-800"
               >
-              <select
-                id="interest-select"
-                class="rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-              >
-                <option value="all">All Interests</option>
-              </select>
+                <i class="fas fa-filter mr-2 text-blue-600"></i>
+                Filters
+              </h3>
+
+              <!-- Interest Filter -->
+              <div>
+                <label
+                  for="interest-select"
+                  class="mb-2 block text-sm font-medium text-gray-700"
+                >
+                  Research Interest
+                </label>
+                <div class="relative">
+                  <select
+                    id="interest-select"
+                    class="w-full appearance-none rounded-lg border border-gray-200 bg-white px-4 py-3 pr-10 text-gray-900 transition-all duration-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  >
+                    <option value="all">All Research Areas</option>
+                  </select>
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+                  >
+                    <i class="fas fa-chevron-down text-gray-400"></i>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- Sort Buttons -->
-            <div class="flex items-center gap-2">
-              <span class="text-sm font-medium text-gray-700">Sort by:</span>
-              <div class="flex gap-1">
+            <!-- Sort Controls -->
+            <div class="space-y-4">
+              <h3
+                class="text-sm font-semibold uppercase tracking-wide text-gray-800"
+              >
+                <i class="fas fa-sort mr-2 text-blue-600"></i>
+                Sort By
+              </h3>
+
+              <div class="grid grid-cols-2 gap-2">
                 <button
                   id="sort-name"
-                  class="sort-btn rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                  class="sort-btn flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
                 >
-                  A-Z
+                  <i class="fas fa-sort-alpha-down"></i>
+                  Name
                 </button>
                 <button
                   id="sort-hindex"
-                  class="sort-btn rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                  class="sort-btn flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
                 >
+                  <i class="fas fa-chart-line"></i>
                   h-Index
                 </button>
                 <button
                   id="sort-citations"
-                  class="sort-btn rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                  class="sort-btn flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
                 >
+                  <i class="fas fa-quote-right"></i>
                   Citations
                 </button>
                 <button
                   id="sort-shuffle"
-                  class="sort-btn rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                  class="sort-btn flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
                 >
                   <i class="fas fa-random"></i>
+                  Shuffle
                 </button>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Results Count -->
-        <div id="results-count" class="mt-4 text-sm text-gray-600"></div>
+          <!-- Results Count -->
+          <div
+            class="mt-6 flex items-center justify-between border-t border-gray-100 pt-4"
+          >
+            <div id="results-count" class="text-sm text-gray-600"></div>
+            <div class="flex items-center gap-2 text-xs text-gray-500">
+              <i class="fas fa-info-circle"></i>
+              <span>Real-time filtering</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="flex flex-col gap-6">
@@ -359,7 +400,7 @@ import { SITE } from "@/config";
     function updateStatus(message, isError = false) {
       if (searchStatus) {
         searchStatus.textContent = message;
-        searchStatus.className = `mt-2 text-center text-sm ${isError ? "text-red-600" : "text-gray-600"}`;
+        searchStatus.className = `mt-2 text-sm ${isError ? "text-red-600" : "text-gray-600"}`;
       }
       console.log(isError ? "❌" : "✅", message);
     }
@@ -460,21 +501,29 @@ import { SITE } from "@/config";
 
       const queryLower = query.toLowerCase();
 
-      // Enhanced name search with comprehensive matching
-      const nameMatches = allResearchers.filter(r => {
+      // Enhanced search with comprehensive matching (name, affiliation, position)
+      const searchMatches = allResearchers.filter(r => {
         const name = (r.name || "").toLowerCase();
         const firstName = (r.firstName || "").toLowerCase();
         const lastName = (r.lastName || "").toLowerCase();
+        const affiliation = (r.affiliation || "").toLowerCase();
+        const position = (r.position || "").toLowerCase();
 
-        // Split the full name into individual words for more flexible matching
+        // Split text into words for flexible matching
         const nameWords = name.split(/\s+/).filter(word => word.length > 0);
+        const affiliationWords = affiliation
+          .split(/\s+/)
+          .filter(word => word.length > 0);
+        const positionWords = position
+          .split(/\s+/)
+          .filter(word => word.length > 0);
         const queryWords = queryLower
           .split(/\s+/)
           .filter(word => word.length > 0);
 
         // Check various matching scenarios
-        const matches =
-          // Direct substring matching in any name field
+        const nameMatches =
+          // Direct substring matching in name fields
           name.includes(queryLower) ||
           firstName.includes(queryLower) ||
           lastName.includes(queryLower) ||
@@ -488,22 +537,61 @@ import { SITE } from "@/config";
           // Check if any name word starts with the query
           nameWords.some(nameWord => nameWord.startsWith(queryLower));
 
+        const affiliationMatches =
+          // Direct substring matching in affiliation
+          affiliation.includes(queryLower) ||
+          // Check if any query word matches any affiliation word
+          queryWords.some(queryWord =>
+            affiliationWords.some(affiliationWord =>
+              affiliationWord.includes(queryWord)
+            )
+          ) ||
+          // Check if any affiliation word starts with the query
+          affiliationWords.some(affiliationWord =>
+            affiliationWord.startsWith(queryLower)
+          );
+
+        const positionMatches =
+          // Direct substring matching in position
+          position.includes(queryLower) ||
+          // Check if any query word matches any position word
+          queryWords.some(queryWord =>
+            positionWords.some(positionWord => positionWord.includes(queryWord))
+          ) ||
+          // Check if any position word starts with the query
+          positionWords.some(positionWord =>
+            positionWord.startsWith(queryLower)
+          );
+
+        const matches = nameMatches || affiliationMatches || positionMatches;
+
         if (matches) {
-          console.log("✅ Name match:", r.name, "| Query:", query);
+          const matchType = nameMatches
+            ? "name"
+            : affiliationMatches
+              ? "affiliation"
+              : "position";
+          console.log(
+            `✅ ${matchType} match:`,
+            r.name,
+            `(${r.affiliation})`,
+            "| Query:",
+            query
+          );
         }
 
         return matches;
       });
 
-      console.log("🎯 Name matches found:", nameMatches.length);
+      console.log("🎯 Search matches found:", searchMatches.length);
 
-      // Then apply interest filter to name results
+      // Then apply interest filter to search results
       const selectedInterest = interestSelect ? interestSelect.value : "all";
 
       if (selectedInterest === "all") {
-        filteredResearchers = nameMatches;
+        filteredResearchers = searchMatches;
       } else {
-        filteredResearchers = nameMatches.filter(
+        filteredResearchers = searchMatches.filter(
           r => r.interests && r.interests.includes(selectedInterest)
         );
       }
@@ -513,7 +601,7 @@ import { SITE } from "@/config";
       // Enhanced status message with search details
       if (filteredResearchers.length === 0) {
         updateStatus(
-          `No researchers found matching "${query}". Try searching by first name, last name, or full name.`
+          `No researchers found matching "${query}". Try searching by name, affiliation, or position.`
         );
       } else {
         updateStatus(
@@ -644,15 +732,19 @@ import { SITE } from "@/config";
     function updateActiveSortButton(sortType) {
       Object.values(sortBtns).forEach(btn => {
         if (btn) {
-          btn.classList.remove("bg-blue-500", "text-white");
-          btn.classList.add("bg-gray-100", "text-gray-700");
+          btn.classList.remove("bg-blue-500", "text-white", "border-blue-500");
+          btn.classList.add("bg-white", "text-gray-700", "border-gray-200");
         }
       });
 
       const activeBtn = sortBtns[sortType];
       if (activeBtn) {
-        activeBtn.classList.remove("bg-gray-100", "text-gray-700");
-        activeBtn.classList.add("bg-blue-500", "text-white");
+        activeBtn.classList.remove(
+          "bg-white",
+          "text-gray-700",
+          "border-gray-200"
+        );
+        activeBtn.classList.add("bg-blue-500", "text-white", "border-blue-500");
       }
     }
 
