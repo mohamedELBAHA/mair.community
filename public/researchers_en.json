@@ -1455,12 +1455,12 @@
         "firstName": "Amine Mohamed ",
         "lastName": "Aboussalah",
         "name": "Amine Mohamed Aboussalah",
-        "affiliation": "Quantum Geometric Intelligence Lab",
+        "affiliation": "New York University",
         "position": "Professor",
         "hindex": 7,
         "photo": "./profiles/Amine_ABOUSSALAH.JPG",
-        "scholar": "https://scholar.google.com/citations?user=2b1c0eMAAAAJ&hl=en",
-        "linkedin": "https://scholar.google.com/citations?user=c2QKp_MAAAAJ&hl=en",
+        "scholar": " https://scholar.google.com/citations?user=c2QKp_MAAAAJ&hl=en",
+        "linkedin": "https://www.linkedin.com/in/amine-aboussalah-89b761281/",
         "website": "https://quantumgeometricintelligence.com/",
         "twitter": "",
         "interests": [
@@ -1468,7 +1468,7 @@
             "Dynamical Systems",
             "Information Geometry"
         ],
-        "citedby": 435,
+        "citedby": 436,
         "lastupdate": "2025-03-04"
     }
 ]
