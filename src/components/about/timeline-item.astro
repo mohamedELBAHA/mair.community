@@ -21,7 +21,9 @@ const { title, images } = Astro.props as Props;
     class="flex w-full flex-col justify-center rounded-md bg-neutral-light-50 p-2 xl:flex-row xl:group-even:flex-row-reverse"
   >
     <div class="w-full xl:w-2/5">
-      <div>
+      <div
+        class="max-h-[320px] overflow-hidden md:max-h-[360px] xl:max-h-[620px]"
+      >
         <picture>
           <source media="(max-width: 640px)" srcset={images.mobile.src} />
           <source
@@ -38,6 +40,7 @@ const { title, images } = Astro.props as Props;
             alt={title}
             class="rounded-xs h-full w-full object-cover md:rounded-s"
             loading="lazy"
+            style={{ maxHeight: "100%" }}
           />
         </picture>
       </div>
