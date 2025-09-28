@@ -2,8 +2,19 @@
 import Member from "./member.astro";
 import { getCollection } from "astro:content";
 
+type TeamMember = {
+  name: string;
+  link?: string;
+  profile_image?:
+    | string
+    | { src: string; width?: number; height?: number; format?: string };
+  [key: string]: unknown;
+};
+
 const teamCollection = await getCollection("team");
-const teamMembers = teamCollection.map((member: any) => member.data);
+const teamMembers = teamCollection.map(
+  member => member.data as unknown as TeamMember
+);
 ---
 
 <section id="team" class="bg-neutral-dark-20 py-16">
@@ -18,15 +29,58 @@ const teamMembers = teamCollection.map((member: any) => member.data);
       class="grid grid-cols-2 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
     >
       {
-        teamMembers.map((member: any) => (
+        teamMembers.map((member: TeamMember) => (
           <Member
-            key={member.name}
-            name={member.name}
-            link={member.link}
-            profile_image={member.profile_image}
+            key={member.name as string}
+            name={member.name as string}
+            link={member.link as string}
+            profile_image={member.profile_image as string}
           />
         ))
       }
+    </div>
+  </div>
+</section>
+
+<section aria-hidden="false" class="bg-neutral-light-30 py-12">
+  <div class="main mx-auto">
+    <h2
+      class="mb-6 text-center text-heading-sm text-neutral-light-50 md:text-left"
+    >
+      We want you
+    </h2>
+    <div
+      class="mx-auto max-w-3xl rounded-lg bg-white p-8 text-center shadow-sm"
+    >
+      <h3 class="mb-4 text-heading-sm font-bold text-neutral-dark-10">
+        🧠 Who should join ?
+      </h3>
+      <div
+        class="mb-6 text-left text-paragraph-sm leading-7 text-neutral-dark-20"
+      >
+        <p>Anyone who:</p>
+        <ul class="ml-5 mt-3 list-disc">
+          <li>Believes in the power of community and collaboration.</li>
+          <li>Wants to contribute to the AI research scene in Morocco.</li>
+          <li>
+            Is excited to learn, lead, and support others, at any stage of their
+            career.
+          </li>
+        </ul>
+        <p class="mt-4 font-medium">
+          This isn’t just about supporting MAIR grow — it’s about growing with
+          it.
+        </p>
+      </div>
+      <div class="flex justify-center">
+        <a
+          href="https://forms.gle/uPRwyWGyVJE7jzreA"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center rounded-md border-2 border-black bg-white px-8 py-3 font-bold text-black shadow-[5px_5px_0px_0px_#990101] hover:translate-x-[2px] hover:translate-y-[2px]"
+          >Join us</a
+        >
+      </div>
     </div>
   </div>
 </section>
