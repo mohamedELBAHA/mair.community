@@ -40,5 +40,11 @@
         "link": "https://www.linkedin.com/in/alielbaha/",
         "profile_image": "./images/ali.jpeg",
         "status": "active"
+    },   {
+        "id": 7,
+        "name": "Marwa El Kamil",
+        "link": "https://www.linkedin.com/in/marwa-el-kamil/",
+        "profile_image": "./images/marwaelk.png",
+        "status": "active"
     }
 ]
