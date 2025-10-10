@@ -1,0 +1,242 @@
+---
+import Layout from "@/components/layout.astro";
+import Header from "@/components/header.astro";
+import { SITE } from "@/config";
+import { AMBASSADORS } from "@/data/ambassadors";
+
+const title = `Ambassadors | ${SITE.title}`;
+---
+
+<Layout
+  title={title}
+  description="Meet MAIR Ambassadors connecting Moroccan AI researchers worldwide."
+>
+  <section class="relative overflow-hidden bg-neutral-light-30">
+    <Header />
+    <div class="main mx-auto py-10">
+      <div class="mx-auto max-w-3xl text-center">
+        <h1 class="mb-4 text-heading-lg font-bold text-neutral-dark-10">
+          MAIR Ambassadors
+        </h1>
+        <p class="text-paragraph-md text-neutral-dark-30">
+          A distributed group of community builders helping connect Moroccan AI
+          researchers, facilitate collaboration, and support emerging talent
+          around the world.
+        </p>
+      </div>
+
+      <div class="mt-12">
+        <div
+          id="ambassador-map"
+          class="relative mx-auto aspect-[16/8] w-full max-w-5xl overflow-hidden rounded-xl bg-gradient-to-br from-neutral-light-40 via-neutral-light-20 to-neutral-light-40 p-4 shadow-sm"
+        >
+          <div
+            class="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:radial-gradient(circle_at_center,#000_1px,transparent_1.5px)] [background-size:22px_22px]"
+          >
+          </div>
+          <div
+            class="absolute left-[12%] top-[28%] h-40 w-64 -rotate-6 rounded-[40%] bg-neutral-dark-10/10 blur-xl"
+          >
+          </div>
+          <div
+            class="absolute left-[40%] top-[20%] h-52 w-80 rotate-12 rounded-[45%] bg-neutral-dark-10/10 blur-xl"
+          >
+          </div>
+          <div
+            class="absolute right-[10%] top-[30%] h-48 w-72 rotate-3 rounded-[46%] bg-neutral-dark-10/10 blur-xl"
+          >
+          </div>
+
+          {
+            AMBASSADORS.map(a => (
+              <button
+                class="ambassador-pin bg-primary group absolute h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-white transition-all hover:scale-125 focus:scale-125 focus:outline-none"
+                style={`left:${a.x}%;top:${a.y}%`}
+                data-id={a.id}
+                aria-label={`Ambassador: ${a.name}`}
+              >
+                <span class="bg-primary pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded px-2 py-1 text-xs text-white group-hover:block">
+                  {a.name}
+                </span>
+              </button>
+            ))
+          }
+
+          <div
+            id="ambassador-card"
+            class="invisible absolute left-0 top-0 z-20 w-72 -translate-x-1/2 -translate-y-[110%] scale-95 transform rounded-xl border border-neutral-dark-10/10 bg-white p-4 opacity-0 shadow-xl transition-all duration-200"
+            role="dialog"
+            aria-hidden="true"
+          >
+            <div class="flex items-start gap-3">
+              <img
+                id="amb-photo"
+                src="/avatars/default-avatar.svg"
+                alt="Ambassador photo"
+                class="h-14 w-14 rounded-full object-cover ring-2 ring-neutral-light-40"
+              />
+              <div class="flex-1">
+                <h3
+                  id="amb-name"
+                  class="text-label-md font-semibold text-neutral-dark-20"
+                >
+                </h3>
+                <p id="amb-role" class="text-label-xs text-primary font-medium">
+                </p>
+                <p
+                  id="amb-location"
+                  class="text-label-xs mt-0.5 text-neutral-dark-40"
+                >
+                </p>
+              </div>
+              <button
+                id="amb-close"
+                class="ml-1 text-neutral-dark-40 transition-colors hover:text-neutral-dark-20"
+                aria-label="Close ambassador card"
+              >
+                ✕
+              </button>
+            </div>
+            <p
+              id="amb-bio"
+              class="mt-3 text-[11px] leading-relaxed text-neutral-dark-30"
+            >
+            </p>
+            <div id="amb-links" class="mt-3 flex flex-wrap gap-2"></div>
+            <div class="mt-3 flex justify-end">
+              <div
+                class="bg-primary/10 text-primary rounded-full px-3 py-1 text-[10px] font-semibold tracking-wide"
+              >
+                Ambassador
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mx-auto mt-12 max-w-4xl">
+          <h2 class="mb-4 text-heading-sm font-bold text-neutral-dark-10">
+            Directory
+          </h2>
+          <ul class="grid gap-4 md:grid-cols-3">
+            {
+              AMBASSADORS.map(a => (
+                <li class="rounded-lg border border-neutral-light-40 bg-white p-4 text-label-sm shadow-sm">
+                  <p class="font-semibold text-neutral-dark-20">{a.name}</p>
+                  <p class="text-primary">{a.role}</p>
+                  <p class="text-neutral-dark-40">{a.location}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline>
+  const ambassadors = JSON.parse(
+    `{${AMBASSADORS.map(a => `"${a.id}":${JSON.stringify(a)}`).join(",")}}`
+  );
+  const mapEl = document.getElementById("ambassador-map");
+  const card = document.getElementById("ambassador-card");
+  const photoEl = document.getElementById("amb-photo");
+  const nameEl = document.getElementById("amb-name");
+  const roleEl = document.getElementById("amb-role");
+  const locEl = document.getElementById("amb-location");
+  const bioEl = document.getElementById("amb-bio");
+  const linksEl = document.getElementById("amb-links");
+  const closeBtn = document.getElementById("amb-close");
+  let activeId = null;
+  function closeCard() {
+    activeId = null;
+    card.setAttribute("aria-hidden", "true");
+    card.classList.add("opacity-0", "scale-95", "invisible");
+  }
+  function openCard(id, pinEl) {
+    const a = ambassadors[id];
+    if (!a) return;
+    activeId = id;
+    nameEl.textContent = a.name;
+    roleEl.textContent = a.role || "";
+    locEl.textContent = a.location || "";
+    bioEl.textContent = a.bio || "";
+    photoEl.src = a.photo || "/avatars/default-avatar.svg";
+    photoEl.alt = a.name;
+    linksEl.innerHTML = "";
+    if (a.links) {
+      if (a.links.linkedin)
+        linksEl.innerHTML += `<a href="${a.links.linkedin}" target="_blank" class="text-primary text-[11px] underline">LinkedIn</a>`;
+      if (a.links.website)
+        linksEl.innerHTML += `<a href="${a.links.website}" target="_blank" class="text-primary text-[11px] underline">Website</a>`;
+      if (a.links.twitter)
+        linksEl.innerHTML += `<a href="${a.links.twitter}" target="_blank" class="text-primary text-[11px] underline">Twitter</a>`;
+    }
+    const pinRect = pinEl.getBoundingClientRect();
+    const mapRect = mapEl.getBoundingClientRect();
+    const left = pinRect.left - mapRect.left;
+    const top = pinRect.top - mapRect.top;
+    card.style.left = left + "px";
+    card.style.top = top + "px";
+    card.setAttribute("aria-hidden", "false");
+    card.classList.remove("opacity-0", "scale-95", "invisible");
+  }
+  mapEl.addEventListener("click", e => {
+    const target = e.target.closest(".ambassador-pin");
+    if (!target) {
+      closeCard();
+      return;
+    }
+    const id = target.dataset.id;
+    if (id === activeId) {
+      closeCard();
+    } else {
+      openCard(id, target);
+    }
+  });
+  closeBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    closeCard();
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeCard();
+  });
+  window.addEventListener("resize", () => {
+    if (activeId) {
+      const pinEl = mapEl.querySelector(
+        `.ambassador-pin[data-id='${activeId}']`
+      );
+      if (pinEl) openCard(activeId, pinEl);
+    }
+  });
+</script>
+
+<style>
+  .ambassador-pin::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.25),
+      transparent 70%
+    );
+    animation: ping 2.4s linear infinite;
+    opacity: 0.5;
+  }
+  @keyframes ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    70% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+</style>
