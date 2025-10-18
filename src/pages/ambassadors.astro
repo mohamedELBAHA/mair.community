@@ -28,29 +28,25 @@ const title = `Ambassadors | ${SITE.title}`;
       <div class="mt-12">
         <div
           id="ambassador-map"
-          class="relative mx-auto aspect-[16/8] w-full max-w-5xl overflow-hidden rounded-xl bg-gradient-to-br from-neutral-light-40 via-neutral-light-20 to-neutral-light-40 p-4 shadow-sm"
+          class="bg-neutral-dark-5 relative mx-auto aspect-[2000/1000] w-full max-w-5xl overflow-hidden rounded-xl shadow ring-1 ring-neutral-light-50/60"
         >
+          <!-- Real simplified world map background -->
+          <img
+            src="/maps/world.svg"
+            alt="World map"
+            class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-90 [filter:contrast(105%)_saturate(110%)]"
+            loading="lazy"
+          />
+          <!-- subtle gradient for contrast -->
           <div
-            class="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:radial-gradient(circle_at_center,#000_1px,transparent_1.5px)] [background-size:22px_22px]"
-          >
-          </div>
-          <div
-            class="absolute left-[12%] top-[28%] h-40 w-64 -rotate-6 rounded-[40%] bg-neutral-dark-10/10 blur-xl"
-          >
-          </div>
-          <div
-            class="absolute left-[40%] top-[20%] h-52 w-80 rotate-12 rounded-[45%] bg-neutral-dark-10/10 blur-xl"
-          >
-          </div>
-          <div
-            class="absolute right-[10%] top-[30%] h-48 w-72 rotate-3 rounded-[46%] bg-neutral-dark-10/10 blur-xl"
+            class="from-neutral-dark-5/60 to-neutral-dark-5/40 pointer-events-none absolute inset-0 bg-gradient-to-tr via-transparent"
           >
           </div>
 
           {
             AMBASSADORS.map(a => (
               <button
-                class="ambassador-pin bg-primary group absolute h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-white transition-all hover:scale-125 focus:scale-125 focus:outline-none"
+                class="ambassador-pin bg-primary group absolute h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_0_0_3px_rgba(255,255,255,0.4)] ring-2 ring-white transition-all hover:scale-125 focus:scale-125 focus:outline-none"
                 style={`left:${a.x}%;top:${a.y}%`}
                 data-id={a.id}
                 aria-label={`Ambassador: ${a.name}`}

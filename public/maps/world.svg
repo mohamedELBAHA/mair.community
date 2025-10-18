@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Simplified public-domain world map (Robinson projection inspired, heavily simplified). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1001" role="img" aria-label="World map">
+  <defs>
+    <style>
+      .land { fill: #1e293b; } /* slate-800 */
+    </style>
+  </defs>
+  <rect width="2000" height="1001" fill="none"/>
+  <!-- Continents simplified paths (not accurate for navigation, only visual) -->
+  <path class="land" d="M221 541l-18-24 9-32 41-11 27-37 54-22 46 7 8 31 37-6 32 14 15 41-34 29-14 43-55 9-28-20-49 6-33-28z"/>
+  <path class="land" d="M597 516l-22-32 11-28 40-10 33-26 27 8 42-12 25 18 37-5 21 30-14 34 9 29-30 18-16 33-41-3-36 12-28-14-26-35z"/>
+  <path class="land" d="M930 500l-25-40 15-30 55-14 34-31 52-9 48 13 42-6 38 19 29 46-9 41 19 34-44 28-23 32-61 4-52 16-40-20-36-48z"/>
+  <path class="land" d="M1310 515l-18-28 12-30 46-9 29-27 45-8 41 11 35-5 33 18 25 40-8 38 17 31-38 26-20 29-53 3-45 14-35-18-31-44z"/>
+  <path class="land" d="M1615 548l-14-22 10-24 34-7 21-20 33-6 30 8 26-4 24 14 18 30-6 28 12 23-28 20-15 22-41 2-35 10-27-13-24-33z"/>
+  <path class="land" d="M1822 610l8-18 23-7 18 10 7 19-9 17-23 6-16-9-8-18z"/>
+  <!-- Australia -->
+  <path class="land" d="M1560 770l-20-30 14-26 37-9 30-24 47-8 42 12 22 32-8 34 16 29-36 24-19 25-50 4-42 12-32-17-27-38z"/>
+  <!-- Greenland / Arctic cluster -->
+  <path class="land" d="M880 250l-12-18 9-20 26-5 19-16 29-5 26 7 22-3 20 11 15 24-5 22 10 18-23 16-12 18-33 2-28 9-22-11-19-24z"/>
+</svg>
