@@ -411,14 +411,14 @@ import { SITE } from "@/config";
     }
     updateStatus("Loading researchers...");
 
-    // Load data - EXACTLY like working test-search pattern
-    fetch("/researchers_en.json")
+    fetch("https://mair.pages.dev/api/researchers")
       .then(response => {
         console.log("📡 Response:", response.status);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json();
       })
-      .then(data => {
+      .then(result => {
+        const data = result.data || [];
         console.log("📊 Raw data:", data.length);
         console.log("📊 Sample:", data[0]);
 
@@ -464,11 +464,61 @@ import { SITE } from "@/config";
         }
       })
       .catch(error => {
-        console.error("❌ Error:", error);
-        updateStatus(`Error: ${error.message}`, true);
-        if (loadingSkeleton) {
-          loadingSkeleton.style.display = "none";
-        }
+        console.error("❌ API Error:", error);
+        console.log("🔄 Falling back to local JSON file...");
+        updateStatus("API unavailable, loading from local file...");
+        
+        return fetch("/researchers_en.json")
+          .then(response => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+          })
+          .then(data => {
+            console.log("📊 Fallback data:", data.length);
+            
+            allResearchers = data.map(r => {
+              const name = r.name || "Unknown";
+              const nameParts = name.split(/\s+/).filter(part => part.length > 0);
+
+              return {
+                ...r,
+                name: name,
+                firstName:
+                  r.firstName || (nameParts.length > 0 ? nameParts[0] : ""),
+                lastName:
+                  r.lastName ||
+                  (nameParts.length > 1 ? nameParts.slice(1).join(" ") : ""),
+                position: r.position || "Researcher",
+                affiliation: r.affiliation || "",
+                interests: Array.isArray(r.interests) ? r.interests : [],
+                hindex: parseInt(r.hindex) || 0,
+                citedby: parseInt(r.citedby) || 0,
+              };
+            });
+
+            updateStatus(`${allResearchers.length} researchers loaded.`);
+            
+            setupSearch(allResearchers);
+            setupInterestFilter();
+            setupSorting();
+            setupModals();
+
+            filteredResearchers = [...allResearchers];
+            applySorting();
+            renderResearchers();
+            updateActiveSortButton(activeSort);
+
+            if (loadingSkeleton) {
+              loadingSkeleton.style.display = "none";
+            }
+          })
+          .catch(fallbackError => {
+            console.error("❌ Fallback Error:", fallbackError);
+            updateStatus(`Error loading data: ${fallbackError.message}`, true);
+            if (loadingSkeleton) {
+              loadingSkeleton.style.display = "none";
+            }
+          });
       });
 
     // Setup search - EXACTLY like working test-search pattern
