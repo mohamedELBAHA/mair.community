@@ -1,0 +1,506 @@
+---
+import Layout from "@/components/layout.astro";
+import Header from "@/components/header.astro";
+import { SITE } from "@/config";
+import mentroshipbg from "@/assets/mentroshipbg.jpg";
+
+const timelineSteps = [
+  {
+    number: "01",
+    title: "Apply",
+    body: "20 spots. Show us your motivation and research direction.",
+  },
+  {
+    number: "02",
+    title: "Get Selected",
+    body: "Top 20 profiles chosen for clarity, commitment, and potential.",
+  },
+  {
+    number: "03",
+    title: "Bootcamp",
+    body: "One week. Six sessions. Everything your PhD won't teach you.",
+  },
+  {
+    number: "04",
+    title: "Mentorship",
+    body: "1-on-1 mentor. Private cohort. Monthly group check-ins.",
+  },
+  {
+    number: "★",
+    title: "Research Output",
+    body: "Publish, present, and grow — for as long as you research.",
+  },
+];
+
+const bootcampDays = [
+  {
+    day: "Wednesday",
+    time: "20:00 – 21:30 GMT+1",
+    title: "Research Tools & Workflow",
+    speaker: "Yasser Benigmim",
+    description:
+      "Essential tools and workflows to organize research, manage papers, write in LaTeX, and ensure reproducibility. Includes how to read papers efficiently and key research terminology.",
+  },
+  {
+    day: "Thursday",
+    time: "20:00 – 21:30 GMT+1",
+    title: "AI Conferences & Journals",
+    speaker: "Yassir Bendou",
+    description:
+      "Overview of major AI conferences and rankings, how to choose where to publish, and how the paper submission process works — from peer review to rebuttals and common reasons for rejection.",
+  },
+  {
+    day: "Friday",
+    time: "20:00 – 21:30 GMT+1",
+    title:
+      "Paper Structure & Storytelling — Writing Efficiently as a Researcher",
+    speaker: "Ziyad Benomar",
+    description:
+      "How to structure a strong research paper, write clear abstracts, and present contributions effectively, along with practical methods for writing efficiently, collaborating with co-authors, and avoiding common pitfalls.",
+  },
+  {
+    day: "Saturday",
+    time: "20:00 – 21:30 GMT+1",
+    title: "Communicating Your Research",
+    speaker: "Ahmed Zahlane",
+    description:
+      "How to clearly communicate your research to different audiences and navigate collaboration, feedback, and professional relationships during a PhD.",
+  },
+  {
+    day: "Sunday",
+    time: "19:00 – 20:00 GMT+1",
+    title: "The Researcher Mindset",
+    speaker: "Amine El Yousfi",
+    description: "Non-technical session.",
+  },
+];
+
+const eligibility = [
+  "Master's students planning to pursue a PhD",
+  "Incoming PhD students who haven't started yet",
+  "Early-stage PhD students in their first years",
+];
+---
+
+<Layout
+  title={`Mentorship Program | ${SITE.title}`}
+  description="The MAIR Mentorship Program is a selective, end-to-end program designed to equip early-stage Moroccan AI researchers with the skills, network, and support they need to thrive."
+>
+  <!-- Header -->
+  <section class="relative overflow-hidden bg-neutral-light-30">
+    <img
+      src={mentroshipbg.src}
+      alt=""
+      aria-hidden="true"
+      class="absolute inset-0 h-full w-full object-cover opacity-20"
+    />
+
+    <div class="relative z-10">
+      <Header withSocialIcons={false} />
+    </div>
+
+    <!-- Hero -->
+    <div class="main relative z-10 mx-auto pb-16 pt-8 md:pb-24 md:pt-12">
+      <div
+        class="flex flex-col gap-12 md:flex-row md:items-center md:justify-between"
+      >
+        <!-- Left: text -->
+        <div class="flex-1">
+          <p class="mb-3 font-mono text-paragraph-sm font-medium text-teal-60">
+            MAIR Programs
+          </p>
+          <h1 class="mb-6 text-heading-lg font-bold text-neutral-dark-10">
+            Mentorship Program
+          </h1>
+          <p class="max-w-xl text-paragraph-lg text-neutral-dark-30">
+            A selective, end-to-end program designed to equip early-stage
+            Moroccan AI researchers with the skills, network, and support they
+            need to thrive in their research journey. Not a one-off event — a
+            structured, long-term commitment.
+          </p>
+          <div class="mt-8">
+            <a
+              href="https://forms.gle/xk5pk9dCNKVCbmvq9"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center border-2 border-black bg-white px-8 py-4 font-sans font-bold text-black shadow-[5px_5px_0px_0px_#990101] transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0px_0px_#990101]"
+            >
+              Apply Now
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: countdown -->
+        <div
+          class="shrink-0 rounded-xl border-2 border-neutral-dark-10/10 bg-white/70 px-8 py-6 backdrop-blur-sm"
+        >
+          <p
+            class="mb-5 font-mono text-paragraph-xs font-semibold uppercase tracking-widest text-neutral-dark-30"
+          >
+            Application Deadline
+          </p>
+          <div class="flex items-start gap-4">
+            <div class="flex flex-col items-center">
+              <span
+                id="cd-days"
+                class="font-mono text-[3.5rem] font-bold tabular-nums leading-none text-neutral-dark-10"
+                >00</span
+              >
+              <span
+                class="mt-1 font-mono text-paragraph-xs font-medium uppercase tracking-widest text-neutral-dark-30"
+                >Days</span
+              >
+            </div>
+            <span
+              class="mt-2 font-mono text-[2rem] font-bold text-neutral-dark-10/30"
+              >:</span
+            >
+            <div class="flex flex-col items-center">
+              <span
+                id="cd-hours"
+                class="font-mono text-[3.5rem] font-bold tabular-nums leading-none text-neutral-dark-10"
+                >00</span
+              >
+              <span
+                class="mt-1 font-mono text-paragraph-xs font-medium uppercase tracking-widest text-neutral-dark-30"
+                >Hours</span
+              >
+            </div>
+            <span
+              class="mt-2 font-mono text-[2rem] font-bold text-neutral-dark-10/30"
+              >:</span
+            >
+            <div class="flex flex-col items-center">
+              <span
+                id="cd-minutes"
+                class="font-mono text-[3.5rem] font-bold tabular-nums leading-none text-neutral-dark-10"
+                >00</span
+              >
+              <span
+                class="mt-1 font-mono text-paragraph-xs font-medium uppercase tracking-widest text-neutral-dark-30"
+                >Minutes</span
+              >
+            </div>
+            <span
+              class="mt-2 font-mono text-[2rem] font-bold text-neutral-dark-10/30"
+              >:</span
+            >
+            <div class="flex flex-col items-center">
+              <span
+                id="cd-seconds"
+                class="font-mono text-[3.5rem] font-bold tabular-nums leading-none text-teal-60"
+                >00</span
+              >
+              <span
+                class="mt-1 font-mono text-paragraph-xs font-medium uppercase tracking-widest text-neutral-dark-30"
+                >Seconds</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const DEADLINE = new Date("2026-05-01T00:00:00").getTime();
+
+    function pad(n: number) {
+      return String(n).padStart(2, "0");
+    }
+
+    function tick() {
+      const now = Date.now();
+      const diff = DEADLINE - now;
+
+      const days = document.getElementById("cd-days")!;
+      const hours = document.getElementById("cd-hours")!;
+      const minutes = document.getElementById("cd-minutes")!;
+      const seconds = document.getElementById("cd-seconds")!;
+
+      if (diff <= 0) {
+        days.textContent = "00";
+        hours.textContent = "00";
+        minutes.textContent = "00";
+        seconds.textContent = "00";
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      days.textContent = pad(d);
+      hours.textContent = pad(h);
+      minutes.textContent = pad(m);
+      seconds.textContent = pad(s);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+
+  <!-- Who is it for -->
+  <section class="bg-white py-16 md:py-20">
+    <div class="main mx-auto">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
+        <div>
+          <h2 class="mb-4 text-heading-sm font-bold text-neutral-dark-10">
+            Who is it for?
+          </h2>
+          <p class="text-paragraph-md text-neutral-dark-30">
+            If you're Moroccan, passionate about AI research, and ready to
+            invest in your growth as a researcher, this program is for you.
+          </p>
+        </div>
+        <ul class="space-y-4">
+          {
+            eligibility.map(item => (
+              <li class="flex items-start gap-3">
+                <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-60/15">
+                  <svg
+                    class="h-3 w-3 text-teal-60"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                  >
+                    <path
+                      d="M2 6l3 3 5-5"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="text-paragraph-md text-neutral-dark-20">
+                  {item}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="bg-neutral-light-30 py-16 md:py-24">
+    <div class="main mx-auto">
+      <!-- Section label + title -->
+      <div class="mb-14">
+        <p
+          class="mb-3 font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-teal-60"
+        >
+          The Process
+        </p>
+        <h2 class="text-heading-sm font-bold text-neutral-dark-10">
+          How it works
+        </h2>
+      </div>
+
+      <!-- Desktop: horizontal flow -->
+      <div class="hidden md:flex md:items-stretch md:gap-3">
+        {
+          timelineSteps.map((step, i) => (
+            <>
+              <div class="step-card group relative flex flex-1 cursor-default flex-col overflow-hidden rounded-xl border border-teal-60/30 bg-transparent p-6">
+                <span class="pointer-events-none absolute -bottom-3 -right-2 select-none font-mono text-[6rem] font-black leading-none text-teal-60/10 transition-all duration-300 group-hover:text-teal-60/20">
+                  {step.number}
+                </span>
+                <div class="relative z-10 flex flex-1 flex-col">
+                  <h3 class="mb-3 text-label-sm font-bold text-neutral-dark-10">
+                    {step.title}
+                  </h3>
+                  <p class="mt-auto text-paragraph-sm leading-relaxed text-neutral-dark-30">
+                    {step.body}
+                  </p>
+                </div>
+              </div>
+
+              {i < timelineSteps.length - 1 && (
+                <div class="flex shrink-0 items-center text-teal-60/40">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </div>
+              )}
+            </>
+          ))
+        }
+      </div>
+
+      <!-- Mobile: vertical stack -->
+      <div class="flex flex-col gap-3 md:hidden">
+        {
+          timelineSteps.map(step => (
+            <div class="step-card group relative overflow-hidden rounded-xl border border-teal-60/30 bg-transparent p-6">
+              <span class="pointer-events-none absolute -bottom-3 -right-2 select-none font-mono text-[5rem] font-black leading-none text-teal-60/10">
+                {step.number}
+              </span>
+              <div class="relative z-10">
+                <h3 class="mb-2 text-label-sm font-bold text-neutral-dark-10">
+                  {step.title}
+                </h3>
+                <p class="text-paragraph-sm leading-relaxed text-neutral-dark-30">
+                  {step.body}
+                </p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .step-card {
+      background: transparent;
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+    }
+    .step-card:hover {
+      transform: rotate(1.5deg);
+      background: rgba(41, 174, 134, 0.06);
+      box-shadow:
+        0 0 0 1px rgba(41, 174, 134, 0.35),
+        0 8px 32px -8px rgba(41, 174, 134, 0.15);
+    }
+  </style>
+
+  <!-- Bootcamp Schedule -->
+  <section class="bg-white py-16 md:py-20">
+    <div class="main mx-auto">
+      <h2 class="mb-2 text-heading-sm font-bold text-neutral-dark-10">
+        Bootcamp Schedule
+      </h2>
+      <p class="text-paragraph-md mb-10 text-neutral-dark-30">
+        One week. Six sessions. Everything your PhD program won't teach you.
+      </p>
+
+      <!-- Desktop grid -->
+      <div class="hidden grid-cols-5 gap-3 md:grid">
+        {
+          bootcampDays.map(day => (
+            <div class="flex flex-col overflow-hidden rounded-lg border border-teal-60/30 bg-transparent">
+              <div class="bg-teal-60/8 border-b border-teal-60/20 px-4 py-3">
+                <p class="font-mono text-paragraph-xs font-bold uppercase tracking-widest text-teal-60">
+                  {day.day}
+                </p>
+                <p class="mt-0.5 font-mono text-paragraph-xs text-neutral-dark-30/60">
+                  {day.time}
+                </p>
+              </div>
+              <div class="flex flex-1 flex-col gap-3 px-4 py-4">
+                <p class="text-paragraph-sm font-bold leading-snug text-neutral-dark-10">
+                  {day.title}
+                </p>
+                <p class="font-mono text-paragraph-xs text-teal-60">
+                  {day.speaker}
+                </p>
+                <p class="text-paragraph-xs leading-relaxed text-neutral-dark-30">
+                  {day.description}
+                </p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Mobile stack -->
+      <div class="flex flex-col gap-4 md:hidden">
+        {
+          bootcampDays.map(day => (
+            <div class="overflow-hidden rounded-lg border border-teal-60/30">
+              <div class="bg-teal-60/8 border-b border-teal-60/20 px-4 py-3">
+                <p class="font-mono text-paragraph-xs font-bold uppercase tracking-widest text-teal-60">
+                  {day.day}
+                </p>
+                <p class="mt-0.5 font-mono text-paragraph-xs text-neutral-dark-30/60">
+                  {day.time}
+                </p>
+              </div>
+              <div class="flex flex-col gap-2 px-4 py-4">
+                <p class="text-paragraph-sm font-bold text-neutral-dark-10">
+                  {day.title}
+                </p>
+                <p class="font-mono text-paragraph-xs text-teal-60">
+                  {day.speaker}
+                </p>
+                <p class="text-paragraph-xs leading-relaxed text-neutral-dark-30">
+                  {day.description}
+                </p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Why it matters -->
+  <section class="bg-white py-16 md:py-20">
+    <div class="main mx-auto">
+      <div class="max-w-2xl">
+        <h2 class="mb-6 text-heading-sm font-bold text-neutral-dark-10">
+          Why it matters
+        </h2>
+        <p class="text-paragraph-lg text-neutral-dark-30">
+          Doing a PhD can be isolating, especially for Moroccan researchers who
+          often lack access to structured mentorship, peer networks, or guidance
+          on navigating the global research landscape. The MAIR Mentorship
+          Program exists to close that gap — not with a single workshop, but
+          with sustained, community-driven support that lasts as long as your
+          research journey does.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-neutral-light-30 py-16 md:py-20">
+    <div class="main mx-auto">
+      <div
+        class="flex flex-col items-start gap-6 rounded-lg border border-neutral-light-0 bg-white p-8 md:flex-row md:items-center md:justify-between"
+      >
+        <div>
+          <h3 class="mb-1 text-label-lg font-bold text-neutral-dark-10">
+            May 2026 Cohort — 20 spots available
+          </h3>
+          <p class="text-paragraph-md text-neutral-dark-30">
+            Submit your application now. Join our Discord to stay informed.
+          </p>
+        </div>
+        <div class="flex shrink-0 flex-col gap-3 sm:flex-row">
+          <a
+            href="https://forms.gle/xk5pk9dCNKVCbmvq9"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center border-2 border-black bg-white px-8 py-4 font-sans font-bold text-black shadow-[5px_5px_0px_0px_#990101] transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0px_0px_#990101]"
+          >
+            Apply Now
+          </a>
+          <a
+            href="https://lnkd.in/et9MW3_i"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center border-2 border-black bg-white px-8 py-4 font-sans font-bold text-black shadow-[5px_5px_0px_0px_#49BE97] transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0px_0px_#49BE97]"
+          >
+            Join Discord
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
