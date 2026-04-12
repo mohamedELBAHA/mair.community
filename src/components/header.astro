@@ -19,6 +19,16 @@ const navItems = [
   // { label: "Brand Style", href: "/brand" },
 ];
 
+const programsDropdown = {
+  label: "Programs",
+  items: [
+    { label: "Mentorship Program", href: "/programs/mentorship" },
+    { label: "Ambassador Program", href: "/programs/ambassador" },
+  ],
+};
+
+const isProgramsActive = Astro.url.pathname.startsWith("/programs");
+
 const socialIcons = [
   { icon: "linkedin", href: SOCIALS.linkedin.href, ariaLabel: "LinkedIn" },
   { icon: "discord", href: SOCIALS.discord.href, ariaLabel: "Discord" },
@@ -78,6 +88,18 @@ const socialIcons = [
               </li>
             ))
           }
+          <li class="flex flex-col items-center space-y-3">
+            <span
+              class={`text-label-sm font-sans text-neutral-dark-20 ${isProgramsActive ? "font-bold" : "font-normal"}`}
+            >
+              {programsDropdown.label}
+            </span>
+            {
+              programsDropdown.items.map(item => (
+                <HeaderLink label={item.label} href={item.href} />
+              ))
+            }
+          </li>
         </ul>
       </nav>
     </div>
@@ -95,6 +117,35 @@ const socialIcons = [
             </li>
           ))
         }
+        <li class="group relative">
+          <button
+            class={`relative inline-flex items-center gap-1 px-2 pl-4 font-sans text-label-sm text-neutral-dark-20 transition-colors duration-200 hover:font-bold ${isProgramsActive ? "font-bold" : "font-normal"}`}
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {programsDropdown.label}
+            <Icon
+              name="chev-down"
+              class="h-3 w-3 transition-transform duration-200 group-hover:rotate-180"
+            />
+          </button>
+          <ul
+            class="invisible absolute left-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-neutral-dark-20/10 bg-white py-1 opacity-0 shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100"
+          >
+            {
+              programsDropdown.items.map(item => (
+                <li>
+                  <a
+                    href={item.href}
+                    class={`text-paragraph-md block px-4 py-2 font-sans text-neutral-dark-20 transition-colors duration-150 hover:bg-neutral-light-30 hover:font-bold ${Astro.url.pathname === item.href ? "font-bold" : "font-normal"}`}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </li>
       </ul>
       <ul class="flex flex-row items-center space-x-4">
         <Search />

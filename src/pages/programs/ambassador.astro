@@ -1,0 +1,28 @@
+---
+import Layout from "@/components/layout.astro";
+import Header from "@/components/header.astro";
+import { SITE } from "@/config";
+---
+
+<Layout
+  title={`Ambassador Program | ${SITE.title}`}
+  description="The MAIR Ambassador Program — coming soon."
+>
+  <section class="relative overflow-hidden bg-neutral-light-30">
+    <Header />
+  </section>
+
+  <main class="flex min-h-[60vh] items-center justify-center bg-white">
+    <div class="text-center">
+      <p
+        class="mb-4 font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-teal-60"
+      >
+        MAIR Programs
+      </p>
+      <h1 class="mb-4 text-heading-lg font-bold text-neutral-dark-10">
+        Ambassador Program
+      </h1>
+      <p class="text-paragraph-md text-neutral-dark-30">Coming Soon</p>
+    </div>
+  </main>
+</Layout>
