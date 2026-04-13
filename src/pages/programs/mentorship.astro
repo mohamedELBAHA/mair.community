@@ -71,7 +71,8 @@ const bootcampDays = [
     time: "19:00 – 20:00 GMT+1",
     title: "The Researcher Mindset",
     speaker: "Amine El Yousfi",
-    description: "Non-technical session.",
+    description:
+      "Non-technical session exploring the deeper purpose of research, the mindset required to pursue it, and the broader societal role of knowledge creation. Through a sociological lens, the discussion will reflect on what it means to do research as a Moroccan in a global context.",
   },
 ];
 
@@ -118,7 +119,12 @@ const eligibility = [
             need to thrive in their research journey. Not a one-off event — a
             structured, long-term commitment.
           </p>
-          <div class="mt-8">
+          <p
+            class="mt-6 font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-neutral-dark-30"
+          >
+            Bootcamp — <span class="text-teal-60">May 6 – 10, 2026</span>
+          </p>
+          <div class="mt-6">
             <a
               href="https://forms.gle/xk5pk9dCNKVCbmvq9"
               target="_blank"
@@ -137,7 +143,7 @@ const eligibility = [
           <p
             class="mb-5 font-mono text-paragraph-xs font-semibold uppercase tracking-widest text-neutral-dark-30"
           >
-            Application Deadline
+            Application Deadline — April 30
           </p>
           <div class="flex items-start gap-4">
             <div class="flex flex-col items-center">
@@ -203,7 +209,7 @@ const eligibility = [
   </section>
 
   <script>
-    const DEADLINE = new Date("2026-05-01T00:00:00").getTime();
+    const DEADLINE = new Date("2026-04-30T00:00:00").getTime();
 
     function pad(n: number) {
       return String(n).padStart(2, "0");
@@ -385,6 +391,11 @@ const eligibility = [
       <h2 class="mb-2 text-heading-sm font-bold text-neutral-dark-10">
         Bootcamp Schedule
       </h2>
+      <p
+        class="mb-3 font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-teal-60"
+      >
+        May 6 – May 10, 2026
+      </p>
       <p class="text-paragraph-md mb-10 text-neutral-dark-30">
         One week. Six sessions. Everything your PhD program won't teach you.
       </p>
@@ -406,7 +417,7 @@ const eligibility = [
                 <p class="text-paragraph-sm font-bold leading-snug text-neutral-dark-10">
                   {day.title}
                 </p>
-                <p class="font-mono text-paragraph-xs text-teal-60">
+                <p class="select-none font-mono text-paragraph-xs text-teal-60 blur-sm">
                   {day.speaker}
                 </p>
                 <p class="text-paragraph-xs leading-relaxed text-neutral-dark-30">
@@ -435,7 +446,7 @@ const eligibility = [
                 <p class="text-paragraph-sm font-bold text-neutral-dark-10">
                   {day.title}
                 </p>
-                <p class="font-mono text-paragraph-xs text-teal-60">
+                <p class="select-none font-mono text-paragraph-xs text-teal-60 blur-sm">
                   {day.speaker}
                 </p>
                 <p class="text-paragraph-xs leading-relaxed text-neutral-dark-30">
@@ -452,18 +463,156 @@ const eligibility = [
   <!-- Why it matters -->
   <section class="bg-white py-16 md:py-20">
     <div class="main mx-auto">
-      <div class="max-w-2xl">
-        <h2 class="mb-6 text-heading-sm font-bold text-neutral-dark-10">
-          Why it matters
-        </h2>
-        <p class="text-paragraph-lg text-neutral-dark-30">
-          Doing a PhD can be isolating, especially for Moroccan researchers who
-          often lack access to structured mentorship, peer networks, or guidance
-          on navigating the global research landscape. The MAIR Mentorship
-          Program exists to close that gap — not with a single workshop, but
-          with sustained, community-driven support that lasts as long as your
-          research journey does.
-        </p>
+      <div class="flex flex-col items-center gap-16 md:flex-row md:gap-20">
+        <div class="flex-1">
+          <h2 class="mb-6 text-heading-sm font-bold text-neutral-dark-10">
+            Why it matters
+          </h2>
+          <p class="text-paragraph-lg text-neutral-dark-30">
+            Doing a PhD can be isolating, especially for Moroccan researchers
+            who often lack access to structured mentorship, peer networks, or
+            guidance on navigating the global research landscape. The MAIR
+            Mentorship Program exists to close that gap — not with a single
+            workshop, but with sustained, community-driven support that lasts as
+            long as your research journey does.
+          </p>
+        </div>
+
+        <!-- Visual: network graph -->
+        <div class="shrink-0" aria-hidden="true">
+          <svg
+            width="280"
+            height="280"
+            viewBox="0 0 280 280"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Edges -->
+            <line
+              x1="140"
+              y1="140"
+              x2="140"
+              y2="40"
+              stroke="#29AE86"
+              stroke-width="1"
+              stroke-opacity="0.25"></line>
+            <line
+              x1="140"
+              y1="140"
+              x2="230"
+              y2="95"
+              stroke="#29AE86"
+              stroke-width="1"
+              stroke-opacity="0.25"></line>
+            <line
+              x1="140"
+              y1="140"
+              x2="230"
+              y2="185"
+              stroke="#29AE86"
+              stroke-width="1"
+              stroke-opacity="0.25"></line>
+            <line
+              x1="140"
+              y1="140"
+              x2="140"
+              y2="240"
+              stroke="#29AE86"
+              stroke-width="1"
+              stroke-opacity="0.25"></line>
+            <line
+              x1="140"
+              y1="140"
+              x2="50"
+              y2="185"
+              stroke="#29AE86"
+              stroke-width="1"
+              stroke-opacity="0.25"></line>
+            <line
+              x1="140"
+              y1="140"
+              x2="50"
+              y2="95"
+              stroke="#29AE86"
+              stroke-width="1"
+              stroke-opacity="0.25"></line>
+            <!-- Cross edges (peer connections) -->
+            <line
+              x1="140"
+              y1="40"
+              x2="230"
+              y2="95"
+              stroke="#29AE86"
+              stroke-width="0.75"
+              stroke-opacity="0.12"></line>
+            <line
+              x1="230"
+              y1="95"
+              x2="230"
+              y2="185"
+              stroke="#29AE86"
+              stroke-width="0.75"
+              stroke-opacity="0.12"></line>
+            <line
+              x1="230"
+              y1="185"
+              x2="140"
+              y2="240"
+              stroke="#29AE86"
+              stroke-width="0.75"
+              stroke-opacity="0.12"></line>
+            <line
+              x1="140"
+              y1="240"
+              x2="50"
+              y2="185"
+              stroke="#29AE86"
+              stroke-width="0.75"
+              stroke-opacity="0.12"></line>
+            <line
+              x1="50"
+              y1="185"
+              x2="50"
+              y2="95"
+              stroke="#29AE86"
+              stroke-width="0.75"
+              stroke-opacity="0.12"></line>
+            <line
+              x1="50"
+              y1="95"
+              x2="140"
+              y2="40"
+              stroke="#29AE86"
+              stroke-width="0.75"
+              stroke-opacity="0.12"></line>
+            <!-- Outer nodes -->
+            <circle cx="140" cy="40" r="5" fill="#29AE86" fill-opacity="0.5"
+            ></circle>
+            <circle cx="230" cy="95" r="5" fill="#29AE86" fill-opacity="0.5"
+            ></circle>
+            <circle cx="230" cy="185" r="5" fill="#29AE86" fill-opacity="0.5"
+            ></circle>
+            <circle cx="140" cy="240" r="5" fill="#29AE86" fill-opacity="0.5"
+            ></circle>
+            <circle cx="50" cy="185" r="5" fill="#29AE86" fill-opacity="0.5"
+            ></circle>
+            <circle cx="50" cy="95" r="5" fill="#29AE86" fill-opacity="0.5"
+            ></circle>
+            <!-- Center node (mentor / MAIR) -->
+            <circle cx="140" cy="140" r="14" fill="#29AE86" fill-opacity="0.12"
+            ></circle>
+            <circle cx="140" cy="140" r="8" fill="#29AE86" fill-opacity="0.7"
+            ></circle>
+            <!-- Pulse ring -->
+            <circle
+              cx="140"
+              cy="140"
+              r="22"
+              stroke="#29AE86"
+              stroke-width="1"
+              stroke-opacity="0.2"></circle>
+          </svg>
+        </div>
       </div>
     </div>
   </section>
