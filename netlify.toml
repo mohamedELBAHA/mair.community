@@ -1,0 +1,11 @@
+[build]
+  command = "astro build"
+  publish = "dist"
+
+# Serve the mentorship portal at the root of mentorship.mair.ma
+[[redirects]]
+  from = "/*"
+  to = "/mentorship-portal/:splat"
+  status = 200
+  force = true
+  conditions = {Host = ["mentorship.mair.ma"]}
