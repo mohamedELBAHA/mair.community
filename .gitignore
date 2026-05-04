@@ -37,3 +37,6 @@ pnpm-debug.log*
 ## scripts output
 missed-episode.json
 .vercel
+
+
+MEMORY.md

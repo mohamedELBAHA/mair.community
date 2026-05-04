@@ -46,5 +46,12 @@
         "link": "https://www.linkedin.com/in/marwa-el-kamil/",
         "profile_image": "./images/marwaelk.png",
         "status": "active"
+    },
+    {
+        "id": 8,
+        "name": "Zakaria Mahmoud",
+        "link": "https://www.linkedin.com/in/zakariamahmoud/",
+        "profile_image": "./images/mahmoud.jpg",
+        "status": "active"
     }
 ]
