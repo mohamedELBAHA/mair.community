@@ -1,0 +1,1134 @@
+---
+import Layout from "@/components/layout.astro";
+import { SITE } from "@/config";
+
+const sessions = [
+  {
+    id: "session-1",
+    shortDay: "WED",
+    date: "May 6",
+    isoDate: "2026-05-06",
+    time: "20:00 – 21:30 GMT+1",
+    title: "Research Tools & Workflow",
+    speaker: "Yasser Benigmim",
+    description:
+      "Essential tools and workflows to organize research, manage papers, write in LaTeX, and ensure reproducibility. Includes how to read papers efficiently and key research terminology.",
+  },
+  {
+    id: "session-2",
+    shortDay: "THU",
+    date: "May 7",
+    isoDate: "2026-05-07",
+    time: "20:00 – 21:30 GMT+1",
+    title: "AI Conferences & Journals",
+    speaker: "Yassir Bendou",
+    description:
+      "Overview of major AI conferences and rankings, how to choose where to publish, and how the paper submission process works — from peer review to rebuttals and common reasons for rejection.",
+  },
+  {
+    id: "session-3",
+    shortDay: "FRI",
+    date: "May 8",
+    isoDate: "2026-05-08",
+    time: "20:00 – 21:30 GMT+1",
+    title: "Paper Structure & Storytelling",
+    speaker: "Ziyad Benomar",
+    description:
+      "How to structure a strong research paper, write clear abstracts, and present contributions effectively, along with practical methods for writing efficiently, collaborating with co-authors, and avoiding common pitfalls.",
+  },
+  {
+    id: "session-4",
+    shortDay: "SAT",
+    date: "May 9",
+    isoDate: "2026-05-09",
+    time: "20:00 – 21:30 GMT+1",
+    title: "Communicating Your Research",
+    speaker: "Ahmed Zahlane",
+    description:
+      "How to clearly communicate your research to different audiences and navigate collaboration, feedback, and professional relationships during a PhD.",
+  },
+  {
+    id: "session-5",
+    shortDay: "SUN",
+    date: "May 10",
+    isoDate: "2026-05-10",
+    time: "19:00 – 20:00 GMT+1",
+    title: "The Researcher Mindset",
+    speaker: "Amine El Yousfi",
+    description:
+      "Non-technical session exploring the deeper purpose of research, the mindset required to pursue it, and the broader societal role of knowledge creation. Through a sociological lens, the discussion will reflect on what it means to do research as a Moroccan in a global context.",
+  },
+];
+
+const COHORTS = [
+  {
+    id: "may2026",
+    label: "MAY 2026",
+    program: "Mentorship Program",
+    dates: "Bootcamp: May 6 – 10, 2026",
+    status: "Active",
+  },
+];
+
+// ── DEMO ONLY ─────────────────────────────────────────────────────────────────
+// Replace with the real participant list before going live.
+// Each entry: { email, code, name }
+// ─────────────────────────────────────────────────────────────────────────────
+const CREDENTIALS = [
+  {
+    email: "demo@mair.ma",
+    code: "MAIR-DEMO",
+    name: "Demo Participant",
+    university: "Mohammed VI Polytechnic University",
+    phdYear: "2025",
+    thesis: "Deep Learning for Arabic Natural Language Processing",
+    linkedin: "",
+    website: "",
+  },
+  {
+    email: "ahmed@example.com",
+    code: "MAIR-AHM",
+    name: "Ahmed Alaoui",
+    university: "Université Mohammed V – Rabat",
+    phdYear: "2024",
+    thesis: "Graph Neural Networks for Molecular Property Prediction",
+    linkedin: "",
+    website: "",
+  },
+  {
+    email: "fatima@example.com",
+    code: "MAIR-FAT",
+    name: "Fatima Benali",
+    university: "École Polytechnique – Paris",
+    phdYear: "2026",
+    thesis: "Efficient Vision Transformers for Medical Imaging",
+    linkedin: "",
+    website: "",
+  },
+  {
+    email: "youssef@example.com",
+    code: "MAIR-YOU",
+    name: "Youssef Chraibi",
+    university: "MIT",
+    phdYear: "2025",
+    thesis: "Reinforcement Learning for Autonomous Robotic Systems",
+    linkedin: "",
+    website: "",
+  },
+];
+---
+
+<Layout
+  title={`Mentorship Portal | ${SITE.title}`}
+  description="MAIR Mentorship Program participant portal — May 2026 cohort bootcamp schedule and attendance."
+>
+  <!-- ===================================================== -->
+  <!-- SCREEN 1 — Cohort selection                           -->
+  <!-- ===================================================== -->
+  <div id="screen-cohort" class="min-h-screen bg-neutral-light-30">
+    <div class="main border-b border-neutral-dark-10/[0.06] py-4 md:py-6">
+      <a href="/" aria-label="MAIR home">
+        <img
+          src="/logo2.png"
+          alt="MAIR Logo"
+          class="h-auto w-[90px] md:w-[110px]"
+        />
+      </a>
+    </div>
+
+    <main class="main py-14 md:py-24">
+      <div class="mx-auto max-w-lg">
+        <p
+          class="mb-3 font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-teal-60"
+        >
+          MAIR Programs
+        </p>
+        <h1
+          class="mb-2 font-sans text-heading-lg font-bold text-neutral-dark-10"
+        >
+          Mentorship Portal
+        </h1>
+        <p class="mb-10 text-paragraph-lg text-neutral-dark-30">
+          Select your cohort to continue.
+        </p>
+
+        <div id="cohort-list" class="flex flex-col gap-4">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- SCREEN 2 — Login                                      -->
+  <!-- ===================================================== -->
+  <div id="screen-login" class="hidden min-h-screen bg-neutral-light-30">
+    <div class="main border-b border-neutral-dark-10/[0.06] py-4 md:py-6">
+      <a href="/" aria-label="MAIR home">
+        <img
+          src="/logo2.png"
+          alt="MAIR Logo"
+          class="h-auto w-[90px] md:w-[110px]"
+        />
+      </a>
+    </div>
+
+    <main class="main py-14 md:py-24">
+      <div class="mx-auto max-w-md">
+        <button
+          id="back-to-cohort"
+          class="mb-8 flex items-center gap-1.5 font-mono text-paragraph-xs text-neutral-dark-30 transition-colors hover:text-neutral-dark-10"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+          </svg>
+          Choose a different cohort
+        </button>
+
+        <!-- Cohort badge -->
+        <div
+          class="mb-6 inline-flex items-center gap-2 rounded-full border border-teal-60/30 bg-teal-60/5 px-4 py-1.5"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-teal-60"></span>
+          <span
+            id="login-cohort-label"
+            class="font-mono text-paragraph-xs font-semibold uppercase tracking-widest text-teal-60"
+          >
+            MAY 2026
+          </span>
+        </div>
+
+        <h2
+          class="mb-1 font-sans text-heading-sm font-bold text-neutral-dark-10"
+        >
+          Access the portal
+        </h2>
+        <p class="text-paragraph-md mb-8 text-neutral-dark-30">
+          Enter your email address and access code to continue.
+        </p>
+
+        <div
+          class="rounded-xl border border-neutral-dark-10/10 bg-white p-6 shadow-sm md:p-8"
+        >
+          <form id="login-form" novalidate class="flex flex-col gap-5">
+            <!-- Email -->
+            <div class="flex flex-col gap-1.5">
+              <label
+                for="login-email"
+                class="font-mono text-paragraph-xs font-semibold uppercase tracking-widest text-neutral-dark-30"
+              >
+                Email address
+              </label>
+              <input
+                id="login-email"
+                type="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                class="rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-4 py-3 font-mono text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+              />
+            </div>
+
+            <!-- Access code -->
+            <div class="flex flex-col gap-1.5">
+              <label
+                for="login-code"
+                class="font-mono text-paragraph-xs font-semibold uppercase tracking-widest text-neutral-dark-30"
+              >
+                Access code
+              </label>
+              <input
+                id="login-code"
+                type="password"
+                autocomplete="off"
+                placeholder="••••••••"
+                class="rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-4 py-3 font-mono text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+              />
+            </div>
+
+            <!-- Error message -->
+            <p
+              id="login-error"
+              class="hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 font-mono text-paragraph-xs text-red-600"
+            >
+              Incorrect email or access code. Please check your details and try
+              again.
+            </p>
+
+            <!-- Submit -->
+            <button
+              type="submit"
+              id="login-submit"
+              class="mt-1 inline-flex items-center justify-center gap-2 border-2 border-black bg-white px-6 py-3.5 font-sans font-bold text-black shadow-[4px_4px_0px_0px_#990101] transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#990101]"
+            >
+              Access portal
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- SCREEN 3 — Portal                                     -->
+  <!-- ===================================================== -->
+  <div id="screen-portal" class="hidden min-h-screen">
+    <!-- Header -->
+    <div class="border-b border-neutral-dark-10/[0.06] bg-white">
+      <div class="main flex items-center justify-between py-4 md:py-5">
+        <a href="/" aria-label="MAIR home">
+          <img
+            src="/logo2.png"
+            alt="MAIR Logo"
+            class="h-auto w-[90px] md:w-[110px]"
+          />
+        </a>
+        <button
+          id="sign-out-btn"
+          class="flex items-center gap-1.5 font-mono text-paragraph-xs text-neutral-dark-30 transition-colors hover:text-neutral-dark-10"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+          </svg>
+          Sign out
+        </button>
+      </div>
+    </div>
+
+    <!-- Welcome banner -->
+    <section class="bg-neutral-light-30 py-10 md:py-14">
+      <div class="main">
+        <div
+          class="mb-3 inline-flex items-center gap-2 rounded-full border border-teal-60/30 bg-teal-60/5 px-4 py-1.5"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-teal-60"></span>
+          <span
+            id="portal-cohort-label"
+            class="font-mono text-paragraph-xs font-semibold uppercase tracking-widest text-teal-60"
+          >
+            MAY 2026
+          </span>
+        </div>
+        <h1
+          class="mb-1 font-sans text-heading-lg font-bold text-neutral-dark-10"
+        >
+          Welcome, <span id="welcome-name">—</span>
+        </h1>
+        <p class="text-paragraph-sm text-neutral-dark-30">
+          MAIR Mentorship Program &middot; Bootcamp: May 6 – 10, 2026
+        </p>
+
+        <!-- Attendance progress -->
+        <div class="mt-8 w-full max-w-xs">
+          <div class="mb-2 flex items-center justify-between">
+            <span
+              class="font-mono text-paragraph-xs font-medium uppercase tracking-widest text-neutral-dark-30"
+            >
+              Your attendance
+            </span>
+            <span
+              id="attendance-label"
+              class="font-mono text-paragraph-xs font-bold text-teal-60"
+            >
+              0 / {sessions.length}
+            </span>
+          </div>
+          <div
+            class="h-1.5 w-full overflow-hidden rounded-full bg-neutral-dark-10/10"
+          >
+            <div
+              id="attendance-bar"
+              class="h-1.5 rounded-full bg-teal-60 transition-all duration-500"
+              style="width: 0%"
+            >
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile card -->
+        <div
+          class="mt-8 rounded-xl border border-neutral-dark-10/10 bg-white p-6 shadow-sm md:p-8"
+        >
+          <!-- Card header -->
+          <div class="mb-5 flex items-center justify-between">
+            <p
+              class="font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-neutral-dark-30/60"
+            >
+              Your Profile
+            </p>
+            <div class="flex items-center gap-2">
+              <button
+                id="edit-profile-btn"
+                class="flex items-center gap-1.5 rounded-lg border border-neutral-dark-10/15 px-3 py-1.5 font-mono text-paragraph-xs text-neutral-dark-30 transition-colors hover:border-teal-60 hover:text-teal-60"
+              >
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                  ></path>
+                  <path
+                    d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                  ></path>
+                </svg>
+                Edit
+              </button>
+              <button
+                id="save-profile-btn"
+                class="hidden rounded-lg bg-teal-60 px-4 py-1.5 font-sans text-paragraph-xs font-bold text-white transition-colors hover:bg-teal-60/85"
+              >
+                Save changes
+              </button>
+              <button
+                id="cancel-profile-btn"
+                class="hidden rounded-lg border border-neutral-dark-10/15 px-3 py-1.5 font-mono text-paragraph-xs text-neutral-dark-30 transition-colors hover:text-neutral-dark-10"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <!-- ── VIEW MODE ── -->
+          <div id="profile-view">
+            <div class="mb-5 flex items-center gap-4">
+              <div
+                id="profile-avatar"
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-teal-60/15 font-sans text-label-sm font-bold text-teal-60"
+              >
+                --
+              </div>
+              <div>
+                <p
+                  id="profile-name"
+                  class="font-sans text-label-sm font-bold text-neutral-dark-10"
+                >
+                  —
+                </p>
+                <p
+                  id="profile-email"
+                  class="font-mono text-paragraph-xs text-neutral-dark-30"
+                >
+                  —
+                </p>
+                <div
+                  id="profile-links-view"
+                  class="mt-2 hidden items-center gap-3"
+                >
+                  <a
+                    id="profile-linkedin-link"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-1 font-mono text-paragraph-xs text-neutral-dark-30 transition-colors hover:text-teal-60"
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      ><path
+                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                      ></path><rect x="2" y="9" width="4" height="12"
+                      ></rect><circle cx="4" cy="4" r="2"></circle></svg
+                    >
+                    LinkedIn
+                  </a>
+                  <a
+                    id="profile-website-link"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-1 font-mono text-paragraph-xs text-neutral-dark-30 transition-colors hover:text-teal-60"
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      ><circle cx="12" cy="12" r="10"></circle><line
+                        x1="2"
+                        y1="12"
+                        x2="22"
+                        y2="12"></line><path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                      ></path></svg
+                    >
+                    Website
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="border-neutral-dark-10/8 grid grid-cols-1 gap-5 border-t pt-5 sm:grid-cols-2"
+            >
+              <div>
+                <p
+                  class="mb-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                >
+                  University
+                </p>
+                <p
+                  id="profile-university"
+                  class="text-paragraph-sm text-neutral-dark-10"
+                >
+                  —
+                </p>
+              </div>
+              <div>
+                <p
+                  class="mb-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                >
+                  PhD Year
+                </p>
+                <p
+                  id="profile-phd-year"
+                  class="text-paragraph-sm text-neutral-dark-10"
+                >
+                  —
+                </p>
+              </div>
+              <div class="sm:col-span-2">
+                <p
+                  class="mb-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                >
+                  Thesis Subject
+                </p>
+                <p
+                  id="profile-thesis"
+                  class="text-paragraph-sm text-neutral-dark-10"
+                >
+                  —
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── EDIT MODE ── -->
+          <div id="profile-edit" class="hidden">
+            <!-- Name row -->
+            <div class="mb-5 flex items-start gap-4">
+              <div
+                id="profile-avatar-edit"
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-teal-60/15 font-sans text-label-sm font-bold text-teal-60"
+              >
+                --
+              </div>
+              <div class="flex-1 space-y-3">
+                <div>
+                  <label
+                    for="edit-name"
+                    class="mb-1 block font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                  >
+                    Full name
+                  </label>
+                  <input
+                    id="edit-name"
+                    type="text"
+                    class="w-full rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                  />
+                </div>
+                <p class="font-mono text-paragraph-xs text-neutral-dark-30/50">
+                  Email: <span
+                    id="edit-email-display"
+                    class="text-neutral-dark-30">—</span
+                  >
+                </p>
+              </div>
+            </div>
+
+            <!-- Detail fields grid -->
+            <div
+              class="border-neutral-dark-10/8 grid grid-cols-1 gap-4 border-t pt-5 sm:grid-cols-2"
+            >
+              <div>
+                <label
+                  for="edit-university"
+                  class="mb-1 block font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                >
+                  University
+                </label>
+                <input
+                  id="edit-university"
+                  type="text"
+                  placeholder="Your university"
+                  class="w-full rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                />
+              </div>
+              <div>
+                <label
+                  for="edit-phd-year"
+                  class="mb-1 block font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                >
+                  PhD Year
+                </label>
+                <input
+                  id="edit-phd-year"
+                  type="number"
+                  min="2020"
+                  max="2035"
+                  placeholder="e.g. 2025"
+                  class="w-full rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label
+                  for="edit-thesis"
+                  class="mb-1 block font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                >
+                  Thesis Subject
+                </label>
+                <input
+                  id="edit-thesis"
+                  type="text"
+                  placeholder="Your research topic"
+                  class="w-full rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                />
+              </div>
+              <div>
+                <label
+                  for="edit-linkedin"
+                  class="mb-1 block font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                >
+                  LinkedIn
+                </label>
+                <input
+                  id="edit-linkedin"
+                  type="url"
+                  placeholder="https://linkedin.com/in/…"
+                  class="w-full rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                />
+              </div>
+              <div>
+                <label
+                  for="edit-website"
+                  class="mb-1 block font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
+                >
+                  Website
+                </label>
+                <input
+                  id="edit-website"
+                  type="url"
+                  placeholder="https://yoursite.com"
+                  class="w-full rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sessions list -->
+    <section class="bg-white py-12 md:py-16">
+      <div class="main">
+        <div class="mb-10">
+          <h2
+            class="mb-2 font-sans text-heading-sm font-bold text-neutral-dark-10"
+          >
+            Bootcamp Schedule
+          </h2>
+          <p
+            class="mb-1 font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-teal-60"
+          >
+            May 6 – May 10, 2026
+          </p>
+          <p class="text-paragraph-md text-neutral-dark-30">
+            Click <strong class="font-semibold text-neutral-dark-10"
+              >Mark as Present</strong
+            > for each session you attended.
+          </p>
+        </div>
+
+        <div id="sessions-list" class="flex flex-col gap-4">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script is:inline define:vars={{ sessions, COHORTS, CREDENTIALS }}>
+  const LS_SESSION = "mair_portal_session";
+  const LS_ATTENDANCE = "mair_portal_attendance";
+
+  // ---- DOM refs ----
+  const screenCohort = document.getElementById("screen-cohort");
+  const screenLogin = document.getElementById("screen-login");
+  const screenPortal = document.getElementById("screen-portal");
+
+  const cohortListEl = document.getElementById("cohort-list");
+  const loginCohortLabel = document.getElementById("login-cohort-label");
+  const portalCohortLabel = document.getElementById("portal-cohort-label");
+  const backToCohortBtn = document.getElementById("back-to-cohort");
+  const loginForm = document.getElementById("login-form");
+  const loginEmailEl = document.getElementById("login-email");
+  const loginCodeEl = document.getElementById("login-code");
+  const loginErrorEl = document.getElementById("login-error");
+  const signOutBtn = document.getElementById("sign-out-btn");
+  const welcomeNameEl = document.getElementById("welcome-name");
+  const sessionsListEl = document.getElementById("sessions-list");
+  const attendanceLabelEl = document.getElementById("attendance-label");
+  const attendanceBarEl = document.getElementById("attendance-bar");
+
+  // ---- State ----
+  let selectedCohort = null;
+  let participant = null; // { name, email }
+  let attendance = {};
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(LS_SESSION);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        participant = { name: saved.name, email: saved.email };
+        selectedCohort = COHORTS.find(c => c.id === saved.cohortId) || null;
+      }
+    } catch {
+      /* ignore invalid stored session */
+    }
+    try {
+      attendance = JSON.parse(localStorage.getItem(LS_ATTENDANCE) || "{}");
+    } catch {
+      attendance = {};
+    }
+  }
+
+  function saveSession() {
+    localStorage.setItem(
+      LS_SESSION,
+      JSON.stringify({
+        name: participant.name,
+        email: participant.email,
+        cohortId: selectedCohort.id,
+      })
+    );
+  }
+
+  function saveAttendance() {
+    localStorage.setItem(LS_ATTENDANCE, JSON.stringify(attendance));
+  }
+
+  function clearSession() {
+    localStorage.removeItem(LS_SESSION);
+    participant = null;
+    selectedCohort = null;
+  }
+
+  // ---- Screen transitions ----
+
+  function show(screen) {
+    [screenCohort, screenLogin, screenPortal].forEach(s =>
+      s.classList.add("hidden")
+    );
+    screen.classList.remove("hidden");
+    window.scrollTo(0, 0);
+  }
+
+  function goToCohortScreen() {
+    renderCohorts();
+    show(screenCohort);
+  }
+
+  function goToLoginScreen(cohort) {
+    selectedCohort = cohort;
+    loginCohortLabel.textContent = cohort.label;
+    loginErrorEl.classList.add("hidden");
+    loginEmailEl.value = "";
+    loginCodeEl.value = "";
+    show(screenLogin);
+    loginEmailEl.focus();
+  }
+
+  // ---- Profile editing ----
+
+  const LS_PROFILE = "mair_portal_profile";
+  let profileOverrides = {};
+
+  function loadProfileOverrides() {
+    try {
+      const raw = localStorage.getItem(`${LS_PROFILE}_${participant.email}`);
+      profileOverrides = raw ? JSON.parse(raw) : {};
+    } catch {
+      profileOverrides = {};
+    }
+  }
+
+  function saveProfileOverrides() {
+    localStorage.setItem(
+      `${LS_PROFILE}_${participant.email}`,
+      JSON.stringify(profileOverrides)
+    );
+  }
+
+  function getEffectiveProfile() {
+    const cred =
+      CREDENTIALS.find(
+        c => c.email.toLowerCase() === participant.email.toLowerCase()
+      ) || {};
+    return {
+      name: profileOverrides.name ?? cred.name ?? "",
+      email: participant.email,
+      university: profileOverrides.university ?? cred.university ?? "",
+      phdYear: profileOverrides.phdYear ?? cred.phdYear ?? "",
+      thesis: profileOverrides.thesis ?? cred.thesis ?? "",
+      linkedin: profileOverrides.linkedin ?? cred.linkedin ?? "",
+      website: profileOverrides.website ?? cred.website ?? "",
+    };
+  }
+
+  function initials(name) {
+    return (name || "?")
+      .split(" ")
+      .map(n => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  }
+
+  function populateProfile() {
+    const p = getEffectiveProfile();
+
+    // Avatar (both view and edit share the same initials)
+    const ini = initials(p.name);
+    document.getElementById("profile-avatar").textContent = ini;
+    document.getElementById("profile-avatar-edit").textContent = ini;
+
+    // View mode fields
+    document.getElementById("profile-name").textContent = p.name || "—";
+    document.getElementById("profile-email").textContent = p.email || "—";
+    document.getElementById("profile-university").textContent =
+      p.university || "—";
+    document.getElementById("profile-phd-year").textContent = p.phdYear || "—";
+    document.getElementById("profile-thesis").textContent = p.thesis || "—";
+
+    // Social links
+    const linksView = document.getElementById("profile-links-view");
+    const linkedinLink = document.getElementById("profile-linkedin-link");
+    const websiteLink = document.getElementById("profile-website-link");
+
+    linkedinLink.classList.toggle("hidden", !p.linkedin);
+    websiteLink.classList.toggle("hidden", !p.website);
+
+    if (p.linkedin) linkedinLink.href = p.linkedin;
+    if (p.website) websiteLink.href = p.website;
+
+    linksView.classList.toggle("hidden", !p.linkedin && !p.website);
+    linksView.classList.toggle("flex", !!(p.linkedin || p.website));
+
+    // Update welcome name if name changed
+    welcomeNameEl.textContent = p.name || participant.name;
+  }
+
+  function enterEditMode() {
+    const p = getEffectiveProfile();
+    document.getElementById("edit-name").value = p.name;
+    document.getElementById("edit-email-display").textContent = p.email;
+    document.getElementById("edit-university").value = p.university;
+    document.getElementById("edit-phd-year").value = p.phdYear;
+    document.getElementById("edit-thesis").value = p.thesis;
+    document.getElementById("edit-linkedin").value = p.linkedin;
+    document.getElementById("edit-website").value = p.website;
+
+    document.getElementById("profile-view").classList.add("hidden");
+    document.getElementById("profile-edit").classList.remove("hidden");
+    document.getElementById("edit-profile-btn").classList.add("hidden");
+    document.getElementById("save-profile-btn").classList.remove("hidden");
+    document.getElementById("cancel-profile-btn").classList.remove("hidden");
+
+    document.getElementById("edit-name").focus();
+  }
+
+  function exitEditMode() {
+    document.getElementById("profile-view").classList.remove("hidden");
+    document.getElementById("profile-edit").classList.add("hidden");
+    document.getElementById("edit-profile-btn").classList.remove("hidden");
+    document.getElementById("save-profile-btn").classList.add("hidden");
+    document.getElementById("cancel-profile-btn").classList.add("hidden");
+  }
+
+  function saveProfile() {
+    profileOverrides.name = document.getElementById("edit-name").value.trim();
+    profileOverrides.university = document
+      .getElementById("edit-university")
+      .value.trim();
+    profileOverrides.phdYear = document
+      .getElementById("edit-phd-year")
+      .value.trim();
+    profileOverrides.thesis = document
+      .getElementById("edit-thesis")
+      .value.trim();
+    profileOverrides.linkedin = document
+      .getElementById("edit-linkedin")
+      .value.trim();
+    profileOverrides.website = document
+      .getElementById("edit-website")
+      .value.trim();
+
+    saveProfileOverrides();
+    populateProfile();
+    exitEditMode();
+  }
+
+  function goToPortal() {
+    welcomeNameEl.textContent = participant.name;
+    portalCohortLabel.textContent = selectedCohort.label;
+    loadProfileOverrides();
+    populateProfile();
+    renderSessions();
+    updateProgress();
+    show(screenPortal);
+  }
+
+  // ---- Auth ----
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = loginEmailEl.value.trim().toLowerCase();
+    const code = loginCodeEl.value.trim();
+
+    const match = CREDENTIALS.find(
+      c =>
+        c.email.toLowerCase() === email &&
+        c.code.toLowerCase() === code.toLowerCase()
+    );
+
+    if (match) {
+      participant = { name: match.name, email: match.email };
+      saveSession();
+      loginErrorEl.classList.add("hidden");
+      goToPortal();
+    } else {
+      loginErrorEl.classList.remove("hidden");
+      loginCodeEl.value = "";
+      loginCodeEl.focus();
+    }
+  }
+
+  // ---- Attendance ----
+
+  function toggleAttendance(sessionId) {
+    attendance[sessionId] = !attendance[sessionId];
+    saveAttendance();
+    updateSessionCard(sessionId);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = sessions.length;
+    const attended = sessions.filter(s => attendance[s.id]).length;
+    attendanceLabelEl.textContent = `${attended} / ${total}`;
+    attendanceBarEl.style.width = `${(attended / total) * 100}%`;
+  }
+
+  // ---- Render: cohort cards ----
+
+  function renderCohorts() {
+    cohortListEl.innerHTML = COHORTS.map(
+      c => `
+      <button
+        class="cohort-btn group w-full rounded-xl border-2 border-neutral-dark-10/10 bg-white p-6 text-left transition-all duration-200 hover:border-teal-60/50 hover:shadow-md md:p-8"
+        data-cohort-id="${c.id}"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="mb-3 inline-flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-teal-60"></span>
+              <span class="font-mono text-[10px] font-semibold uppercase tracking-widest text-teal-60">${c.status}</span>
+            </div>
+            <h3 class="mb-1 font-sans text-heading-sm font-bold text-neutral-dark-10">${c.label}</h3>
+            <p class="font-mono text-paragraph-xs text-neutral-dark-30">${c.program}</p>
+            <p class="mt-0.5 font-mono text-paragraph-xs text-neutral-dark-30/60">${c.dates}</p>
+          </div>
+          <div class="mt-1 shrink-0 text-neutral-dark-30/30 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-teal-60">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </div>
+      </button>
+    `
+    ).join("");
+
+    cohortListEl.querySelectorAll(".cohort-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const cohort = COHORTS.find(c => c.id === btn.dataset.cohortId);
+        if (cohort) goToLoginScreen(cohort);
+      });
+    });
+  }
+
+  // ---- Render: session cards ----
+
+  function isSessionPast(isoDate) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return new Date(isoDate) < today;
+  }
+
+  function sessionCardHTML(s) {
+    const present = !!attendance[s.id];
+    const past = isSessionPast(s.isoDate);
+
+    const cardBorder = present
+      ? "border-teal-60/50 bg-teal-60/[0.03]"
+      : "border-neutral-dark-10/10 bg-white";
+
+    const badgeBg = present
+      ? "bg-teal-60 text-white"
+      : past
+        ? "bg-neutral-dark-10/8 text-neutral-dark-20"
+        : "bg-neutral-light-30 text-neutral-dark-30";
+
+    const btnClasses = present
+      ? "border-teal-60 bg-teal-60 text-white hover:bg-teal-60/85 hover:border-teal-60/85"
+      : "border-neutral-dark-10/20 bg-white text-neutral-dark-30 hover:border-teal-60 hover:text-teal-60";
+
+    const statusTag = present
+      ? `<span class="inline-flex items-center gap-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-teal-60">
+           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+           Present
+         </span>`
+      : past
+        ? `<span class="font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/40">Past</span>`
+        : `<span class="font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/40">Upcoming</span>`;
+
+    const btnContent = present
+      ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Present`
+      : `Mark as Present`;
+
+    return `
+      <div data-card="${s.id}" class="flex flex-col gap-4 rounded-xl border-2 p-5 transition-all duration-200 md:flex-row md:items-start md:gap-6 md:p-6 ${cardBorder}">
+        <div class="flex shrink-0 items-center gap-3 md:flex-col md:items-start md:gap-2">
+          <div class="flex w-[68px] flex-col items-center rounded-lg px-3 py-2.5 text-center ${badgeBg}">
+            <span class="font-mono text-[10px] font-bold uppercase tracking-widest leading-none">${s.shortDay}</span>
+            <span class="mt-0.5 font-mono text-paragraph-sm font-bold leading-tight">${s.date}</span>
+          </div>
+          <div class="md:hidden">${statusTag}</div>
+        </div>
+
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-start justify-between gap-2">
+            <div>
+              <h3 class="font-sans text-label-sm font-bold text-neutral-dark-10">${s.title}</h3>
+              <p class="mt-0.5 font-mono text-paragraph-xs text-neutral-dark-30/60">${s.time}</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="hidden md:block">${statusTag}</div>
+              <span class="font-mono text-paragraph-xs font-medium text-teal-60">${s.speaker}</span>
+            </div>
+          </div>
+          <p class="mt-3 text-paragraph-sm leading-relaxed text-neutral-dark-30">${s.description}</p>
+        </div>
+
+        <div class="shrink-0 self-end md:self-start">
+          <button
+            class="attendance-btn flex items-center gap-2 rounded-lg border-2 px-5 py-2.5 font-sans text-paragraph-sm font-bold transition-all duration-200 ${btnClasses}"
+            data-session-id="${s.id}"
+          >${btnContent}</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderSessions() {
+    sessionsListEl.innerHTML = sessions.map(sessionCardHTML).join("");
+    bindAttendanceButtons();
+  }
+
+  function updateSessionCard(sessionId) {
+    const old = sessionsListEl.querySelector(`[data-card="${sessionId}"]`);
+    const session = sessions.find(s => s.id === sessionId);
+    if (!old || !session) return;
+    const tmp = document.createElement("div");
+    tmp.innerHTML = sessionCardHTML(session);
+    const card = tmp.firstElementChild;
+    old.replaceWith(card);
+    card
+      .querySelector(".attendance-btn")
+      ?.addEventListener("click", () => toggleAttendance(sessionId));
+  }
+
+  function bindAttendanceButtons() {
+    sessionsListEl.querySelectorAll(".attendance-btn").forEach(btn => {
+      btn.addEventListener("click", () =>
+        toggleAttendance(btn.dataset.sessionId)
+      );
+    });
+  }
+
+  // ---- Event listeners ----
+
+  backToCohortBtn.addEventListener("click", goToCohortScreen);
+  signOutBtn.addEventListener("click", () => {
+    clearSession();
+    goToCohortScreen();
+  });
+  loginForm.addEventListener("submit", handleLogin);
+
+  document
+    .getElementById("edit-profile-btn")
+    .addEventListener("click", enterEditMode);
+  document
+    .getElementById("save-profile-btn")
+    .addEventListener("click", saveProfile);
+  document
+    .getElementById("cancel-profile-btn")
+    .addEventListener("click", exitEditMode);
+
+  // Allow showing the password via double-click on the code field label
+  document
+    .querySelector('[for="login-code"]')
+    ?.addEventListener("dblclick", () => {
+      loginCodeEl.type = loginCodeEl.type === "password" ? "text" : "password";
+    });
+
+  // ---- Init ----
+
+  loadState();
+  if (participant && selectedCohort) {
+    goToPortal();
+  } else {
+    goToCohortScreen();
+  }
+</script>
