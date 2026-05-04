@@ -5,6 +5,10 @@ dist/
 # dependencies
 node_modules/
 
+# This project uses pnpm — never commit npm/yarn lockfiles.
+package-lock.json
+yarn.lock
+
 # logs
 npm-debug.log*
 yarn-debug.log*
