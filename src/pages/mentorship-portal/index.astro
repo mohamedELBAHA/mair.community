@@ -16,7 +16,7 @@ const { data: cohortRows = [] } = await sb
 
 const { data: sessionRows = [] } = await sb
   .from("bootcamp_sessions")
-  .select("id,cohort_id,short_day,date_label,iso_date,time_label,title,speaker,description,position")
+  .select("id,cohort_id,short_day,date_label,iso_date,time_label,title,speaker,description,position,pdf_path,pdf_filename")
   .order("position", { ascending: true });
 
 // Shape data the way the legacy inline script expects.
@@ -44,6 +44,8 @@ for (const s of sessionRows ?? []) {
     title: s.title,
     speaker: s.speaker ?? "",
     description: s.description ?? "",
+    hasPdf: !!s.pdf_path,
+    pdfFilename: s.pdf_filename ?? "",
   });
 }
 
@@ -515,7 +517,7 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
                 <p
                   class="mb-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
                 >
-                  PhD Year
+                  Year of PhD
                 </p>
                 <p
                   id="profile-phd-year"
@@ -596,16 +598,44 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
                   for="edit-phd-year"
                   class="mb-1 block font-mono text-[10px] font-semibold uppercase tracking-widest text-neutral-dark-30/50"
                 >
-                  PhD Year
+                  Year of PhD
                 </label>
-                <input
-                  id="edit-phd-year"
-                  type="number"
-                  min="2020"
-                  max="2035"
-                  placeholder="e.g. 2025"
-                  class="w-full rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 placeholder-neutral-dark-30/40 transition-colors focus:border-teal-60 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
-                />
+                <input id="edit-phd-year" type="hidden" value="" />
+                <div
+                  id="edit-phd-year-buttons"
+                  class="flex flex-wrap gap-2"
+                  role="radiogroup"
+                  aria-label="Year of PhD"
+                >
+                  <button
+                    type="button"
+                    data-phd-year="1"
+                    class="phd-year-btn rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 transition-colors hover:border-teal-60/60 hover:bg-teal-60/5 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                  >
+                    First year
+                  </button>
+                  <button
+                    type="button"
+                    data-phd-year="2"
+                    class="phd-year-btn rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 transition-colors hover:border-teal-60/60 hover:bg-teal-60/5 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                  >
+                    Second year
+                  </button>
+                  <button
+                    type="button"
+                    data-phd-year="3"
+                    class="phd-year-btn rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 transition-colors hover:border-teal-60/60 hover:bg-teal-60/5 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                  >
+                    Third year
+                  </button>
+                  <button
+                    type="button"
+                    data-phd-year="4"
+                    class="phd-year-btn rounded-lg border border-neutral-dark-10/20 bg-neutral-light-30 px-3 py-2 font-sans text-paragraph-sm text-neutral-dark-10 transition-colors hover:border-teal-60/60 hover:bg-teal-60/5 focus:outline-none focus:ring-2 focus:ring-teal-60/20"
+                  >
+                    Fourth year
+                  </button>
+                </div>
               </div>
               <div class="sm:col-span-2">
                 <label
@@ -655,30 +685,103 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
       </div>
     </section>
 
-    <!-- Sessions list -->
+    <!-- Tabbed: Schedule + Cohort Members -->
     <section class="bg-white py-14 md:py-20">
       <div class="main">
-        <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <div>
+        <!-- Tab bar -->
+        <div
+          role="tablist"
+          aria-label="Portal sections"
+          class="mb-8 flex flex-wrap gap-2 border-b border-neutral-dark-10/10"
+        >
+          <button
+            type="button"
+            id="tab-schedule"
+            role="tab"
+            aria-selected="true"
+            aria-controls="pane-schedule"
+            class="portal-tab -mb-px border-b-2 border-teal-60 px-4 py-2 font-sans text-paragraph-sm font-semibold text-teal-60 transition-colors focus:outline-none"
+          >
+            Bootcamp Schedule
+          </button>
+          <button
+            type="button"
+            id="tab-members"
+            role="tab"
+            aria-selected="false"
+            aria-controls="pane-members"
+            class="portal-tab -mb-px border-b-2 border-transparent px-4 py-2 font-sans text-paragraph-sm font-semibold text-neutral-dark-30 transition-colors hover:text-neutral-dark-10 focus:outline-none"
+          >
+            Cohort Members
+          </button>
+        </div>
+
+        <!-- Pane: Schedule -->
+        <div id="pane-schedule" role="tabpanel" aria-labelledby="tab-schedule">
+          <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p
+                class="mb-2 font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-teal-60"
+              >
+                May 6 – May 10, 2026
+              </p>
+              <h2
+                class="mb-2 font-sans text-heading-sm font-bold tracking-tight text-neutral-dark-10"
+              >
+                Bootcamp Schedule
+              </h2>
+              <p class="text-paragraph-md leading-relaxed text-neutral-dark-30">
+                Attendance is recorded by the program coordinators after each session.
+                Your status updates here automatically.
+              </p>
+            </div>
+          </div>
+
+          <div id="sessions-list" class="flex flex-col gap-4">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- Pane: Cohort Members -->
+        <div
+          id="pane-members"
+          role="tabpanel"
+          aria-labelledby="tab-members"
+          class="hidden"
+        >
+          <div class="mb-10">
             <p
               class="mb-2 font-mono text-paragraph-xs font-semibold uppercase tracking-[0.18em] text-teal-60"
             >
-              May 6 – May 10, 2026
+              Your cohort
             </p>
             <h2
               class="mb-2 font-sans text-heading-sm font-bold tracking-tight text-neutral-dark-10"
             >
-              Bootcamp Schedule
+              Cohort Members
             </h2>
             <p class="text-paragraph-md leading-relaxed text-neutral-dark-30">
-              Attendance is recorded by the program coordinators after each session.
-              Your status updates here automatically.
+              Fellow participants in your cohort. Reach out — many great
+              collaborations start here.
             </p>
           </div>
-        </div>
 
-        <div id="sessions-list" class="flex flex-col gap-4">
-          <!-- populated by JS -->
+          <p
+            id="members-loading"
+            class="hidden py-6 text-center font-mono text-paragraph-xs text-neutral-dark-30/60"
+          >
+            Loading…
+          </p>
+          <p
+            id="members-error"
+            class="hidden rounded-lg border border-red-200 bg-red-50 px-4 py-3 font-mono text-paragraph-xs text-red-700"
+          ></p>
+          <div
+            id="members-grid"
+            class="grid grid-cols-1 gap-4 sm:grid-cols-2"
+          >
+            <!-- populated by JS -->
+          </div>
         </div>
       </div>
     </section>
@@ -712,6 +815,14 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
   const welcomeNameEl = document.getElementById("welcome-name");
   const sessionsListEl = document.getElementById("sessions-list");
   const attendanceLabelEl = document.getElementById("attendance-label");
+  const tabScheduleBtn = document.getElementById("tab-schedule");
+  const tabMembersBtn = document.getElementById("tab-members");
+  const paneScheduleEl = document.getElementById("pane-schedule");
+  const paneMembersEl = document.getElementById("pane-members");
+  const membersGridEl = document.getElementById("members-grid");
+  const membersLoadingEl = document.getElementById("members-loading");
+  const membersErrorEl = document.getElementById("members-error");
+  let membersLoaded = false;
   const attendanceBarEl = document.getElementById("attendance-bar");
 
   // ---- State ----
@@ -829,6 +940,34 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
     };
   }
 
+  const PHD_YEAR_LABELS = {
+    1: "First year",
+    2: "Second year",
+    3: "Third year",
+    4: "Fourth year",
+  };
+
+  function formatPhdYear(v) {
+    const n = typeof v === "number" ? v : parseInt(v, 10);
+    return PHD_YEAR_LABELS[n] || "—";
+  }
+
+  // Sync hidden input + visual active state on the segmented buttons.
+  // Empty string clears the selection.
+  function setEditPhdYear(value) {
+    const hidden = document.getElementById("edit-phd-year");
+    hidden.value = value == null ? "" : String(value);
+    document.querySelectorAll("#edit-phd-year-buttons [data-phd-year]")
+      .forEach((btn) => {
+        const active = btn.dataset.phdYear === hidden.value;
+        btn.classList.toggle("border-teal-60", active);
+        btn.classList.toggle("bg-teal-60/10", active);
+        btn.classList.toggle("text-teal-60", active);
+        btn.classList.toggle("font-medium", active);
+        btn.setAttribute("aria-checked", active ? "true" : "false");
+      });
+  }
+
   function initials(name) {
     return (name || "?")
       .split(" ")
@@ -851,7 +990,7 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
     document.getElementById("profile-email").textContent = p.email || "—";
     document.getElementById("profile-university").textContent =
       p.university || "—";
-    document.getElementById("profile-phd-year").textContent = p.phdYear || "—";
+    document.getElementById("profile-phd-year").textContent = formatPhdYear(p.phdYear);
     document.getElementById("profile-thesis").textContent = p.thesis || "—";
 
     // Social links
@@ -877,7 +1016,9 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
     document.getElementById("edit-name").value = p.name;
     document.getElementById("edit-email-display").textContent = p.email;
     document.getElementById("edit-university").value = p.university;
-    document.getElementById("edit-phd-year").value = p.phdYear;
+    setEditPhdYear(
+      p.phdYear == null || p.phdYear === "" ? "" : String(p.phdYear),
+    );
     document.getElementById("edit-thesis").value = p.thesis;
     document.getElementById("edit-linkedin").value = p.linkedin;
     document.getElementById("edit-website").value = p.website;
@@ -903,7 +1044,10 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
     const payload = {
       name: document.getElementById("edit-name").value.trim(),
       university: document.getElementById("edit-university").value.trim(),
-      phd_year: document.getElementById("edit-phd-year").value.trim(),
+      phd_year: (() => {
+        const v = document.getElementById("edit-phd-year").value;
+        return v === "" ? null : parseInt(v, 10);
+      })(),
       thesis: document.getElementById("edit-thesis").value.trim(),
       linkedin: document.getElementById("edit-linkedin").value.trim(),
       website: document.getElementById("edit-website").value.trim(),
@@ -1226,6 +1370,16 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
               <span class="font-sans text-paragraph-sm font-medium text-neutral-dark-20">${safeSpeaker}</span>
             </div>` : ""}
           ${safeDescription ? `<p class="mt-3 text-paragraph-sm leading-relaxed text-neutral-dark-30">${safeDescription}</p>` : ""}
+          ${s.hasPdf ? `
+            <button
+              type="button"
+              data-pdf-session="${s.id}"
+              class="session-pdf-btn mt-3 inline-flex items-center gap-2 rounded-lg border border-teal-60/30 bg-teal-60/5 px-3 py-1.5 font-mono text-paragraph-xs font-semibold uppercase tracking-wider text-teal-60 transition-colors hover:border-teal-60 hover:bg-teal-60/10"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+              <span class="pdf-btn-label">Download slides</span>
+            </button>
+          ` : ""}
         </div>
 
         <!-- Status (read-only — attendance is set by an admin) -->
@@ -1242,7 +1396,40 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
   function renderSessions() {
     sessionsListEl.innerHTML = sessions.map(sessionCardHTML).join("");
     // No click bindings — attendance is read-only on the portal.
+    // PDF downloads use a delegated handler bound once below.
   }
+
+  // Delegated handler for "Download slides" buttons.
+  // Cards are re-rendered on cohort switch / attendance update, so we delegate
+  // off the parent container instead of binding per-card.
+  sessionsListEl.addEventListener("click", async (ev) => {
+    const btn = ev.target.closest("[data-pdf-session]");
+    if (!btn) return;
+    const sessionId = btn.dataset.pdfSession;
+    const labelEl = btn.querySelector(".pdf-btn-label");
+    const orig = labelEl ? labelEl.textContent : "";
+    if (labelEl) labelEl.textContent = "Preparing…";
+    btn.disabled = true;
+    try {
+      const res = await fetch(`/api/mentorship/sessions/${sessionId}/pdf.json`, {
+        credentials: "same-origin",
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.url) {
+        if (labelEl) labelEl.textContent = data.error || "Unavailable";
+        setTimeout(() => { if (labelEl) labelEl.textContent = orig; }, 2500);
+        return;
+      }
+      // Open in a new tab so the participant can preview before saving.
+      window.open(data.url, "_blank", "noopener");
+      if (labelEl) labelEl.textContent = orig;
+    } catch (e) {
+      if (labelEl) labelEl.textContent = "Network error";
+      setTimeout(() => { if (labelEl) labelEl.textContent = orig; }, 2500);
+    } finally {
+      btn.disabled = false;
+    }
+  });
 
   function updateSessionCard(sessionId) {
     const old = sessionsListEl.querySelector(`[data-card="${sessionId}"]`);
@@ -1279,6 +1466,122 @@ const sessions = sessionsByCohort[defaultCohortKey] ?? [];
   document
     .getElementById("cancel-profile-btn")
     .addEventListener("click", exitEditMode);
+
+  // Year-of-PhD segmented buttons: click to select, click active to clear.
+  document.querySelectorAll("#edit-phd-year-buttons [data-phd-year]")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const v = btn.dataset.phdYear;
+        const current = document.getElementById("edit-phd-year").value;
+        setEditPhdYear(current === v ? "" : v);
+      });
+    });
+
+  // Tabs: Schedule ↔ Cohort Members. Members are fetched on first activation.
+  tabScheduleBtn.addEventListener("click", () => switchTab("schedule"));
+  tabMembersBtn.addEventListener("click", () => switchTab("members"));
+
+  function switchTab(name) {
+    const onSchedule = name === "schedule";
+    paneScheduleEl.classList.toggle("hidden", !onSchedule);
+    paneMembersEl.classList.toggle("hidden", onSchedule);
+
+    for (const [btn, active] of [
+      [tabScheduleBtn, onSchedule],
+      [tabMembersBtn, !onSchedule],
+    ]) {
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+      btn.classList.toggle("border-teal-60", active);
+      btn.classList.toggle("text-teal-60", active);
+      btn.classList.toggle("border-transparent", !active);
+      btn.classList.toggle("text-neutral-dark-30", !active);
+    }
+
+    if (!onSchedule && !membersLoaded) loadCohortMembers();
+  }
+
+  async function loadCohortMembers() {
+    membersLoaded = true;
+    membersErrorEl.classList.add("hidden");
+    membersLoadingEl.classList.remove("hidden");
+    membersGridEl.innerHTML = "";
+    try {
+      const res = await fetch("/api/mentorship/cohort.json", {
+        credentials: "same-origin",
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const members = Array.isArray(data.members) ? data.members : [];
+      if (members.length === 0) {
+        membersGridEl.innerHTML =
+          '<p class="col-span-full py-6 text-center font-mono text-paragraph-xs text-neutral-dark-30/60">No other members yet.</p>';
+      } else {
+        membersGridEl.innerHTML = members.map(memberCardHTML).join("");
+      }
+    } catch (e) {
+      membersLoaded = false; // allow retry on next switch
+      membersErrorEl.textContent =
+        "Could not load cohort members. Try switching tabs again.";
+      membersErrorEl.classList.remove("hidden");
+    } finally {
+      membersLoadingEl.classList.add("hidden");
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function memberCardHTML(m) {
+    const name = escapeHtml(m.name || m.email || "—");
+    const ini = initials(m.name || m.email);
+    const uni = m.university ? escapeHtml(m.university) : "";
+    const yr = formatPhdYear(m.phdYear);
+    const yrShown = yr === "—" ? "" : yr;
+    const meta = [uni, yrShown].filter(Boolean).join(" · ");
+    const youTag = m.isSelf
+      ? '<span class="ml-2 rounded-full bg-teal-60/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase text-teal-60">You</span>'
+      : "";
+
+    const linkedinHref = m.linkedin ? escapeHtml(m.linkedin) : "";
+    const websiteHref = m.website ? escapeHtml(m.website) : "";
+    const emailHref = m.email ? `mailto:${escapeHtml(m.email)}` : "";
+
+    const iconBtn = (href, opensNew, label, svg) =>
+      `<a href="${href}"${opensNew ? ' target="_blank" rel="noopener"' : ""} aria-label="${label}" title="${label}" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-neutral-dark-10/15 text-neutral-dark-30 transition-colors hover:border-teal-60 hover:bg-teal-60/5 hover:text-teal-60">${svg}</a>`;
+
+    const mailSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`;
+    const linkedinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>`;
+    const globeSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
+
+    const links = [];
+    if (emailHref) links.push(iconBtn(emailHref, false, "Email", mailSvg));
+    if (linkedinHref) links.push(iconBtn(linkedinHref, true, "LinkedIn", linkedinSvg));
+    if (websiteHref) links.push(iconBtn(websiteHref, true, "Website", globeSvg));
+
+    return `
+      <article class="flex flex-col gap-3 rounded-2xl border border-neutral-dark-10/10 bg-white p-5 transition-colors hover:border-teal-60/40 ${m.isSelf ? "ring-1 ring-teal-60/20" : ""}">
+        <div class="flex items-start gap-3">
+          <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal-60/15 font-sans text-label-sm font-bold text-teal-60">
+            ${escapeHtml(ini)}
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center">
+              <h3 class="truncate font-sans text-paragraph-md font-semibold text-neutral-dark-10">${name}</h3>
+              ${youTag}
+            </div>
+            ${meta ? `<p class="mt-0.5 truncate font-mono text-paragraph-xs text-neutral-dark-30">${escapeHtml(meta)}</p>` : ""}
+          </div>
+        </div>
+        ${links.length ? `<div class="flex flex-wrap gap-2">${links.join("")}</div>` : ""}
+      </article>
+    `;
+  }
 
   // Allow showing the password via double-click on the code field label
   document

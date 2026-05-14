@@ -42,7 +42,22 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
   for (const k of ALLOWED) {
     if (k in body) {
       const v = body[k];
-      update[k] = typeof v === "string" ? v.trim() || null : null;
+      if (k === "phd_year") {
+        if (v === null || v === "" || v === undefined) {
+          update[k] = null;
+        } else {
+          const n = typeof v === "number" ? v : parseInt(String(v), 10);
+          if (!Number.isInteger(n) || n < 1 || n > 4) {
+            return new Response(
+              JSON.stringify({ error: "phd_year must be 1, 2, 3, or 4" }),
+              { status: 400, headers: { "content-type": "application/json" } },
+            );
+          }
+          update[k] = n;
+        }
+      } else {
+        update[k] = typeof v === "string" ? v.trim() || null : null;
+      }
     }
   }
   if (Object.keys(update).length === 0) {
